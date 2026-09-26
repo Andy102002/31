@@ -8,367 +8,458 @@
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@800&display=swap');
 
   :root {
-    --bg: #0b1021;
-    --primary: #0055ff;
-    --neon: #00d4ff;
+    --bg-dark: #0b1021;
+    --primary-blue: #0055ff;
+    --neon-blue: #00d4ff;
     --hw-blue: #002299;
     --hw-red: #e60000;
     --hw-yellow: #ffcc00;
   }
 
-  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; }
-
-  /* --- PANTALLA DE CARGA --- */
-  #loader {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease;
+  * { box-sizing: border-box; }
+  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
+  
+  /* =========================================
+     1. PANTALLA DE CARGA
+  ========================================= */
+  #pantallaEntrada {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    transition: opacity 1s ease;
   }
-  .loading-text { font-size: 1.5rem; color: var(--neon); letter-spacing: 2px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-  .bar-bg { width: 250px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-  .bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--neon)); transition: width 0.1s linear; }
-  #btnStart {
-    display: none; padding: 15px 40px; font-size: 1.2rem; text-transform: uppercase; border: 2px solid var(--neon);
-    background: transparent; color: var(--neon); border-radius: 30px; cursor: pointer; margin-top: 30px;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); animation: pulse 2s infinite; font-family: 'Nunito', sans-serif; font-weight: 800;
-  }
-  #btnStart:hover { background: var(--neon); color: #000; }
+  #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; text-transform: uppercase; }
+  .barra-contenedor { width: 80%; max-width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0 auto; }
+  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); transition: width 0.1s linear; }
 
-  /* --- ESCENA 1: EL RAMO DEDICACODES --- */
+  #btnDescubrir {
+    display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase;
+    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px;
+    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s; margin-top: 40px; animation: latido 2s infinite;
+  }
+  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
+
+  /* =========================================
+     2. ESCENA DEL RAMO (MÉTODO 3 CAPAS)
+  ========================================= */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #111a3a 0%, var(--bg) 100%);
-    z-index: 100; display: flex; align-items: center; justify-content: center; flex-direction: column;
+    background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%);
+    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: opacity 1.5s ease;
   }
-
-  .ramo-titulo { font-family: 'Caveat', cursive; font-size: 4rem; color: #fff; text-shadow: 0 0 15px var(--primary); margin-bottom: 20px; opacity: 0; animation: fadeIn 2s forwards 0.5s; z-index: 200; }
-
-  /* Lienzo estricto de 400x600 que se escalará con JS */
-  #canvas-ramo { position: relative; width: 400px; height: 500px; transform-origin: center center; }
-
-  /* Elementos del ramo (Posiciones absolutas dentro del lienzo de 400x500) */
-  .cono-atras {
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 280px; height: 350px;
-    background: linear-gradient(to bottom, #1e3a8a, #0f172a);
-    clip-path: polygon(15% 0, 85% 0, 60% 100%, 40% 100%);
-    opacity: 0; animation: popUpCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s; z-index: 1;
+  
+  .ramo-titulo { 
+    font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; 
+    text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
+    margin-bottom: 20px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
   }
   
-  .tallos { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
-  .tallo { position: absolute; bottom: 50px; width: 6px; background: #15803d; transform-origin: bottom center; border-radius: 5px; opacity: 0; animation: growTallo 0.8s forwards; }
-  
-  .flores { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 3; }
-  .flor-svg { position: absolute; width: 80px; height: 80px; opacity: 0; transform-origin: center; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4)); }
-  
-  .autos { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; z-index: 4; }
-  .auto-box {
-    position: absolute; width: 80px; height: 120px; opacity: 0; cursor: pointer;
-    background: linear-gradient(180deg, var(--hw-blue) 0%, #001144 100%); border-radius: 6px; border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-    display: flex; flex-direction: column; align-items: center; transform-origin: center bottom;
-    animation: popInAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    transition: transform 0.2s, filter 0.2s;
-  }
-  .auto-box:hover { z-index: 50 !important; filter: brightness(1.2); }
-  .auto-box .hueco { width: 20px; height: 6px; background: var(--bg); border-radius: 0 0 5px 5px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
-  .auto-box .logo { background: var(--hw-red); color: var(--hw-yellow); font-size: 0.45rem; font-weight: 900; font-style: italic; padding: 2px 6px; border-radius: 10px; margin-bottom: auto; }
-  .auto-box img { width: 90%; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
-
-  .cono-frente {
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 220px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    clip-path: polygon(0 0, 100% 0, 60% 100%, 40% 100%);
-    opacity: 0; animation: popUpCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 5s; z-index: 10;
+  /* Lienzo Maestro: Mantiene la proporción estricta para que nada se descuadre */
+  .ramo-master {
+    position: relative; width: 380px; height: 550px; 
+    display: flex; justify-content: center; align-items: flex-end;
   }
 
-  .lazo-btn {
-    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
-    background: #ff0055; color: white; padding: 10px 30px; border-radius: 30px; font-weight: 800; font-size: 1.2rem;
-    border: 3px solid #ff4d88; box-shadow: 0 10px 20px rgba(0,0,0,0.6); cursor: pointer; opacity: 0; z-index: 20;
-    animation: popInBtn 1s forwards 6s, pulse 2s infinite 7s; transition: 0.2s;
+  /* CAPA 1: FONDO DEL RAMO (PNG Transparente) */
+  .capa-fondo {
+    position: absolute; bottom: 0; width: 100%; height: 100%;
+    background-image: url('ramo_atras.png'); 
+    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    z-index: 1; opacity: 0; animation: nacerCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s;
   }
-  .lazo-btn:hover { background: #cc0044; transform: translateX(-50%) scale(1.1); }
-  .lazo-btn::before, .lazo-btn::after { content: ''; position: absolute; top: 10px; width: 40px; height: 30px; background: #cc0044; border-radius: 50%; z-index: -1; }
-  .lazo-btn::before { left: -20px; transform: rotate(-20deg); }
-  .lazo-btn::after { right: -20px; transform: rotate(20deg); }
 
-  /* --- COORDENADAS EXACTAS DEL DISEÑO --- */
-  /* Tallos */
-  .t1 { left: 140px; height: 280px; transform: rotate(-25deg); animation-delay: 1.5s; }
-  .t2 { left: 180px; height: 320px; transform: rotate(-10deg); animation-delay: 1.7s; }
-  .t3 { left: 220px; height: 310px; transform: rotate(10deg); animation-delay: 1.9s; }
-  .t4 { left: 250px; height: 260px; transform: rotate(25deg); animation-delay: 2.1s; }
+  /* CAPA 2: CAJAS HOT WHEELS */
+  .cajas-container { position: absolute; bottom: 80px; width: 100%; height: 420px; z-index: 2; }
   
-  /* Flores SVG */
-  .f1 { left: 50px; bottom: 250px; transform: rotate(-15deg); animation-delay: 2.3s; }
-  .f2 { left: 150px; bottom: 300px; transform: rotate(5deg); animation-delay: 2.5s; width: 90px; height: 90px; }
-  .f3 { left: 260px; bottom: 240px; transform: rotate(20deg); animation-delay: 2.7s; }
-  .f4 { left: 100px; bottom: 180px; transform: rotate(-30deg); animation-delay: 4.5s; z-index: 15; } /* Flor frontal */
-  .f5 { left: 220px; bottom: 190px; transform: rotate(30deg); animation-delay: 4.7s; z-index: 15; } /* Flor frontal */
+  .blister-card {
+    position: absolute; width: 85px; height: 130px;
+    background: linear-gradient(180deg, var(--hw-blue) 0%, #000a22 100%);
+    border-radius: 8px 8px 5px 5px; border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center;
+  }
+  .blister-card:hover { transform: scale(1.3) translateY(-15px) !important; z-index: 50 !important; box-shadow: 0 15px 40px var(--neon-blue); filter: brightness(1.2); }
+  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
+  .blister-logo { background: var(--hw-red); color: var(--hw-yellow); font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 10px; border: 1px solid #fff; margin-bottom: auto; }
+  .blister-burbuja { width: 90%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); border-radius: 10px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.1); }
+  .blister-auto-img { width: 95%; height: 50px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
-  /* Cajas Hot Wheels */
-  .a1 { left: 20px; bottom: 140px; --r: -25deg; animation-delay: 3.2s; }
-  .a2 { left: 90px; bottom: 210px; --r: -10deg; animation-delay: 3.4s; }
-  .a3 { left: 160px; bottom: 230px; --r: 0deg; animation-delay: 3.6s; z-index: 5;}
-  .a4 { left: 230px; bottom: 210px; --r: 10deg; animation-delay: 3.8s; }
-  .a5 { left: 300px; bottom: 140px; --r: 25deg; animation-delay: 4.0s; }
-  .a6 { left: 160px; bottom: 120px; --r: 0deg; animation-delay: 4.2s; z-index: 6;}
+  /* Animación y posiciones de los autos brotando del ramo */
+  @keyframes saltarAuto { 0% { transform: translateY(150px) scale(0); opacity: 0; } 70% { transform: translateY(-10px) scale(1.1); opacity: 1; } 100% { opacity: 1; } }
+  .hw1 { bottom: 150px; left: 10px; transform: rotate(-25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.0s; }
+  .hw2 { bottom: 220px; left: 70px; transform: rotate(-10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.2s; }
+  .hw3 { bottom: 230px; right: 70px; transform: rotate(10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.4s; }
+  .hw4 { bottom: 160px; right: 10px; transform: rotate(25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.6s; }
+  .hw5 { bottom: 100px; left: 145px; transform: rotate(0deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.8s; z-index: 25;}
 
-  /* --- ESCENA 2: GALAXIA 3D --- */
+  /* CAPA 3: FRENTE DEL RAMO (PNG Transparente) */
+  .capa-frente {
+    position: absolute; bottom: 0; width: 100%; height: 100%;
+    background-image: url('ramo_frente.png'); 
+    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    z-index: 3; opacity: 0; animation: nacerCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
+    pointer-events: none; /* Permite hacer clic a los autos que están detrás del papel */
+  }
+
+  /* BOTÓN GALAXIA */
+  #btnGalaxia {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    width: 180px; height: 60px; background: linear-gradient(to bottom, #ff0055, #cc0044);
+    border: 2px solid #ff4d88; border-radius: 40px; color: #fff; font-weight: 900; font-size: 1.2rem; letter-spacing: 2px;
+    cursor: pointer; opacity: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center; z-index: 10;
+    animation: nacerBoton 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 4.5s, latidoLazo 2s infinite 4.5s; transition: 0.3s;
+  }
+  #btnGalaxia:hover { background: #ff3377; transform: translateX(-50%) scale(1.1); box-shadow: 0 10px 40px #ff0055; }
+  #btnGalaxia::before, #btnGalaxia::after { content: ''; position: absolute; top: 5px; width: 60px; height: 50px; background: #cc0044; border-radius: 50%; z-index: -1; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }
+  #btnGalaxia::before { left: -30px; transform: rotate(-20deg); }
+  #btnGalaxia::after { right: -30px; transform: rotate(20deg); }
+
+  /* =========================================
+     3. ESCENA GALAXIA 3D
+  ========================================= */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
-  #ui-galaxia h1 { margin: 0; font-size: 3rem; color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon); font-family: 'Caveat', cursive; }
-  #ui-galaxia p { margin-top: 10px; font-size: 1rem; color: #fff; background: rgba(0, 0, 0, 0.5); display: inline-block; padding: 5px 20px; border-radius: 20px; border: 1px solid var(--neon); text-transform: uppercase; }
+  #ui-galaxia h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
+  #ui-galaxia p { margin-top: 10px; font-size: 1.1rem; color: #fff; background: rgba(0, 0, 20, 0.7); display: inline-block; padding: 8px 25px; border-radius: 30px; border: 1px solid var(--neon-blue); text-transform: uppercase; font-weight: bold; }
 
-  /* --- MODAL --- */
-  #modal {
+  /* =========================================
+     MODAL DE MENSAJES
+  ========================================= */
+  #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
-    background: rgba(255, 255, 255, 0.95); border: 4px solid var(--primary); border-radius: 15px;
-    width: 85%; max-width: 350px; padding: 30px 20px; text-align: center; color: #111;
-    z-index: 10000; box-shadow: 0 20px 50px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.3s;
+    background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
+    width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111;
+    z-index: 10000; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 85, 255, 0.3);
+    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-  #modal.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  #m-title { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; font-weight: 900; }
-  .m-icon { font-size: 4rem; margin: 10px 0; display: block; animation: float 3s infinite; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));}
-  #m-text { font-size: 1.2rem; margin-bottom: 25px; font-weight: 700; font-family: 'Caveat', cursive; color: #333;}
-  .m-btn { background: var(--primary); color: #fff; border: none; padding: 10px 30px; border-radius: 20px; font-weight: 900; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 85, 255, 0.4); }
+  #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
+  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
+  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
+  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
+  .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
   /* ANIMACIONES */
-  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes latidoLazo { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @keyframes popUpCono { 0% { transform: translateX(-50%) translateY(100px) scale(0.5); opacity: 0; } 100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; } }
-  @keyframes growTallo { 0% { transform: scaleY(0); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
-  @keyframes popIn { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
-  @keyframes popInAuto { 0% { transform: translateY(100px) scale(0) rotate(var(--r)); opacity: 0; } 100% { transform: translateY(0) scale(1) rotate(var(--r)); opacity: 1; } }
-  @keyframes popInBtn { 0% { transform: translateX(-50%) scale(0); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+  @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes nacerCono { 0% { transform: translateY(200px) scale(0.5); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+  @keyframes nacerBoton { 0% { transform: translateX(-50%) scale(0); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
 
-<!-- SVG FLOR PERFECTA -->
-<svg style="display: none;">
-  <defs>
-    <g id="flor-svg">
-      <path d="M40 20 C45 0, 70 15, 40 40 C15 15, 35 0, 40 20" fill="#00aaff" stroke="#0055ff" stroke-width="2"/>
-      <path d="M40 40 C70 15, 85 40, 40 40" fill="#0088ff" stroke="#0044cc" stroke-width="2" transform="rotate(72 40 40)"/>
-      <path d="M40 40 C70 15, 85 40, 40 40" fill="#0066ff" stroke="#0033aa" stroke-width="2" transform="rotate(144 40 40)"/>
-      <path d="M40 40 C70 15, 85 40, 40 40" fill="#0044ff" stroke="#002288" stroke-width="2" transform="rotate(216 40 40)"/>
-      <path d="M40 40 C70 15, 85 40, 40 40" fill="#0022cc" stroke="#001155" stroke-width="2" transform="rotate(288 40 40)"/>
-      <circle cx="40" cy="40" r="12" fill="#ffcc00" stroke="#e60000" stroke-width="3"/>
-    </g>
-  </defs>
-</svg>
-
 <audio id="musicaFondo" loop crossorigin="anonymous"><source src="cancion.mp3" type="audio/mpeg"></audio>
 
-<!-- 1. CARGA -->
-<div id="loader">
-  <div class="loading-text" id="loaderText">ENSAMBLANDO SORPRESA... 0%</div>
-  <div class="bar-bg"><div class="bar-fill" id="loaderBar"></div></div>
-  <button id="btnStart">ABRIR REGALO</button>
+<!-- 1. PANTALLA DE CARGA -->
+<div id="pantallaEntrada">
+  <div id="textoCarga">ENSAMBLANDO SORPRESA... 0%</div>
+  <div class="barra-contenedor"><div class="barra-progreso" id="barraProgreso"></div></div>
+  <button id="btnDescubrir">ABRIR REGALO</button>
 </div>
 
-<!-- 2. ESCENA RAMO (Lienzo escalable) -->
+<!-- 2. ESCENA DEL RAMO -->
 <div id="escenaRamo">
   <div class="ramo-titulo">❤️ Feliz 30 de Septiembre ❤️</div>
   
-  <div id="canvas-ramo">
-    <!-- Capa 1: Fondo -->
-    <div class="cono-atras"></div>
+  <div class="ramo-master">
+    <!-- CAPA 1: PNG de Fondo (Cartón trasero, tallos y flores) -->
+    <div class="capa-fondo"></div>
     
-    <!-- Capa 2: Tallos -->
-    <div class="tallos">
-      <div class="tallo t1"></div><div class="tallo t2"></div><div class="tallo t3"></div><div class="tallo t4"></div>
-    </div>
-    
-    <!-- Capa 3: Flores Traseras -->
-    <div class="flores">
-      <svg class="flor-svg f1" viewBox="0 0 80 80"><use href="#flor-svg"/></svg>
-      <svg class="flor-svg f2" viewBox="0 0 80 80"><use href="#flor-svg"/></svg>
-      <svg class="flor-svg f3" viewBox="0 0 80 80"><use href="#flor-svg"/></svg>
-    </div>
-    
-    <!-- Capa 4: Autos -->
-    <div class="autos">
-      <div class="auto-box a1" onclick="abrirModal('MI ALEGRÍA', 'Haces que mi vida sea más bonita')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto1.png" onerror="this.style.display='none'">
+    <!-- CAPA 2: Cajas Hot Wheels -->
+    <div class="cajas-container">
+      <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
-      <div class="auto-box a2" onclick="abrirModal('TE AMO', 'No necesito calendario para amarte')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto2.png" onerror="this.style.display='none'">
+      <div class="blister-card hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
-      <div class="auto-box a3" onclick="abrirModal('TE ADORO', 'Creo en ti siempre')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto3.png" onerror="this.style.display='none'">
+      <div class="blister-card hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
-      <div class="auto-box a4" onclick="abrirModal('ERES VALIOSO', 'Éxito en cada meta que persigas')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto4.png" onerror="this.style.display='none'">
+      <div class="blister-card hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
-      <div class="auto-box a5" onclick="abrirModal('MI PILOTO', 'Aceleras mi mundo')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto5.png" onerror="this.style.display='none'">
-      </div>
-      <div class="auto-box a6" onclick="abrirModal('MI TODO', 'Gracias por existir')">
-        <div class="hueco"></div><div class="logo">HOT WHEELS</div><img src="auto6.png" onerror="this.style.display='none'">
+      <div class="blister-card hw5" onclick="abrirModal('MI PILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto5.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
     </div>
 
-    <!-- Capa 5: Flores Frontales -->
-    <div class="flores">
-      <svg class="flor-svg f4" viewBox="0 0 80 80"><use href="#flor-svg"/></svg>
-      <svg class="flor-svg f5" viewBox="0 0 80 80"><use href="#flor-svg"/></svg>
-    </div>
-
-    <!-- Capa 6: Envoltura Frontal -->
-    <div class="cono-frente"></div>
+    <!-- CAPA 3: PNG Frontal (Papel de adelante) -->
+    <div class="capa-frente"></div>
     
-    <!-- Capa 7: Botón Lazo -->
-    <button class="lazo-btn" onclick="goGalaxy()">GALAXIA 🌌</button>
+    <!-- BOTÓN -->
+    <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
   </div>
 </div>
 
-<!-- 3. ESCENA GALAXIA -->
+<!-- 3. ESCENA GALAXIA 3D -->
 <div id="threeCanvas"></div>
+
 <div id="ui-galaxia">
   <h1>❤️ Feliz 30 de Septiembre ❤️</h1>
   <p>👆 Gira el universo y toca un auto 🏎️</p>
 </div>
 
-<!-- MODAL -->
-<div id="modal">
-  <div id="m-title">Titulo</div>
-  <span class="m-icon">🐻❤️🐼</span>
-  <div id="m-text">Texto</div>
-  <button class="m-btn" onclick="cerrarModal()">CONTINUAR</button>
+<!-- TARJETA MODAL COMPARTIDA -->
+<div id="modalMensaje">
+  <div id="modalTitulo">Titulo</div>
+  <span class="modal-img-tierna">🐻❤️🐼</span>
+  <div id="modalTexto">Texto</div>
+  <button class="btn-cerrar" onclick="cerrarModal()">CONTINUAR</button>
 </div>
 
-<!-- SCRIPTS -->
+<!-- LIBRERÍAS THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-// SCALING DEL LIENZO PARA QUE NO SE ROMPA EN NINGÚN CELULAR/PC
-function resizeCanvas() {
-  const canvas = document.getElementById('canvas-ramo');
-  const scale = Math.min(window.innerWidth / 450, window.innerHeight / 750);
-  canvas.style.transform = `scale(${scale > 1 ? 1 : scale})`;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas(); // Llamada inicial
-
-// LOADER
-let pct = 0;
-const loadInt = setInterval(() => {
-  pct += Math.floor(Math.random() * 10) + 5;
-  if(pct >= 100) {
-    pct = 100; clearInterval(loadInt);
-    document.getElementById('loaderText').innerText = "¡SISTEMA LISTO!";
-    document.querySelector('.bar-bg').style.display = 'none';
-    document.getElementById('btnStart').style.display = 'block';
-  } else {
-    document.getElementById('loaderText').innerText = `ENSAMBLANDO SORPRESA... ${pct}%`;
-    document.getElementById('loaderBar').style.width = `${pct}%`;
+// --- LÓGICA DE CARGA ---
+let porcentaje = 0;
+const intervaloCarga = setInterval(() => {
+  porcentaje += Math.floor(Math.random() * 8) + 2;
+  if(porcentaje >= 100) {
+    porcentaje = 100;
+    clearInterval(intervaloCarga);
+    document.getElementById('textoCarga').innerText = "¡SISTEMA LISTO!";
+    document.getElementById('barraProgreso').parentElement.style.display = 'none';
+    document.getElementById('btnDescubrir').style.display = 'block';
   }
+  document.getElementById('textoCarga').innerText = `ENSAMBLANDO SORPRESA... ${porcentaje}%`;
+  document.getElementById('barraProgreso').style.width = `${porcentaje}%`;
 }, 100);
 
-document.getElementById('btnStart').addEventListener('click', () => {
-  document.getElementById('musicaFondo').play().catch(e=>{});
-  document.getElementById('loader').style.opacity = '0';
-  setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
+document.getElementById('btnDescubrir').addEventListener('click', () => {
+  document.getElementById('musicaFondo').play().catch(e=>console.log(e));
+  document.getElementById('pantallaEntrada').style.opacity = '0';
+  setTimeout(() => { document.getElementById('pantallaEntrada').style.display = 'none'; }, 1000);
 });
 
-// MODAL
-function abrirModal(t, txt) {
-  document.getElementById('m-title').innerText = t;
-  document.getElementById('m-text').innerText = txt;
-  document.getElementById('modal').classList.add('show');
+function abrirModal(titulo, texto) {
+  document.getElementById('modalTitulo').innerText = titulo;
+  document.getElementById('modalTexto').innerText = texto;
+  document.getElementById('modalMensaje').classList.add('mostrar');
 }
-function cerrarModal() { document.getElementById('modal').classList.remove('show'); }
+function cerrarModal() {
+  document.getElementById('modalMensaje').classList.remove('mostrar');
+}
 
-// TRANSICIÓN
-function goGalaxy() {
-  const ramo = document.getElementById('escenaRamo');
-  ramo.style.opacity = '0';
+// TRANSICIÓN A LA GALAXIA
+function iniciarTransicionGalaxia() {
+  const escenaRamo = document.getElementById('escenaRamo');
+  escenaRamo.style.opacity = '0';
   setTimeout(() => {
-    ramo.style.display = 'none';
+    escenaRamo.style.display = 'none';
     document.getElementById('threeCanvas').style.display = 'block';
     document.getElementById('ui-galaxia').style.display = 'block';
     initThreeJS();
   }, 1500);
 }
 
-// GALAXIA THREEJS
-const bancoMsj = [
-  { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa." },
+// --- BANCO MASIVO DE MENSAJES ÚNICOS PARA LA GALAXIA ---
+const bancoDeMensajes = [
+  { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
-  { t: "MI PILOTO", p: "Aceleras mi corazón todos los días." },
+  { t: "MI PILOTO FAVORITO", p: "Aceleras mi corazón todos los días." },
+  { t: "A TODA VELOCIDAD", p: "Mi corazón late a mil por hora cuando te veo." },
+  { t: "MI DESTINO FINAL", p: "No importa la ruta, mi destino siempre eres tú." },
   { t: "HOT WHEELS", p: "Gracias por dejarme hacer feliz a tu niño interior." },
-  { t: "MI META", p: "De todos los caminos, te elegiré a ti." }
+  { t: "MI COPILOTO IDEAL", p: "La vida es un viaje, gracias por ir a mi lado." },
+  { t: "PRIMERA POSICIÓN", p: "En la carrera de mi vida, tú siempre tienes el primer lugar." },
+  { t: "ADRENALINA PURA", p: "Eso es exactamente lo que siento cuando me miras." },
+  { t: "MI META", p: "De todos los caminos posibles, siempre te elegiré a ti." },
+  { t: "CERO A CIEN", p: "Me haces pasar de 0 a 100 de felicidad en un segundo." },
+  { t: "MOTOR DE MI VIDA", p: "Tú le das la fuerza y energía a todos mis días." },
+  { t: "PISTA FAVORITA", p: "Quiero recorrer cada curva de la vida a tu lado." },
+  { t: "TURBO ACTIVADO", p: "Mi sonrisa se enciende a máxima potencia contigo." },
+  { t: "LUCES EN LA NOCHE", p: "Tu amor ilumina mi camino cuando todo está oscuro." },
+  { t: "MI CAMPEÓN", p: "Ganar tu corazón ha sido mi mayor y mejor victoria." },
+  { t: "AMOR CLÁSICO", p: "Lo nuestro es como un buen auto clásico: nunca pasa de moda." },
+  { t: "SÚPER MOTOR", p: "Gracias por darle tanta fuerza y amor a mis días." },
+  { t: "LLANTAS AL ASFALTO", p: "Me mantienes con los pies en la tierra pero el corazón volando." },
+  { t: "ESCUDERÍA PERFECTA", p: "Juntos somos el mejor equipo que existe." },
+  { t: "V8 DE EMOCIONES", p: "Haces vibrar todo mi mundo con solo hablarme." },
+  { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
+  { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
+  { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
+  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." }
 ];
 
+function shuffleArray(array) {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
+
+// --- ESCENA GALAXIA 3D ---
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
-let carritos = [];
+let carritosInteractivos = [];
+let anillosGalaxia = [];
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 function initThreeJS() {
-  scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b1021); scene.fog = new THREE.FogExp2(0x0b1021, 0.0003);
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 15000); camera.position.set(0, 400, 1500);
-  renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setSize(window.innerWidth, window.innerHeight);
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x020510);
+  scene.fog = new THREE.FogExp2(0x020510, 0.00025);
+
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 15000);
+  camera.position.set(0, 400, 1600); 
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   document.getElementById('threeCanvas').appendChild(renderer.domElement);
-  
-  controls = new THREE.OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.autoRotate = true; controls.autoRotateSpeed = 0.8;
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.8;
+  controls.maxDistance = 2500;
+  controls.minDistance = 300;
 
   scene.add(universoGroup);
+
+  crearFondoEstelar();
+  crearAgujeroNegroAnimado();
+  crearGalaxia();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
   
-  // Estrellas
-  const starGeo = new THREE.BufferGeometry(); const starPos = [];
-  for(let i=0; i<3000; i++) starPos.push((Math.random()-0.5)*5000, (Math.random()-0.5)*5000, (Math.random()-0.5)*5000);
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
-
-  // Agujero Negro
-  const disk = new THREE.Group();
-  disk.add(new THREE.Mesh(new THREE.RingGeometry(180, 260, 64), new THREE.MeshBasicMaterial({color: 0x00d4ff, side: THREE.DoubleSide, transparent: true, opacity: 0.8})));
-  disk.rotation.x = Math.PI/2; universoGroup.add(disk);
-  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
-
-  // Autos
-  const loader = new THREE.TextureLoader();
-  const tex = [loader.load('auto1.png'), loader.load('auto2.png'), loader.load('auto3.png'), loader.load('auto4.png'), loader.load('auto5.png'), loader.load('auto6.png')];
-  
-  for(let i=0; i<30; i++) {
-    const r = 400 + Math.random()*1500; const a = Math.random()*Math.PI*2;
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex[Math.floor(Math.random()*tex.length)], transparent: true }));
-    sprite.scale.set(180, 90, 1); sprite.position.set(Math.cos(a)*r, (Math.random()-0.5)*400, Math.sin(a)*r);
-    sprite.userData = { m: bancoMsj[Math.floor(Math.random()*bancoMsj.length)], aBase: a, radio: r, vel: 0.001 + Math.random()*0.001 };
-    carritos.push(sprite); universoGroup.add(sprite);
-  }
-
-  window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-  renderer.domElement.addEventListener('pointerdown', e => { tiempoInicio = Date.now(); posInicio = {x: e.clientX, y: e.clientY}; });
+  renderer.domElement.addEventListener('pointerdown', onPointerDown);
   renderer.domElement.addEventListener('pointerup', onPointerUp);
+
   animate();
 }
 
-let posInicio = {x:0, y:0}, tiempoInicio = 0;
+function crearSpriteTextoFlotante(texto) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024; canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.font = '50px "Caveat", cursive, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = '#0055ff'; ctx.shadowBlur = 15;
+  ctx.fillText(texto, 512, 64);
+  const texture = new THREE.CanvasTexture(canvas);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7 }));
+  sprite.scale.set(350, 45, 1);
+  return sprite;
+}
+
+function crearFondoEstelar() {
+  const starGeo = new THREE.BufferGeometry(); const starPos = [];
+  for(let i=0; i<5000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
+}
+
+function crearAgujeroNegroAnimado() {
+  const diskGroup = new THREE.Group();
+  const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
+
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 260, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(260, 360, 64, 2), matAnillo(0x00aaff, 0.4));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(360, 550, 64, 1), matAnillo(0x0055ff, 0.15));
+  
+  anillosGalaxia.push(ring1, ring2, ring3);
+  diskGroup.add(ring1, ring2, ring3);
+  diskGroup.rotation.x = Math.PI / 2;
+  universoGroup.add(diskGroup);
+  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
+}
+
+function crearGalaxia() {
+  const loader = new THREE.TextureLoader();
+  const texturasAutos = [
+    loader.load('auto1.png'), loader.load('auto2.png'), loader.load('auto3.png'),
+    loader.load('auto4.png'), loader.load('auto5.png'), loader.load('auto6.png')
+  ];
+
+  const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero", "A toda máquina"];
+  const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
+
+  for(let i=0; i<70; i++) {
+    const radio = 450 + Math.random() * 2200;
+    const angulo = Math.random() * Math.PI * 2;
+    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2800); 
+    const spriteTexto = crearSpriteTextoFlotante(frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)]);
+    spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
+    spriteTexto.userData = { anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
+    universoGroup.add(spriteTexto);
+  }
+
+  const cantidadAutos = 35; 
+  for(let i=0; i<cantidadAutos; i++) {
+    const radio = 500 + Math.random() * 1900;
+    const angulo = Math.random() * Math.PI * 2;
+    const altura = (Math.random() - 0.5) * 450; 
+    
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturasAutos[Math.floor(Math.random() * texturasAutos.length)], transparent: true }));
+    sprite.scale.set(200, 100, 1); 
+    sprite.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
+    
+    sprite.userData = { 
+      mensaje: mensajesAleatorios[i], 
+      anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0012 
+    };
+
+    carritosInteractivos.push(sprite); 
+    universoGroup.add(sprite);
+  }
+}
+
+let posInicio = { x: 0, y: 0 }, tiempoInicio = 0;
+function onPointerDown(e) {
+  posInicio.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+  posInicio.y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+  tiempoInicio = Date.now();
+}
+
 function onPointerUp(e) {
-  if (Math.hypot(e.clientX - posInicio.x, e.clientY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
-    mouse.x = (e.clientX / window.innerWidth)*2 - 1; mouse.y = -(e.clientY / window.innerHeight)*2 + 1;
+  let endX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : 0);
+  let endY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : 0);
+  
+  if (Math.hypot(endX - posInicio.x, endY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
+    mouse.x = (endX / window.innerWidth) * 2 - 1; mouse.y = -(endY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(carritos);
-    if (hits.length > 0) {
-      abrirModal(hits[0].object.userData.m.t, hits[0].object.userData.m.p);
-      hits[0].object.scale.set(250, 125, 1); setTimeout(() => hits[0].object.scale.set(180, 90, 1), 300);
+    const intersects = raycaster.intersectObjects(carritosInteractivos);
+    if (intersects.length > 0) {
+      const obj = intersects[0].object; 
+      abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
+      const escX = 200, escY = 100;
+      obj.scale.set(escX*1.4, escY*1.4, 1); 
+      setTimeout(() => obj.scale.set(escX, escY, 1), 300);
     }
   }
 }
 
 function animate() {
-  requestAnimationFrame(animate); controls.update();
+  requestAnimationFrame(animate);
+  controls.update();
+  universoGroup.rotation.y -= 0.0005;
+  if(anillosGalaxia.length === 3) {
+    anillosGalaxia[0].rotation.z -= 0.02; anillosGalaxia[1].rotation.z -= 0.008; anillosGalaxia[2].rotation.z -= 0.003;
+  }
   universoGroup.children.forEach(c => {
-    if(c.userData.radio) {
-      c.userData.aBase += c.userData.vel;
-      c.position.x = Math.cos(c.userData.aBase) * c.userData.radio;
-      c.position.z = Math.sin(c.userData.aBase) * c.userData.radio;
+    if(c.userData && c.userData.radio) {
+      c.userData.anguloBase += c.userData.velocidad;
+      c.position.x = Math.cos(c.userData.anguloBase) * c.userData.radio;
+      c.position.z = Math.sin(c.userData.anguloBase) * c.userData.radio;
     }
   });
   renderer.render(scene, camera);
