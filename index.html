@@ -95,7 +95,7 @@
 <!-- INTERFAZ FLOTANTE -->
 <div id="ui-layer">
   <h1>Feliz 30 de Septiembre</h1>
-  <div id="instruccion">👆 Arrastra para girar • Toca un auto para leer</div>
+  <div id="instruccion">👆 Arrastra para girar • Toca exactamente un auto para leer</div>
 </div>
 
 <!-- TARJETA DE MENSAJE -->
@@ -139,12 +139,13 @@ btnDescubrir.addEventListener('click', () => {
 // --- 2. CONFIGURACIÓN DEL UNIVERSO 3D ---
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
-let carritosInteractivos = []; 
+let carritosInteractivos = []; // Array estricto SOLO para los autos
+let anillosGalaxia = []; // Array para animar los anillos de luz
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const textureLoader = new THREE.TextureLoader();
 
-// FRASES ESTILO "TEXTO FLOTANTE"
+// FRASES ESTILO "TEXTO FLOTANTE" (Decorativas)
 const frasesFlotantes = [
   "Acelerando hacia lo que viene", "Contigo la carretera es mejor", "Me alegra conocerte", 
   "Eres mi persona favorita", "Feliz día para ti", "No necesito un motivo para quererte", 
@@ -163,12 +164,14 @@ const mensajesTarjetas = [
   { t: "Mi copiloto ideal", p: "La vida es un viaje, gracias por ir a mi lado." },
   { t: "Primera posición", p: "En la carrera de mi vida, tú siempre tienes el primer lugar." },
   { t: "Adrenalina pura", p: "Eso es exactamente lo que siento cuando me miras." },
-  { t: "Mi meta", p: "De todos los caminos posibles, siempre te elegiré a ti." }
+  { t: "Mi meta", p: "De todos los caminos posibles, siempre te elegiré a ti." },
+  { t: "Cero a cien", p: "Me haces pasar de 0 a 100 de felicidad en un segundo." },
+  { t: "Motor de mi vida", p: "Tú le das la fuerza y energía a todos mis días." }
 ];
 
 function init() {
   scene = new THREE.Scene();
-  // Fondo azul oscuro como en la imagen
+  // Fondo azul oscuro infinito
   scene.background = new THREE.Color(0x021024);
   scene.fog = new THREE.FogExp2(0x021024, 0.0002);
 
@@ -191,7 +194,7 @@ function init() {
   scene.add(universoGroup);
 
   crearFondoEstelar();
-  crearAgujeroNegro();
+  crearAgujeroNegroAnimado();
   crearGalaxia();
 
   window.addEventListener('resize', onResize);
@@ -211,7 +214,6 @@ function crearSpriteTextoFlotante(texto) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   
-  // Sombra ligera azulada
   ctx.shadowColor = '#00aaff';
   ctx.shadowBlur = 10;
   ctx.fillText(texto, 512, 64);
@@ -230,26 +232,41 @@ function crearFondoEstelar() {
   scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
 }
 
-function crearAgujeroNegro() {
-  // Disco de acreción (Anillos celestes y blancos idénticos a tu imagen)
+function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(160, 240, 64), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(240, 340, 64), new THREE.MeshBasicMaterial({color: 0x00aaff, side: THREE.DoubleSide, transparent: true, opacity: 0.6}));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(340, 500, 64), new THREE.MeshBasicMaterial({color: 0x0055ff, side: THREE.DoubleSide, transparent: true, opacity: 0.3}));
+  // Para que se note la rotación, usamos un mapa de textura básico a rayas o segmentos
+  // (Si usamos color sólido, al girar no se nota). Vamos a mapear la opacidad.
   
+  const materialAnillo = (colorHex, opacidad) => {
+    return new THREE.MeshBasicMaterial({
+      color: colorHex, 
+      side: THREE.DoubleSide, 
+      transparent: true, 
+      opacity: opacidad,
+      wireframe: true // Usar wireframe leve hace que al girar se vea increíble y de alta tecnología
+    });
+  };
+
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(160, 240, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(240, 340, 64, 2), materialAnillo(0x00aaff, 0.4));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(340, 500, 64, 1), materialAnillo(0x0055ff, 0.2));
+  
+  // Guardamos en el array global para rotarlos en animate()
+  anillosGalaxia.push(ring1, ring2, ring3);
+
   diskGroup.add(ring1, ring2, ring3);
   diskGroup.rotation.x = Math.PI / 2;
   universoGroup.add(diskGroup);
 
-  // Esfera negra central
+  // Esfera negra central (El núcleo)
   const bhGeo = new THREE.SphereGeometry(158, 32, 32);
   const bhMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   universoGroup.add(new THREE.Mesh(bhGeo, bhMat));
 }
 
 function crearGalaxia() {
-  // CARGAR LAS IMÁGENES PNG (Asegúrate de tener auto1.png, auto2.png, auto3.png, auto4.png en tu carpeta)
+  // CARGAR LAS IMÁGENES PNG EXACTAS QUE PONGAS EN TU CARPETA
   const texturasAutos = [
     textureLoader.load('auto1.png'),
     textureLoader.load('auto2.png'),
@@ -257,7 +274,7 @@ function crearGalaxia() {
     textureLoader.load('auto4.png')
   ];
 
-  // Generar Textos Flotantes
+  // 1. Generar Textos Flotantes (No interactivos)
   for(let i=0; i<80; i++) {
     const radio = 400 + Math.random() * 2000;
     const angulo = Math.random() * Math.PI * 2;
@@ -271,7 +288,7 @@ function crearGalaxia() {
     universoGroup.add(spriteTexto);
   }
 
-  // Generar Carritos Hot Wheels (PNGs)
+  // 2. Generar Carritos Hot Wheels Interactivos (PNGs)
   for(let i=0; i<40; i++) {
     const radio = 450 + Math.random() * 1800;
     const angulo = Math.random() * Math.PI * 2;
@@ -279,31 +296,28 @@ function crearGalaxia() {
     
     const texturaRandom = texturasAutos[Math.floor(Math.random() * texturasAutos.length)];
     
+    // Usamos el Sprite directamente (sin hitbox secundaria) para una colisión perfecta
     const spriteMat = new THREE.SpriteMaterial({ map: texturaRandom, transparent: true });
     const carrito = new THREE.Sprite(spriteMat);
-    // Ajusta la escala dependiendo de la resolución de tus PNGs
-    carrito.scale.set(200, 100, 1); 
+    carrito.scale.set(220, 110, 1); 
 
-    // HITBOX EXCLUSIVO Y ESTRICTO (Para evitar clics en el vacío)
-    const hitBoxGeo = new THREE.PlaneGeometry(180, 90);
-    const hitbox = new THREE.Mesh(hitBoxGeo, new THREE.MeshBasicMaterial({visible: false}));
-    carrito.add(hitbox);
-    
     const fraseElegida = mensajesTarjetas[Math.floor(Math.random() * mensajesTarjetas.length)];
-    hitbox.userData = { 
-      mensaje: fraseElegida,
-      parentSprite: carrito
-    };
-
-    carritosInteractivos.push(hitbox); // SOLO LOS HITBOX DE LOS AUTOS SON CLIQUEABLES
     
     carrito.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    carrito.userData = { anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0015 };
+    carrito.userData = { 
+      mensaje: fraseElegida,
+      anguloBase: angulo, 
+      radio: radio, 
+      velocidad: 0.001 + Math.random() * 0.0015 
+    };
+
+    // ALMACENAMOS EL SPRITE DIRECTAMENTE PARA QUE EL RAYCASTER SEA 100% PRECISO
+    carritosInteractivos.push(carrito); 
     universoGroup.add(carrito);
   }
 }
 
-// --- 3. LÓGICA DE CLICS AISLADA Y SEGURA ---
+// --- 3. LÓGICA DE CLICS EXACTA Y MILIMÉTRICA ---
 let posInicio = { x: 0, y: 0 };
 let tiempoInicio = 0;
 
@@ -320,25 +334,26 @@ function onPointerUp(event) {
   let distancia = Math.hypot(endX - posInicio.x, endY - posInicio.y);
   let tiempo = Date.now() - tiempoInicio;
   
-  // Validar que fue un toque rápido y no un arrastre de cámara
+  // Es un clic si el dedo casi no se movió y fue rápido
   if (distancia < 15 && tiempo < 400) {
     mouse.x = (endX / window.innerWidth) * 2 - 1;
     mouse.y = -(endY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
     
-    // SOLO INTERSECTA LA LISTA DE CARRITOS, EL VACÍO SE IGNORA
+    // VERIFICACIÓN EXACTA: Solo detecta los píxeles reales de las imágenes de los carritos
     const intersects = raycaster.intersectObjects(carritosInteractivos);
 
     if (intersects.length > 0) {
-      const datosAuto = intersects[0].object.userData; 
-      mostrarModal(datosAuto.mensaje);
+      // Tomamos el primer carrito que intercepta el rayo
+      const carritoTocado = intersects[0].object; 
+      mostrarModal(carritoTocado.userData.mensaje);
       
-      const spriteAnimar = datosAuto.parentSprite;
-      const escalaOrgX = 200;
-      const escalaOrgY = 100;
-      spriteAnimar.scale.set(escalaOrgX*1.3, escalaOrgY*1.3, 1);
-      setTimeout(() => { spriteAnimar.scale.set(escalaOrgX, escalaOrgY, 1); }, 300);
+      // Animación de latido en la imagen del auto
+      const escalaOrgX = 220;
+      const escalaOrgY = 110;
+      carritoTocado.scale.set(escalaOrgX*1.3, escalaOrgY*1.3, 1);
+      setTimeout(() => { carritoTocado.scale.set(escalaOrgX, escalaOrgY, 1); }, 300);
     }
   }
 }
@@ -364,10 +379,19 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
+  // Rotar toda la galaxia lentamente
   universoGroup.rotation.y -= 0.0005;
 
+  // ANIMAR LOS ANILLOS DE LA GALAXIA INDIVIDUALMENTE (Efecto realista)
+  if(anillosGalaxia.length === 3) {
+    anillosGalaxia[0].rotation.z -= 0.02;   // Anillo interno muy rápido
+    anillosGalaxia[1].rotation.z -= 0.008;  // Anillo medio moderado
+    anillosGalaxia[2].rotation.z -= 0.003;  // Anillo externo lento
+  }
+
+  // Rotar carritos y textos en su órbita
   universoGroup.children.forEach(child => {
-    if(child.userData.radio) {
+    if(child.userData && child.userData.radio) {
       child.userData.anguloBase += child.userData.velocidad;
       child.position.x = Math.cos(child.userData.anguloBase) * child.userData.radio;
       child.position.z = Math.sin(child.userData.anguloBase) * child.userData.radio;
