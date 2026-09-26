@@ -8,113 +8,148 @@
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Nunito:wght@400;800&display=swap');
 
   :root {
+    --bg-dark: #020510;
     --primary-blue: #0055ff;
     --neon-blue: #00d4ff;
-    --lazo-color: #ff0055;
-    --lazo-oscuro: #cc0044;
+    --hw-blue: #0033cc;
+    --hw-red: #e60000;
+    --hw-yellow: #ffcc00;
+    --leaf-green: #2e8b57;
+    --flower-blue: #4da6ff;
   }
 
-  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #020510; overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
+  * { box-sizing: border-box; }
+  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
-  /* --- PANTALLA DE CARGA --- */
+  /* --- 1. PANTALLA DE CARGA CENTRADA --- */
   #pantallaEntrada {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020510; z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    transition: opacity 1s ease;
   }
-  #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; }
-  .barra-contenedor { width: 80%; max-width: 300px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+  #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; text-transform: uppercase; }
+  .barra-contenedor { width: 80%; max-width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0 auto; }
   .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); transition: width 0.1s linear; }
 
   #btnDescubrir {
-    display: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
+    display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase;
     background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px;
-    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
-    transition: all 0.3s; margin-top: 30px; animation: latido 2s infinite;
+    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s; margin-top: 40px; animation: latido 2s infinite;
   }
-  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
 
-  /* --- ESCENA 1: EL RAMO REALISTA --- */
+  /* --- 2. ESCENA DEL RAMO (PERFECTAMENTE ARMADO) --- */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #0a1535 0%, #020510 100%);
+    background: radial-gradient(circle at center, #0a1535 0%, var(--bg-dark) 100%);
     z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: opacity 1.5s ease;
   }
-  .ramo-titulo { font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4rem); color: #fff; text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); margin-bottom: 10px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; }
+  
+  .ramo-titulo { 
+    font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; 
+    text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
+    margin-bottom: 2vh; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
+  }
   
   .ramo-wrapper {
-    position: relative; width: 360px; height: 500px; margin-top: 10px;
+    position: relative; width: 380px; height: 550px; display: flex; justify-content: center; align-items: flex-end;
   }
 
-  /* Cono del ramo */
-  .capa-fondo { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 280px; height: 350px; background: linear-gradient(to bottom, #1d4ed8, #1e3a8a); clip-path: polygon(0 0, 100% 0, 65% 100%, 35% 100%); z-index: 1; opacity: 0; animation: surgir 1s forwards 1s; box-shadow: inset 0 20px 50px rgba(0,0,0,0.5); }
-  .capa-frente { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 280px; background: linear-gradient(135deg, #3b82f6, #1e40af); clip-path: polygon(5% 0, 95% 0, 65% 100%, 35% 100%); z-index: 10; opacity: 0; animation: surgir 1s forwards 1.2s; box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
+  /* El papel del ramo (Atrás y Frente) */
+  .papel-atras {
+    position: absolute; bottom: 80px; width: 340px; height: 400px;
+    background: linear-gradient(to bottom, #749cff, #1e3a8a);
+    clip-path: polygon(10% 0, 90% 0, 60% 100%, 40% 100%);
+    border-radius: 10px; opacity: 0; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+  }
+  .papel-frente {
+    position: absolute; bottom: 80px; width: 360px; height: 280px;
+    background: linear-gradient(135deg, #9bb8ff, #2563eb);
+    clip-path: polygon(0 0, 100% 0, 65% 100%, 35% 100%);
+    opacity: 0; z-index: 30; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
+    box-shadow: 0 -15px 30px rgba(0,0,0,0.5); border-radius: 5px;
+  }
+
+  /* Sistema de Flores Dibujadas con CSS (Literalmente Flores) */
+  .tallos-container { position: absolute; bottom: 150px; width: 100%; height: 300px; z-index: 10; pointer-events: none; }
+  .tallo { position: absolute; bottom: 0; width: 6px; background: var(--leaf-green); transform-origin: bottom center; border-radius: 5px; opacity: 0; animation: crecer 1s forwards; }
   
-  /* Imágenes de las Flores Reales */
-  .capa-flores { position: absolute; width: 100%; height: 100%; z-index: 8; pointer-events: none; }
-  .flor-img { position: absolute; width: 65px; height: 65px; object-fit: contain; opacity: 0; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-  .flor1 { top: 120px; left: 20px; transform: rotate(-15deg); animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s; }
-  .flor2 { top: 90px; right: 20px; transform: rotate(20deg); width: 75px; height: 75px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
-  .flor3 { top: 180px; left: 60px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
-  .flor4 { top: 170px; right: 60px; width: 70px; height: 70px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
+  /* Hojas */
+  .hoja { position: absolute; width: 30px; height: 30px; background: var(--leaf-green); border-radius: 0 100% 0 100%; opacity: 0; animation: florecer 0.8s forwards; }
+  
+  /* Flor SVG Nativa */
+  .flor-nativa { position: absolute; width: 70px; height: 70px; opacity: 0; transform-origin: center; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 20; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4)); }
 
-  /* Cajas Hot Wheels con la Plantilla JPG */
-  .caja-hw {
-    position: absolute; width: 95px; height: 135px;
-    background-image: url('plantilla.jpg'); background-size: cover; background-position: center;
-    border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.7);
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    cursor: pointer; opacity: 0; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
-    transform-origin: bottom center; padding-bottom: 5px;
+  /* Posicionamiento y Timing de Flores (Crecen después del papel) */
+  .t1 { left: 40%; height: 280px; transform: rotate(-25deg); animation-delay: 1.2s; }
+  .t2 { left: 50%; height: 320px; transform: rotate(-5deg); animation-delay: 1.4s; }
+  .t3 { left: 60%; height: 290px; transform: rotate(20deg); animation-delay: 1.6s; }
+  .t4 { left: 35%; height: 220px; transform: rotate(-40deg); animation-delay: 1.8s; }
+  .t5 { left: 65%; height: 230px; transform: rotate(35deg); animation-delay: 2.0s; }
+
+  .h1 { bottom: 100px; left: 30%; transform: rotate(-60deg); animation-delay: 1.5s; }
+  .h2 { bottom: 150px; left: 55%; transform: rotate(20deg); animation-delay: 1.7s; }
+  .h3 { bottom: 120px; left: 70%; transform: rotate(60deg); animation-delay: 1.9s; }
+
+  .f1 { bottom: 250px; left: 10%; animation-delay: 2.2s; }
+  .f2 { bottom: 310px; left: 35%; width: 85px; height: 85px; animation-delay: 2.4s; z-index: 25;}
+  .f3 { bottom: 270px; right: 15%; animation-delay: 2.6s; }
+  .f4 { bottom: 180px; left: 0%; width: 60px; height: 60px; animation-delay: 2.8s; }
+  .f5 { bottom: 200px; right: 5%; width: 75px; height: 75px; animation-delay: 3.0s; }
+
+  /* CAJAS HOT WHEELS (Diseño Blister Empaque Realista) */
+  .cajas-container { position: absolute; bottom: 160px; width: 100%; height: 400px; z-index: 15; }
+  .blister-card {
+    position: absolute; width: 85px; height: 130px;
+    background: linear-gradient(180deg, var(--hw-blue) 0%, #001144 100%);
+    border-radius: 8px 8px 5px 5px; border: 2px solid rgba(255,255,255,0.8);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: bottom center;
   }
-  .caja-hw:hover { transform: scale(1.15) translateY(-15px) !important; z-index: 20 !important; filter: brightness(1.2); box-shadow: 0 15px 30px var(--neon-blue); }
-  .caja-img { width: 90%; height: 60px; object-fit: contain; margin-bottom: 5px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
+  .blister-card:hover { transform: scale(1.3) translateY(-15px) !important; z-index: 50 !important; box-shadow: 0 15px 30px var(--neon-blue); }
+  
+  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.5); border-top: none; margin-bottom: 5px; }
+  .blister-logo { background: var(--hw-red); color: var(--hw-yellow); font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 10px; border: 1px solid #fff; margin-bottom: auto; }
+  
+  /* Burbuja plástica del auto */
+  .blister-burbuja { width: 90%; height: 70px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 10px rgba(255,255,255,0.2); }
+  .blister-auto-img { width: 95%; height: 50px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
-  /* Posiciones de las cajas */
-  .hw1 { top: 10px; left: 20px; transform: rotate(-18deg); z-index: 4; animation: popUp 0.6s forwards 2.4s; }
-  .hw2 { top: -10px; left: 130px; transform: rotate(0deg); z-index: 4; animation: popUp 0.6s forwards 2.6s; }
-  .hw3 { top: 20px; right: 20px; transform: rotate(18deg); z-index: 4; animation: popUp 0.6s forwards 2.8s; }
-  .hw4 { top: 110px; left: 0px; transform: rotate(-25deg); z-index: 5; animation: popUp 0.6s forwards 3.0s; }
-  .hw5 { top: 100px; left: 130px; transform: rotate(0deg); z-index: 5; animation: popUp 0.6s forwards 3.2s; }
-  .hw6 { top: 120px; right: 0px; transform: rotate(25deg); z-index: 5; animation: popUp 0.6s forwards 3.4s; }
+  /* Aparición de Autos (Brotan después de las flores) */
+  .hw1 { bottom: 190px; left: 10px; transform: rotate(-25deg); animation: popUp 0.7s forwards 3.6s; z-index: 14;}
+  .hw2 { bottom: 250px; left: 80px; transform: rotate(-10deg); animation: popUp 0.7s forwards 3.8s; z-index: 16;}
+  .hw3 { bottom: 260px; right: 80px; transform: rotate(10deg); animation: popUp 0.7s forwards 4.0s; z-index: 14;}
+  .hw4 { bottom: 180px; right: 10px; transform: rotate(25deg); animation: popUp 0.7s forwards 4.2s; z-index: 16;}
+  .hw5 { bottom: 140px; left: 140px; transform: rotate(0deg); animation: popUp 0.7s forwards 4.4s; z-index: 18;}
 
-  /* Botón Lazo Central para ir a Galaxia */
+  /* Botón Lazo "Ir a la Galaxia" */
+  .lazo-boton-wrapper { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 50; }
   #btnGalaxia {
-    position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
-    width: 140px; height: 50px; background: var(--lazo-color);
-    border: 2px solid #ff4d88; border-radius: 40px;
-    color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: 1px;
-    cursor: pointer; z-index: 50; opacity: 0;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.2);
+    position: relative; width: 160px; height: 55px; background: linear-gradient(to bottom, #ff0055, #cc0044);
+    border: 2px solid #ff4d88; border-radius: 40px; color: #fff; font-weight: 900; font-size: 1.1rem; letter-spacing: 2px;
+    cursor: pointer; opacity: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.3);
     display: flex; align-items: center; justify-content: center;
-    animation: fadeIn 2s forwards 4.5s, latido 2s infinite 4.5s;
-    transition: 0.3s;
+    animation: fadeIn 1.5s forwards 5.0s, latido 2s infinite 5.0s; transition: 0.3s;
   }
-  #btnGalaxia:hover { background: #ff3377; transform: translateX(-50%) scale(1.1); box-shadow: 0 10px 30px var(--lazo-color); }
-  /* Nudos del lazo */
-  #btnGalaxia::before, #btnGalaxia::after {
-    content: ''; position: absolute; top: 5px; width: 45px; height: 40px;
-    background: var(--lazo-oscuro); border-radius: 50%; z-index: -1;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-  }
-  #btnGalaxia::before { left: -15px; }
-  #btnGalaxia::after { right: -15px; }
-
-  /* --- ESCENA 2: GALAXIA 3D --- */
-  #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
+  #btnGalaxia:hover { background: #ff3377; transform: scale(1.1); box-shadow: 0 10px 40px #ff0055; }
   
-  /* Título de la Galaxia */
-  #ui-galaxia {
-    position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none;
+  /* Orejas del lazo rojo */
+  #btnGalaxia::before, #btnGalaxia::after {
+    content: ''; position: absolute; top: 5px; width: 55px; height: 45px; background: #cc0044; border-radius: 50%; z-index: -1; box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
   }
-  #ui-galaxia h1 { 
-    margin: 0; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; 
-    text-shadow: 0 0 20px var(--lazo-color), 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; 
-    animation: flotar 3s infinite ease-in-out;
-  }
-  #ui-galaxia p { margin-top: 10px; font-size: 1.2rem; color: #ddd; background: rgba(0, 0, 20, 0.6); display: inline-block; padding: 8px 20px; border-radius: 20px; border: 1px solid var(--primary-blue); }
+  #btnGalaxia::before { left: -25px; transform: rotate(-20deg); }
+  #btnGalaxia::after { right: -25px; transform: rotate(20deg); }
 
-  /* --- TARJETA MODAL UNIVERSAL --- */
+  /* --- 3. ESCENA GALAXIA 3D --- */
+  #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
+  #ui-galaxia { position: absolute; top: 40px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
+  #ui-galaxia h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
+  #ui-galaxia p { margin-top: 15px; font-size: 1.1rem; color: #fff; background: rgba(0, 0, 20, 0.7); display: inline-block; padding: 10px 25px; border-radius: 30px; border: 1px solid var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+
+  /* --- TARJETA MODAL --- */
   #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
     background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
@@ -123,88 +158,109 @@
     opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 15px; font-weight: 900; letter-spacing: 1px; }
-  .modal-img-tierna { font-size: 5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
-  #modalTexto { font-size: 1.2rem; line-height: 1.5; margin-bottom: 30px; font-weight: 700; color: #444; }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
+  #modalTexto { font-size: 1.3rem; line-height: 1.5; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
   .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
   .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
-  /* ANIMACIONES */
+  /* ANIMACIONES CLAVE */
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-  @keyframes latido { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
+  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes surgir { 0% { transform: translateX(-50%) translateY(100px); opacity: 0; } 100% { transform: translateX(-50%) translateY(0); opacity: 1; } }
-  @keyframes popUp { 0% { transform: scale(0.5) translateY(100px); opacity: 0; } 100% { opacity: 1; } }
+  @keyframes surgir { 0% { transform: translateX(-50%) translateY(150px) scale(0.8); opacity: 0; } 100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; } }
+  @keyframes crecer { 0% { transform: scaleY(0); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
+  @keyframes florecer { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+  @keyframes popUp { 0% { transform: scale(0) translateY(100px); opacity: 0; } 100% { opacity: 1; } }
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
 </style>
 </head>
 <body>
 
-<audio id="musicaFondo" loop crossorigin="anonymous">
-  <source src="cancion.mp3" type="audio/mpeg">
-</audio>
+<!-- COMPONENTES SVG REUTILIZABLES (Flores azules literales) -->
+<svg style="display: none;">
+  <defs>
+    <g id="flor-azul">
+      <path d="M35 15 C40 -5, 60 10, 35 35 C10 10, 30 -5, 35 15" fill="#4da6ff" stroke="#0055ff" stroke-width="1"/>
+      <path d="M35 35 C60 10, 75 30, 35 35" fill="#1a8cff" stroke="#0044cc" stroke-width="1" transform="rotate(72 35 35)"/>
+      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0073e6" stroke="#0033aa" stroke-width="1" transform="rotate(144 35 35)"/>
+      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0055ff" stroke="#002288" stroke-width="1" transform="rotate(216 35 35)"/>
+      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0033cc" stroke="#001155" stroke-width="1" transform="rotate(288 35 35)"/>
+      <circle cx="35" cy="35" r="10" fill="#ffcc00" stroke="#e6a800" stroke-width="2"/>
+    </g>
+  </defs>
+</svg>
 
-<!-- PANTALLA DE CARGA -->
+<audio id="musicaFondo" loop crossorigin="anonymous"><source src="cancion.mp3" type="audio/mpeg"></audio>
+
+<!-- 1. PANTALLA DE CARGA -->
 <div id="pantallaEntrada">
   <div id="textoCarga">ENSAMBLANDO SORPRESA... 0%</div>
   <div class="barra-contenedor"><div class="barra-progreso" id="barraProgreso"></div></div>
   <button id="btnDescubrir">ABRIR REGALO</button>
 </div>
 
-<!-- ESCENA 1: EL RAMO AVANZADO -->
+<!-- 2. ESCENA DEL RAMO (CON FLORES DE VERDAD Y CAJAS BLISTER) -->
 <div id="escenaRamo">
   <div class="ramo-titulo">❤️ Feliz 30 de Septiembre ❤️</div>
   
   <div class="ramo-wrapper">
-    <!-- Cono Trasero -->
-    <div class="capa-fondo"></div>
+    <!-- Papel Trasero -->
+    <div class="papel-atras"></div>
     
-    <!-- Imágenes de Flores Reales -->
-    <div class="capa-flores">
-      <img src="flor1.png" class="flor-img flor1" onerror="this.style.display='none'">
-      <img src="flor2.png" class="flor-img flor2" onerror="this.style.display='none'">
-      <img src="flor3.png" class="flor-img flor3" onerror="this.style.display='none'">
-      <img src="flor4.png" class="flor-img flor4" onerror="this.style.display='none'">
+    <!-- Naturaleza Viva (Crecen solas por CSS) -->
+    <div class="tallos-container">
+      <div class="tallo t1"></div><div class="tallo t2"></div><div class="tallo t3"></div>
+      <div class="tallo t4"></div><div class="tallo t5"></div>
+      <div class="hoja h1"></div><div class="hoja h2"></div><div class="hoja h3"></div>
+      <!-- Las flores llaman al SVG nativo -->
+      <svg class="flor-nativa f1" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
+      <svg class="flor-nativa f2" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
+      <svg class="flor-nativa f3" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
+      <svg class="flor-nativa f4" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
+      <svg class="flor-nativa f5" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
     </div>
 
-    <!-- Cajas Hot Wheels con la Plantilla -->
-    <div class="caja-hw hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
-      <img src="auto1.png" class="caja-img" onerror="this.style.display='none'">
-    </div>
-    <div class="caja-hw hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
-      <img src="auto2.png" class="caja-img" onerror="this.style.display='none'">
-    </div>
-    <div class="caja-hw hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
-      <img src="auto3.png" class="caja-img" onerror="this.style.display='none'">
-    </div>
-    <div class="caja-hw hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
-      <img src="auto4.png" class="caja-img" onerror="this.style.display='none'">
-    </div>
-    <div class="caja-hw hw5" onclick="abrirModal('IMPORTANTE PARA MÍ', 'Te amo con todo mi corazón, gracias por existir 🥰')">
-      <img src="auto5.png" class="caja-img" onerror="this.style.display='none'">
-    </div>
-    <div class="caja-hw hw6" onclick="abrirModal('MI COPILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
-      <img src="auto6.png" class="caja-img" onerror="this.style.display='none'">
+    <!-- Cajas Blister Hot Wheels -->
+    <div class="cajas-container">
+      <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="blister-card hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="blister-card hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="blister-card hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="blister-card hw5" onclick="abrirModal('MI PILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto5.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+      </div>
     </div>
 
-    <!-- Cono Delantero -->
-    <div class="capa-frente"></div>
+    <!-- Papel Delantero -->
+    <div class="papel-frente"></div>
     
-    <!-- Botón Lazo Rojo en medio del Ramo -->
-    <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
+    <!-- Botón Lazo Rojo -->
+    <div class="lazo-boton-wrapper">
+      <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
+    </div>
   </div>
 </div>
 
-<!-- ESCENA 2: GALAXIA 3D -->
+<!-- 3. ESCENA GALAXIA 3D -->
 <div id="threeCanvas"></div>
 
 <!-- TÍTULO DE LA GALAXIA -->
 <div id="ui-galaxia">
   <h1>❤️ Feliz 30 de Septiembre ❤️</h1>
-  <p>👆 Gira el universo y toca un auto</p>
+  <p>👆 Gira el universo y toca un auto 🏎️</p>
 </div>
 
-<!-- TARJETA MODAL UNIVERSAL -->
+<!-- TARJETA MODAL COMPARTIDA -->
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
   <span class="modal-img-tierna">🐻❤️🐼</span>
@@ -224,7 +280,7 @@ const intervaloCarga = setInterval(() => {
   if(porcentaje >= 100) {
     porcentaje = 100;
     clearInterval(intervaloCarga);
-    document.getElementById('textoCarga').innerText = "¡TODO LISTO!";
+    document.getElementById('textoCarga').innerText = "¡SISTEMA LISTO!";
     document.getElementById('barraProgreso').parentElement.style.display = 'none';
     document.getElementById('btnDescubrir').style.display = 'block';
   }
@@ -238,7 +294,6 @@ document.getElementById('btnDescubrir').addEventListener('click', () => {
   setTimeout(() => { document.getElementById('pantallaEntrada').style.display = 'none'; }, 1000);
 });
 
-// --- LÓGICA DEL MODAL ---
 function abrirModal(titulo, texto) {
   document.getElementById('modalTitulo').innerText = titulo;
   document.getElementById('modalTexto').innerText = texto;
@@ -248,11 +303,9 @@ function cerrarModal() {
   document.getElementById('modalMensaje').classList.remove('mostrar');
 }
 
-// --- TRANSICIÓN A LA GALAXIA ---
 function iniciarTransicionGalaxia() {
   const escenaRamo = document.getElementById('escenaRamo');
   escenaRamo.style.opacity = '0';
-  
   setTimeout(() => {
     escenaRamo.style.display = 'none';
     document.getElementById('threeCanvas').style.display = 'block';
@@ -261,7 +314,7 @@ function iniciarTransicionGalaxia() {
   }, 1500);
 }
 
-// --- BANCO MASIVO DE MENSAJES ÚNICOS ---
+// --- BANCO MASIVO DE MENSAJES ÚNICOS (MÁS DE 50 FRASES) ---
 const bancoDeMensajes = [
   { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
@@ -287,7 +340,22 @@ const bancoDeMensajes = [
   { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
   { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
   { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
-  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." }
+  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." },
+  { t: "MI CHISPA", p: "Eres la bujía que enciende todos mis días." },
+  { t: "KILÓMETROS DE AMOR", p: "No hay distancia que pueda frenar lo que siento por ti." },
+  { t: "A TODO GAS", p: "Contigo vivo la vida con la máxima intensidad y alegría." },
+  { t: "FUERA DE SERIE", p: "Eres una edición limitada, el modelo más exclusivo de mi vida." },
+  { t: "ARRANQUE PERFECTO", p: "Cada mañana a tu lado es el mejor inicio posible." },
+  { t: "MI REFUGIO", p: "Eres mi parada de boxes favorita, donde encuentro paz." },
+  { t: "SIN LÍMITES", p: "Mi amor por ti no tiene límite de velocidad ni fronteras." },
+  { t: "RUMBO FIJO", p: "Mi brújula interior siempre apunta hacia donde tú estás." },
+  { t: "EN MARCHA", p: "Sigamos construyendo juntos este hermoso camino." },
+  { t: "MI TESORO", p: "Eres el trofeo más grande que la vida me ha dado." },
+  { t: "CABALLOS DE FUERZA", p: "Tú le das toda la potencia y sentido a mi existir." },
+  { t: "AMOR DE PLATINO", p: "Lo nuestro es resistente, brillante y para toda la vida." },
+  { t: "ACELERACIÓN ÚNICA", p: "Nadie más logra que mi corazón salte como tú lo haces." },
+  { t: "MI COMPAÑERO", p: "Gracias por recorrer cada ruta de la vida de mi mano." },
+  { t: "SIEMPRE TÚ", p: "En cualquier pista y en cualquier clima, te elijo a ti." }
 ];
 
 function shuffleArray(array) {
@@ -300,7 +368,7 @@ function shuffleArray(array) {
   return array;
 }
 
-// --- ESCENA 2: THREE.JS GALAXIA ---
+// --- ESCENA GALAXIA 3D ---
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
 let carritosInteractivos = [];
@@ -393,7 +461,6 @@ function crearGalaxia() {
   const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero", "A toda máquina"];
   const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
 
-  // Textos ambientales (No interactivos)
   for(let i=0; i<70; i++) {
     const radio = 450 + Math.random() * 2200;
     const angulo = Math.random() * Math.PI * 2;
@@ -404,8 +471,7 @@ function crearGalaxia() {
     universoGroup.add(spriteTexto);
   }
 
-  // Carritos Interactivos (Imágenes directas de los autos sin la plantilla)
-  const cantidadAutos = 25; 
+  const cantidadAutos = 35; 
   for(let i=0; i<cantidadAutos; i++) {
     const radio = 500 + Math.random() * 1900;
     const angulo = Math.random() * Math.PI * 2;
@@ -417,9 +483,7 @@ function crearGalaxia() {
     
     sprite.userData = { 
       mensaje: mensajesAleatorios[i], 
-      anguloBase: angulo, 
-      radio: radio, 
-      velocidad: 0.001 + Math.random() * 0.0012 
+      anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0012 
     };
 
     carritosInteractivos.push(sprite); 
@@ -427,7 +491,6 @@ function crearGalaxia() {
   }
 }
 
-// --- LÓGICA DE CLICS ---
 let posInicio = { x: 0, y: 0 }, tiempoInicio = 0;
 function onPointerDown(e) {
   posInicio.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
@@ -446,7 +509,6 @@ function onPointerUp(e) {
     if (intersects.length > 0) {
       const obj = intersects[0].object; 
       abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
-      
       const escX = 200, escY = 100;
       obj.scale.set(escX*1.4, escY*1.4, 1); 
       setTimeout(() => obj.scale.set(escX, escY, 1), 300);
@@ -458,13 +520,9 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
   universoGroup.rotation.y -= 0.0005;
-  
   if(anillosGalaxia.length === 3) {
-    anillosGalaxia[0].rotation.z -= 0.02; 
-    anillosGalaxia[1].rotation.z -= 0.008; 
-    anillosGalaxia[2].rotation.z -= 0.003;
+    anillosGalaxia[0].rotation.z -= 0.02; anillosGalaxia[1].rotation.z -= 0.008; anillosGalaxia[2].rotation.z -= 0.003;
   }
-  
   universoGroup.children.forEach(c => {
     if(c.userData && c.userData.radio) {
       c.userData.anguloBase += c.userData.velocidad;
