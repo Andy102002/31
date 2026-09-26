@@ -10,8 +10,8 @@
   :root {
     --primary-blue: #0055ff;
     --neon-blue: #00d4ff;
-    --hot-red: #e60000;
-    --hot-yellow: #ffcc00;
+    --lazo-color: #ff0055;
+    --lazo-oscuro: #cc0044;
   }
 
   body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #020510; overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
@@ -33,75 +33,87 @@
   }
   #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
 
-  /* --- ESCENA 1: EL RAMO AVANZADO --- */
+  /* --- ESCENA 1: EL RAMO REALISTA --- */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #0a1535 0%, #020510 100%);
-    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-    padding-top: 5vh; transition: opacity 1.5s ease;
+    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 1.5s ease;
   }
   .ramo-titulo { font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4rem); color: #fff; text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); margin-bottom: 10px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; }
   
   .ramo-wrapper {
-    position: relative; width: 350px; height: 550px; margin-top: 20px;
+    position: relative; width: 360px; height: 500px; margin-top: 10px;
   }
 
-  /* Capas del ramo (SVG y CSS) */
-  .capa-fondo { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 280px; height: 350px; background: linear-gradient(to bottom, #2b5cff, #0a2070); clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%); z-index: 1; border-radius: 10px 10px 50px 50px; opacity: 0; animation: surgir 1s forwards 1s; box-shadow: inset 0 20px 50px rgba(0,0,0,0.5); }
+  /* Cono del ramo */
+  .capa-fondo { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 280px; height: 350px; background: linear-gradient(to bottom, #1d4ed8, #1e3a8a); clip-path: polygon(0 0, 100% 0, 65% 100%, 35% 100%); z-index: 1; opacity: 0; animation: surgir 1s forwards 1s; box-shadow: inset 0 20px 50px rgba(0,0,0,0.5); }
+  .capa-frente { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 280px; background: linear-gradient(135deg, #3b82f6, #1e40af); clip-path: polygon(5% 0, 95% 0, 65% 100%, 35% 100%); z-index: 10; opacity: 0; animation: surgir 1s forwards 1.2s; box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
   
-  .capa-flores { position: absolute; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-  
-  .capa-frente { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 250px; background: linear-gradient(135deg, #4a7cff, #1a3a8a); clip-path: polygon(10% 0, 90% 0, 65% 100%, 35% 100%); z-index: 10; opacity: 0; animation: surgir 1s forwards 1.2s; box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
-  
-  .lazo { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 120px; height: 40px; z-index: 11; opacity: 0; animation: fadeIn 1s forwards 1.5s; }
-  .lazo::before, .lazo::after { content: ''; position: absolute; width: 60px; height: 40px; background: radial-gradient(ellipse at center, #ff0055 0%, #aa0033 100%); border-radius: 50px 50px 0 50px; top: 0; left: 0; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3); }
-  .lazo::after { border-radius: 50px 50px 50px 0; left: auto; right: 0; }
-  .lazo-centro { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: #ff0055; border-radius: 50%; z-index: 12; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  /* Imágenes de las Flores Reales */
+  .capa-flores { position: absolute; width: 100%; height: 100%; z-index: 8; pointer-events: none; }
+  .flor-img { position: absolute; width: 65px; height: 65px; object-fit: contain; opacity: 0; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+  .flor1 { top: 120px; left: 20px; transform: rotate(-15deg); animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s; }
+  .flor2 { top: 90px; right: 20px; transform: rotate(20deg); width: 75px; height: 75px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
+  .flor3 { top: 180px; left: 60px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
+  .flor4 { top: 170px; right: 60px; width: 70px; height: 70px; animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
 
-  /* Elementos de Flor (SVG) */
-  .flor { position: absolute; width: 60px; height: 60px; opacity: 0; filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5)); }
-  .flor1 { top: 150px; left: 40px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s; z-index: 3;}
-  .flor2 { top: 100px; left: 140px; width: 70px; height: 70px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; z-index: 3;}
-  .flor3 { top: 160px; right: 30px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; z-index: 3;}
-  .flor4 { top: 220px; left: 90px; width: 50px; height: 50px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; z-index: 12;}
-  .flor5 { top: 210px; right: 80px; width: 65px; height: 65px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; z-index: 12;}
-
-  /* Cajas Hot Wheels */
+  /* Cajas Hot Wheels con la Plantilla JPG */
   .caja-hw {
-    position: absolute; width: 90px; height: 130px;
-    background: linear-gradient(180deg, #0044cc 0%, #001155 100%);
-    border: 2px solid #fff; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    position: absolute; width: 95px; height: 135px;
+    background-image: url('plantilla.jpg'); background-size: cover; background-position: center;
+    border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.7);
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
     cursor: pointer; opacity: 0; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
-    transform-origin: bottom center;
+    transform-origin: bottom center; padding-bottom: 5px;
   }
-  .caja-hw:hover { transform: scale(1.15) translateY(-10px) !important; z-index: 20 !important; filter: brightness(1.2); box-shadow: 0 15px 30px var(--neon-blue); }
-  
-  .caja-header { position: absolute; top: 0; width: 100%; height: 25px; background: #0044cc; border-bottom: 2px solid #fff; border-radius: 4px 4px 0 0; display: flex; justify-content: center; align-items: center; }
-  .gancho { width: 20px; height: 10px; background: #020510; border-radius: 10px 10px 0 0; border: 1px solid #fff; border-bottom: none; }
-  .caja-logo { background: var(--hot-red); color: var(--hot-yellow); font-size: 0.5rem; font-weight: 800; font-style: italic; padding: 2px 6px; border-radius: 10px; margin-bottom: auto; margin-top: 35px; border: 1px solid #fff;}
-  .caja-img { width: 95%; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.7)); }
+  .caja-hw:hover { transform: scale(1.15) translateY(-15px) !important; z-index: 20 !important; filter: brightness(1.2); box-shadow: 0 15px 30px var(--neon-blue); }
+  .caja-img { width: 90%; height: 60px; object-fit: contain; margin-bottom: 5px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
-  /* Posiciones de los autos */
-  .hw1 { top: 20px; left: 20px; transform: rotate(-15deg); z-index: 4; animation: popUp 0.6s forwards 2.4s; }
-  .hw2 { top: 0px; left: 130px; transform: rotate(0deg); z-index: 4; animation: popUp 0.6s forwards 2.6s; }
-  .hw3 { top: 30px; right: 20px; transform: rotate(15deg); z-index: 4; animation: popUp 0.6s forwards 2.8s; }
-  .hw4 { top: 120px; left: -10px; transform: rotate(-25deg); z-index: 5; animation: popUp 0.6s forwards 3.0s; }
-  .hw5 { top: 110px; left: 130px; transform: rotate(0deg); z-index: 5; animation: popUp 0.6s forwards 3.2s; }
-  .hw6 { top: 130px; right: -10px; transform: rotate(25deg); z-index: 5; animation: popUp 0.6s forwards 3.4s; }
+  /* Posiciones de las cajas */
+  .hw1 { top: 10px; left: 20px; transform: rotate(-18deg); z-index: 4; animation: popUp 0.6s forwards 2.4s; }
+  .hw2 { top: -10px; left: 130px; transform: rotate(0deg); z-index: 4; animation: popUp 0.6s forwards 2.6s; }
+  .hw3 { top: 20px; right: 20px; transform: rotate(18deg); z-index: 4; animation: popUp 0.6s forwards 2.8s; }
+  .hw4 { top: 110px; left: 0px; transform: rotate(-25deg); z-index: 5; animation: popUp 0.6s forwards 3.0s; }
+  .hw5 { top: 100px; left: 130px; transform: rotate(0deg); z-index: 5; animation: popUp 0.6s forwards 3.2s; }
+  .hw6 { top: 120px; right: 0px; transform: rotate(25deg); z-index: 5; animation: popUp 0.6s forwards 3.4s; }
 
-  /* Botón Galaxia */
+  /* Botón Lazo Central para ir a Galaxia */
   #btnGalaxia {
-    position: relative; z-index: 100; margin-top: 10px; padding: 12px 35px; font-size: 1.2rem; font-weight: 800;
-    background: rgba(0, 85, 255, 0.2); color: #fff; border: 2px solid var(--neon-blue); border-radius: 30px;
-    cursor: pointer; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); opacity: 0; backdrop-filter: blur(5px);
+    position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+    width: 140px; height: 50px; background: var(--lazo-color);
+    border: 2px solid #ff4d88; border-radius: 40px;
+    color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: 1px;
+    cursor: pointer; z-index: 50; opacity: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 -5px 10px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center;
     animation: fadeIn 2s forwards 4.5s, latido 2s infinite 4.5s;
+    transition: 0.3s;
   }
-  #btnGalaxia:hover { background: var(--neon-blue); color: #000; }
+  #btnGalaxia:hover { background: #ff3377; transform: translateX(-50%) scale(1.1); box-shadow: 0 10px 30px var(--lazo-color); }
+  /* Nudos del lazo */
+  #btnGalaxia::before, #btnGalaxia::after {
+    content: ''; position: absolute; top: 5px; width: 45px; height: 40px;
+    background: var(--lazo-oscuro); border-radius: 50%; z-index: -1;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  }
+  #btnGalaxia::before { left: -15px; }
+  #btnGalaxia::after { right: -15px; }
 
   /* --- ESCENA 2: GALAXIA 3D --- */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   
+  /* Título de la Galaxia */
+  #ui-galaxia {
+    position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none;
+  }
+  #ui-galaxia h1 { 
+    margin: 0; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; 
+    text-shadow: 0 0 20px var(--lazo-color), 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; 
+    animation: flotar 3s infinite ease-in-out;
+  }
+  #ui-galaxia p { margin-top: 10px; font-size: 1.2rem; color: #ddd; background: rgba(0, 0, 20, 0.6); display: inline-block; padding: 8px 20px; border-radius: 20px; border: 1px solid var(--primary-blue); }
+
   /* --- TARJETA MODAL UNIVERSAL --- */
   #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
@@ -119,34 +131,14 @@
 
   /* ANIMACIONES */
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes latido { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
   @keyframes surgir { 0% { transform: translateX(-50%) translateY(100px); opacity: 0; } 100% { transform: translateX(-50%) translateY(0); opacity: 1; } }
-  @keyframes florecer { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
   @keyframes popUp { 0% { transform: scale(0.5) translateY(100px); opacity: 0; } 100% { opacity: 1; } }
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-  /* SVG Flor Definición invisible */
-  .svg-defs { display: none; }
 </style>
 </head>
 <body>
-
-<!-- Definición de la flor SVG reutilizable -->
-<svg class="svg-defs">
-  <defs>
-    <g id="flor-azul">
-      <!-- Pétalos -->
-      <path d="M30 10 C35 -5, 50 10, 30 30 C10 10, 25 -5, 30 10" fill="#00d4ff"/>
-      <path d="M30 30 C50 10, 65 25, 30 30" fill="#00aaff" transform="rotate(72 30 30)"/>
-      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0088ff" transform="rotate(144 30 30)"/>
-      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0055ff" transform="rotate(216 30 30)"/>
-      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0033cc" transform="rotate(288 30 30)"/>
-      <!-- Centro -->
-      <circle cx="30" cy="30" r="8" fill="#ffcc00" stroke="#e6a800" stroke-width="2"/>
-    </g>
-  </defs>
-</svg>
 
 <audio id="musicaFondo" loop crossorigin="anonymous">
   <source src="cancion.mp3" type="audio/mpeg">
@@ -164,59 +156,58 @@
   <div class="ramo-titulo">❤️ Feliz 30 de Septiembre ❤️</div>
   
   <div class="ramo-wrapper">
-    <!-- Envoltura Trasera -->
+    <!-- Cono Trasero -->
     <div class="capa-fondo"></div>
     
-    <!-- Capa de Flores y Tallos -->
+    <!-- Imágenes de Flores Reales -->
     <div class="capa-flores">
-      <svg class="flor flor1" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
-      <svg class="flor flor2" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
-      <svg class="flor flor3" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
-      <svg class="flor flor4" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
-      <svg class="flor flor5" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+      <img src="flor1.png" class="flor-img flor1" onerror="this.style.display='none'">
+      <img src="flor2.png" class="flor-img flor2" onerror="this.style.display='none'">
+      <img src="flor3.png" class="flor-img flor3" onerror="this.style.display='none'">
+      <img src="flor4.png" class="flor-img flor4" onerror="this.style.display='none'">
     </div>
 
-    <!-- Cajas Hot Wheels Dinámicas -->
+    <!-- Cajas Hot Wheels con la Plantilla -->
     <div class="caja-hw hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto1.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto1.png" class="caja-img" onerror="this.style.display='none'">
     </div>
     <div class="caja-hw hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto2.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto2.png" class="caja-img" onerror="this.style.display='none'">
     </div>
     <div class="caja-hw hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto3.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto3.png" class="caja-img" onerror="this.style.display='none'">
     </div>
     <div class="caja-hw hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto4.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto4.png" class="caja-img" onerror="this.style.display='none'">
     </div>
     <div class="caja-hw hw5" onclick="abrirModal('IMPORTANTE PARA MÍ', 'Te amo con todo mi corazón, gracias por existir 🥰')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto5.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto5.png" class="caja-img" onerror="this.style.display='none'">
     </div>
     <div class="caja-hw hw6" onclick="abrirModal('MI COPILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
-      <div class="caja-header"><div class="gancho"></div></div>
-      <div class="caja-logo">HOT WHEELS</div><img src="auto6.png" class="caja-img" onerror="this.style.display='none'">
+      <img src="auto6.png" class="caja-img" onerror="this.style.display='none'">
     </div>
 
-    <!-- Envoltura Delantera y Lazo -->
+    <!-- Cono Delantero -->
     <div class="capa-frente"></div>
-    <div class="lazo"><div class="lazo-centro"></div></div>
+    
+    <!-- Botón Lazo Rojo en medio del Ramo -->
+    <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
   </div>
-
-  <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">🌌 VIAJAR A LA GALAXIA 🌌</button>
 </div>
 
 <!-- ESCENA 2: GALAXIA 3D -->
 <div id="threeCanvas"></div>
 
+<!-- TÍTULO DE LA GALAXIA -->
+<div id="ui-galaxia">
+  <h1>❤️ Feliz 30 de Septiembre ❤️</h1>
+  <p>👆 Gira el universo y toca un auto</p>
+</div>
+
 <!-- TARJETA MODAL UNIVERSAL -->
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
-  <span class="modal-img-tierna">🐼❤️🐻</span>
+  <span class="modal-img-tierna">🐻❤️🐼</span>
   <div id="modalTexto">Texto</div>
   <button class="btn-cerrar" onclick="cerrarModal()">CONTINUAR</button>
 </div>
@@ -226,7 +217,7 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-// --- 1. LÓGICA DE CARGA ---
+// --- LÓGICA DE CARGA ---
 let porcentaje = 0;
 const intervaloCarga = setInterval(() => {
   porcentaje += Math.floor(Math.random() * 8) + 2;
@@ -265,12 +256,12 @@ function iniciarTransicionGalaxia() {
   setTimeout(() => {
     escenaRamo.style.display = 'none';
     document.getElementById('threeCanvas').style.display = 'block';
+    document.getElementById('ui-galaxia').style.display = 'block';
     initThreeJS();
   }, 1500);
 }
 
-// --- BANCO MASIVO DE MENSAJES ÚNICOS (60+ Frases) ---
-// Categorizadas y únicas para garantizar que no se repitan en la galaxia
+// --- BANCO MASIVO DE MENSAJES ÚNICOS ---
 const bancoDeMensajes = [
   { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
@@ -296,35 +287,9 @@ const bancoDeMensajes = [
   { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
   { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
   { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
-  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." },
-  { t: "MI CHISPA", p: "Eres la bujía que enciende todos mis días." },
-  { t: "KILÓMETROS DE AMOR", p: "No hay distancia que pueda frenar lo que siento por ti." },
-  { t: "A TODO GAS", p: "Contigo vivo la vida con la máxima intensidad y alegría." },
-  { t: "FUERA DE SERIE", p: "Eres una edición limitada, el modelo más exclusivo de mi vida." },
-  { t: "ARRANQUE PERFECTO", p: "Cada mañana a tu lado es el mejor inicio posible." },
-  { t: "MI REFUGIO", p: "Eres mi parada de boxes favorita, donde encuentro paz." },
-  { t: "SIN LÍMITES", p: "Mi amor por ti no tiene límite de velocidad ni fronteras." },
-  { t: "RUMBO FIJO", p: "Mi brújula interior siempre apunta hacia donde tú estás." },
-  { t: "EN MARCHA", p: "Sigamos construyendo juntos este hermoso camino." },
-  { t: "MI TESORO", p: "Eres el trofeo más grande que la vida me ha dado." },
-  { t: "CABALLOS DE FUERZA", p: "Tú le das toda la potencia y sentido a mi existir." },
-  { t: "AMOR DE PLATINO", p: "Lo nuestro es resistente, brillante y para toda la vida." },
-  { t: "ACELERACIÓN ÚNICA", p: "Nadie más logra que mi corazón salte como tú lo haces." },
-  { t: "MI COMPAÑERO", p: "Gracias por recorrer cada ruta de la vida de mi mano." },
-  { t: "SIEMPRE TÚ", p: "En cualquier pista y en cualquier clima, te elijo a ti." },
-  { t: "AMOR SIN FRENOS", p: "Me lanzo a esta aventura contigo sin miedo a nada." },
-  { t: "A TU LADO", p: "El viaje no importa tanto como la persona que va en el asiento de al lado." },
-  { t: "MI GRAN PREMIO", p: "Tú eres mi recompensa favorita al final de cada día." },
-  { t: "SINFONÍA DE MOTOR", p: "Tu voz es la melodía que calma y alegra mi corazón." },
-  { t: "LLENO DE MAGIA", p: "Haces que la rutina se sienta como un viaje extraordinario." },
-  { t: "AL VOLANTE", p: "Me encanta cómo manejas nuestra relación con tanto amor." },
-  { t: "RUTAS NUEVAS", p: "Quiero explorar cada rincón del mundo a tu lado." },
-  { t: "COMBUSTIBLE IDEAL", p: "Tus besos y abrazos son mi gasolina diaria." },
-  { t: "INOLVIDABLE", p: "Cada momento contigo se graba a fuego en mi memoria." },
-  { t: "CARRERA PERFECTA", p: "Si la vida es una pista, tú eres mi mejor maniobra." }
+  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." }
 ];
 
-// Función profesional para barajar (Shuffle) arrays sin repeticiones
 function shuffleArray(array) {
   let currentIndex = array.length, randomIndex;
   while (currentIndex !== 0) {
@@ -426,8 +391,6 @@ function crearGalaxia() {
   ];
 
   const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero", "A toda máquina"];
-  
-  // Barajamos el banco masivo de mensajes para garantizar que no se repitan los primeros N autos
   const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
 
   // Textos ambientales (No interactivos)
@@ -441,8 +404,8 @@ function crearGalaxia() {
     universoGroup.add(spriteTexto);
   }
 
-  // Carritos Interactivos con MENSAJES ÚNICOS
-  const cantidadAutos = 45; // Máximo 50 para no agotar el banco de mensajes
+  // Carritos Interactivos (Imágenes directas de los autos sin la plantilla)
+  const cantidadAutos = 25; 
   for(let i=0; i<cantidadAutos; i++) {
     const radio = 500 + Math.random() * 1900;
     const angulo = Math.random() * Math.PI * 2;
@@ -452,7 +415,6 @@ function crearGalaxia() {
     sprite.scale.set(200, 100, 1); 
     sprite.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
     
-    // Asignamos el mensaje único usando el índice del bucle
     sprite.userData = { 
       mensaje: mensajesAleatorios[i], 
       anguloBase: angulo, 
@@ -465,7 +427,7 @@ function crearGalaxia() {
   }
 }
 
-// --- LÓGICA DE CLICS EXACTA ---
+// --- LÓGICA DE CLICS ---
 let posInicio = { x: 0, y: 0 }, tiempoInicio = 0;
 function onPointerDown(e) {
   posInicio.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
