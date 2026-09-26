@@ -3,107 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feliz 30 de Septiembre 🏎️✨</title>
+<title>Feliz 30 de Septiembre ❤️</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Nunito:wght@400;800&display=swap');
 
-  body { margin: 0; background: #020510; overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
+  :root {
+    --primary-blue: #0055ff;
+    --neon-blue: #00d4ff;
+    --hot-red: #e60000;
+    --hot-yellow: #ffcc00;
+  }
+
+  body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #020510; overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
   /* --- PANTALLA DE CARGA --- */
   #pantallaEntrada {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #020510; z-index: 999; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; transition: opacity 1s ease;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020510; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease;
   }
-  #textoCarga { font-size: 1.5rem; color: #00d4ff; letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; }
-  .barra-contenedor { width: 80%; max-width: 300px; height: 10px; background: #222; border-radius: 10px; overflow: hidden; }
-  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, #0055ff, #00d4ff); transition: width 0.1s linear; }
+  #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; }
+  .barra-contenedor { width: 80%; max-width: 300px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); transition: width 0.1s linear; }
 
   #btnDescubrir {
     display: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
-    background: transparent; color: #00d4ff; border: 2px solid #00d4ff; border-radius: 30px;
+    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px;
     cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
     transition: all 0.3s; margin-top: 30px; animation: latido 2s infinite;
   }
-  #btnDescubrir:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
+  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
 
-  /* --- ESCENA 1: EL RAMO --- */
+  /* --- ESCENA 1: EL RAMO AVANZADO --- */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png') #050a1f;
-    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 1.5s ease;
+    background: radial-gradient(circle at center, #0a1535 0%, #020510 100%);
+    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    padding-top: 5vh; transition: opacity 1.5s ease;
   }
-  .ramo-titulo { font-family: 'Caveat', cursive; font-size: 3rem; color: #fff; text-shadow: 0 0 15px #00aaff; margin-bottom: 20px; opacity: 0; animation: fadeIn 2s forwards 0.5s; }
+  .ramo-titulo { font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4rem); color: #fff; text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); margin-bottom: 10px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; }
   
-  .ramo-container { position: relative; width: 320px; height: 450px; display: flex; justify-content: center; align-items: flex-end; }
-  
-  /* Envoltura del ramo */
-  .envoltura {
-    position: absolute; bottom: 0; width: 220px; height: 280px;
-    background: linear-gradient(135deg, #4a7cff, #1a3a8a);
-    clip-path: polygon(10% 0, 90% 0, 60% 100%, 40% 100%);
-    z-index: 10; border-radius: 10px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-    transform: translateY(100px); opacity: 0; animation: subirEnvoltura 1s forwards 1s;
+  .ramo-wrapper {
+    position: relative; width: 350px; height: 550px; margin-top: 20px;
   }
+
+  /* Capas del ramo (SVG y CSS) */
+  .capa-fondo { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 280px; height: 350px; background: linear-gradient(to bottom, #2b5cff, #0a2070); clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%); z-index: 1; border-radius: 10px 10px 50px 50px; opacity: 0; animation: surgir 1s forwards 1s; box-shadow: inset 0 20px 50px rgba(0,0,0,0.5); }
   
-  /* Cajas de carritos simuladas */
+  .capa-flores { position: absolute; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+  
+  .capa-frente { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 250px; background: linear-gradient(135deg, #4a7cff, #1a3a8a); clip-path: polygon(10% 0, 90% 0, 65% 100%, 35% 100%); z-index: 10; opacity: 0; animation: surgir 1s forwards 1.2s; box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
+  
+  .lazo { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 120px; height: 40px; z-index: 11; opacity: 0; animation: fadeIn 1s forwards 1.5s; }
+  .lazo::before, .lazo::after { content: ''; position: absolute; width: 60px; height: 40px; background: radial-gradient(ellipse at center, #ff0055 0%, #aa0033 100%); border-radius: 50px 50px 0 50px; top: 0; left: 0; box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3); }
+  .lazo::after { border-radius: 50px 50px 50px 0; left: auto; right: 0; }
+  .lazo-centro { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: #ff0055; border-radius: 50%; z-index: 12; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+  /* Elementos de Flor (SVG) */
+  .flor { position: absolute; width: 60px; height: 60px; opacity: 0; filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5)); }
+  .flor1 { top: 150px; left: 40px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.5s; z-index: 3;}
+  .flor2 { top: 100px; left: 140px; width: 70px; height: 70px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; z-index: 3;}
+  .flor3 { top: 160px; right: 30px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; z-index: 3;}
+  .flor4 { top: 220px; left: 90px; width: 50px; height: 50px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; z-index: 12;}
+  .flor5 { top: 210px; right: 80px; width: 65px; height: 65px; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; z-index: 12;}
+
+  /* Cajas Hot Wheels */
   .caja-hw {
-    position: absolute; width: 90px; height: 120px;
-    background: linear-gradient(to bottom, #0055ff, #0033aa);
-    border: 2px solid #fff; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    position: absolute; width: 90px; height: 130px;
+    background: linear-gradient(180deg, #0044cc 0%, #001155 100%);
+    border: 2px solid #fff; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.6);
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    cursor: pointer; z-index: 5; opacity: 0; transition: transform 0.2s;
+    cursor: pointer; opacity: 0; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
+    transform-origin: bottom center;
   }
-  .caja-hw:hover { transform: scale(1.1) !important; z-index: 20; }
-  .caja-logo { background: #e60000; color: #ffcc00; font-size: 0.6rem; font-weight: bold; font-style: italic; padding: 2px 8px; border-radius: 10px; margin-top: 5px; }
-  .caja-img { width: 90%; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)); }
+  .caja-hw:hover { transform: scale(1.15) translateY(-10px) !important; z-index: 20 !important; filter: brightness(1.2); box-shadow: 0 15px 30px var(--neon-blue); }
+  
+  .caja-header { position: absolute; top: 0; width: 100%; height: 25px; background: #0044cc; border-bottom: 2px solid #fff; border-radius: 4px 4px 0 0; display: flex; justify-content: center; align-items: center; }
+  .gancho { width: 20px; height: 10px; background: #020510; border-radius: 10px 10px 0 0; border: 1px solid #fff; border-bottom: none; }
+  .caja-logo { background: var(--hot-red); color: var(--hot-yellow); font-size: 0.5rem; font-weight: 800; font-style: italic; padding: 2px 6px; border-radius: 10px; margin-bottom: auto; margin-top: 35px; border: 1px solid #fff;}
+  .caja-img { width: 95%; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.7)); }
 
-  /* Posiciones de las cajas en el ramo */
-  .c1 { bottom: 200px; left: 20px; transform: rotate(-15deg); animation: florecer 0.8s forwards 1.5s; }
-  .c2 { bottom: 230px; left: 110px; transform: rotate(0deg); animation: florecer 0.8s forwards 1.8s; }
-  .c3 { bottom: 190px; left: 210px; transform: rotate(15deg); animation: florecer 0.8s forwards 2.1s; }
-  .c4 { bottom: 130px; left: -10px; transform: rotate(-25deg); animation: florecer 0.8s forwards 2.4s; }
-  .c5 { bottom: 150px; left: 110px; transform: rotate(0deg); animation: florecer 0.8s forwards 2.7s; z-index: 6;}
-  .c6 { bottom: 120px; left: 230px; transform: rotate(25deg); animation: florecer 0.8s forwards 3.0s; }
+  /* Posiciones de los autos */
+  .hw1 { top: 20px; left: 20px; transform: rotate(-15deg); z-index: 4; animation: popUp 0.6s forwards 2.4s; }
+  .hw2 { top: 0px; left: 130px; transform: rotate(0deg); z-index: 4; animation: popUp 0.6s forwards 2.6s; }
+  .hw3 { top: 30px; right: 20px; transform: rotate(15deg); z-index: 4; animation: popUp 0.6s forwards 2.8s; }
+  .hw4 { top: 120px; left: -10px; transform: rotate(-25deg); z-index: 5; animation: popUp 0.6s forwards 3.0s; }
+  .hw5 { top: 110px; left: 130px; transform: rotate(0deg); z-index: 5; animation: popUp 0.6s forwards 3.2s; }
+  .hw6 { top: 130px; right: -10px; transform: rotate(25deg); z-index: 5; animation: popUp 0.6s forwards 3.4s; }
 
-  /* Botón de transición */
+  /* Botón Galaxia */
   #btnGalaxia {
-    margin-top: 40px; padding: 12px 30px; font-size: 1.1rem; font-weight: bold;
-    background: #000; color: #00d4ff; border: 2px solid #00d4ff; border-radius: 25px;
-    cursor: pointer; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); opacity: 0;
-    animation: fadeIn 2s forwards 4s, latido 2s infinite 4s;
+    position: relative; z-index: 100; margin-top: 10px; padding: 12px 35px; font-size: 1.2rem; font-weight: 800;
+    background: rgba(0, 85, 255, 0.2); color: #fff; border: 2px solid var(--neon-blue); border-radius: 30px;
+    cursor: pointer; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); opacity: 0; backdrop-filter: blur(5px);
+    animation: fadeIn 2s forwards 4.5s, latido 2s infinite 4.5s;
   }
+  #btnGalaxia:hover { background: var(--neon-blue); color: #000; }
 
   /* --- ESCENA 2: GALAXIA 3D --- */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
-  #ui-layer { position: absolute; top: 20px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
-  #ui-layer h1 { margin: 0; font-size: 3rem; color: #fff; text-shadow: 0 0 15px #00aaff, 0 0 30px #0055ff; font-weight: 800; font-family: 'Caveat', cursive; }
-
-  /* --- TARJETA MODAL COMPARTIDA --- */
+  
+  /* --- TARJETA MODAL UNIVERSAL --- */
   #modalMensaje {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
-    background: rgba(255, 255, 255, 0.95); border: 4px solid #0055ff; border-radius: 15px;
-    width: 85%; max-width: 350px; padding: 30px 20px; text-align: center; color: #333;
-    z-index: 1000; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-    opacity: 0; pointer-events: none; transition: all 0.4s ease;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
+    background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
+    width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111;
+    z-index: 10000; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 85, 255, 0.3);
+    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-  #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
-  #modalTitulo { font-size: 1.4rem; color: #0055ff; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; }
-  .modal-img-tierna { font-size: 4rem; margin: 15px 0; display: block; } /* Aquí puedes poner una etiqueta <img> si tienes fotos de ositos */
-  #modalTexto { font-size: 1.2rem; line-height: 1.4; margin-bottom: 25px; font-weight: bold; }
-  .btn-cerrar { background: #0055ff; color: #fff; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 10px rgba(0, 85, 255, 0.4); }
+  #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 15px; font-weight: 900; letter-spacing: 1px; }
+  .modal-img-tierna { font-size: 5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
+  #modalTexto { font-size: 1.2rem; line-height: 1.5; margin-bottom: 30px; font-weight: 700; color: #444; }
+  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
+  .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
-  /* ANIMACIONES CSS */
+  /* ANIMACIONES */
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes subirEnvoltura { to { transform: translateY(0); opacity: 1; } }
-  @keyframes florecer { 0% { transform: scale(0) translateY(50px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+  @keyframes surgir { 0% { transform: translateX(-50%) translateY(100px); opacity: 0; } 100% { transform: translateX(-50%) translateY(0); opacity: 1; } }
+  @keyframes florecer { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+  @keyframes popUp { 0% { transform: scale(0.5) translateY(100px); opacity: 0; } 100% { opacity: 1; } }
+  @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  /* SVG Flor Definición invisible */
+  .svg-defs { display: none; }
 </style>
 </head>
 <body>
+
+<!-- Definición de la flor SVG reutilizable -->
+<svg class="svg-defs">
+  <defs>
+    <g id="flor-azul">
+      <!-- Pétalos -->
+      <path d="M30 10 C35 -5, 50 10, 30 30 C10 10, 25 -5, 30 10" fill="#00d4ff"/>
+      <path d="M30 30 C50 10, 65 25, 30 30" fill="#00aaff" transform="rotate(72 30 30)"/>
+      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0088ff" transform="rotate(144 30 30)"/>
+      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0055ff" transform="rotate(216 30 30)"/>
+      <path d="M30 30 C50 10, 65 25, 30 30" fill="#0033cc" transform="rotate(288 30 30)"/>
+      <!-- Centro -->
+      <circle cx="30" cy="30" r="8" fill="#ffcc00" stroke="#e6a800" stroke-width="2"/>
+    </g>
+  </defs>
+</svg>
 
 <audio id="musicaFondo" loop crossorigin="anonymous">
   <source src="cancion.mp3" type="audio/mpeg">
@@ -116,46 +159,66 @@
   <button id="btnDescubrir">ABRIR REGALO</button>
 </div>
 
-<!-- ESCENA 1: EL RAMO -->
+<!-- ESCENA 1: EL RAMO AVANZADO -->
 <div id="escenaRamo">
   <div class="ramo-titulo">❤️ Feliz 30 de Septiembre ❤️</div>
-  <div class="ramo-container">
-    <div class="envoltura"></div>
-    <!-- Cajas estilo Hot Wheels hechas con CSS e imágenes PNG -->
-    <div class="caja-hw c1" onclick="abrirModalRamo('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
+  
+  <div class="ramo-wrapper">
+    <!-- Envoltura Trasera -->
+    <div class="capa-fondo"></div>
+    
+    <!-- Capa de Flores y Tallos -->
+    <div class="capa-flores">
+      <svg class="flor flor1" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+      <svg class="flor flor2" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+      <svg class="flor flor3" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+      <svg class="flor flor4" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+      <svg class="flor flor5" viewBox="0 0 60 60"><use href="#flor-azul"/></svg>
+    </div>
+
+    <!-- Cajas Hot Wheels Dinámicas -->
+    <div class="caja-hw hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto1.png" class="caja-img" onerror="this.style.display='none'">
     </div>
-    <div class="caja-hw c2" onclick="abrirModalRamo('TE AMO', 'Feliz día, mi amor no necesito un calendario para recordarte cuánto significas para mí ❤️')">
+    <div class="caja-hw hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto2.png" class="caja-img" onerror="this.style.display='none'">
     </div>
-    <div class="caja-hw c3" onclick="abrirModalRamo('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
+    <div class="caja-hw hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto3.png" class="caja-img" onerror="this.style.display='none'">
     </div>
-    <div class="caja-hw c4" onclick="abrirModalRamo('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
+    <div class="caja-hw hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto4.png" class="caja-img" onerror="this.style.display='none'">
     </div>
-    <div class="caja-hw c5" onclick="abrirModalRamo('IMPORTANTE PARA MÍ', 'Te amo con todo mi corazón, gracias por existir 🥰')">
+    <div class="caja-hw hw5" onclick="abrirModal('IMPORTANTE PARA MÍ', 'Te amo con todo mi corazón, gracias por existir 🥰')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto5.png" class="caja-img" onerror="this.style.display='none'">
     </div>
-    <div class="caja-hw c6" onclick="abrirModalRamo('MI COPILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
+    <div class="caja-hw hw6" onclick="abrirModal('MI COPILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
+      <div class="caja-header"><div class="gancho"></div></div>
       <div class="caja-logo">HOT WHEELS</div><img src="auto6.png" class="caja-img" onerror="this.style.display='none'">
     </div>
+
+    <!-- Envoltura Delantera y Lazo -->
+    <div class="capa-frente"></div>
+    <div class="lazo"><div class="lazo-centro"></div></div>
   </div>
+
   <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">🌌 VIAJAR A LA GALAXIA 🌌</button>
 </div>
 
 <!-- ESCENA 2: GALAXIA 3D -->
 <div id="threeCanvas"></div>
-<div id="ui-layer">
-  <h1>Feliz 30 de Septiembre</h1>
-</div>
 
-<!-- TARJETA MODAL COMPARTIDA -->
+<!-- TARJETA MODAL UNIVERSAL -->
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
-  <span class="modal-img-tierna">🐻❤️🐼</span> <!-- Reemplaza esto por un <img src="osito.jpg"> si tienes fotos -->
+  <span class="modal-img-tierna">🐼❤️🐻</span>
   <div id="modalTexto">Texto</div>
-  <button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+  <button class="btn-cerrar" onclick="cerrarModal()">CONTINUAR</button>
 </div>
 
 <!-- LIBRERÍAS THREE.JS -->
@@ -185,7 +248,7 @@ document.getElementById('btnDescubrir').addEventListener('click', () => {
 });
 
 // --- LÓGICA DEL MODAL ---
-function abrirModalRamo(titulo, texto) {
+function abrirModal(titulo, texto) {
   document.getElementById('modalTitulo').innerText = titulo;
   document.getElementById('modalTexto').innerText = texto;
   document.getElementById('modalMensaje').classList.add('mostrar');
@@ -202,9 +265,74 @@ function iniciarTransicionGalaxia() {
   setTimeout(() => {
     escenaRamo.style.display = 'none';
     document.getElementById('threeCanvas').style.display = 'block';
-    document.getElementById('ui-layer').style.display = 'block';
     initThreeJS();
   }, 1500);
+}
+
+// --- BANCO MASIVO DE MENSAJES ÚNICOS (60+ Frases) ---
+// Categorizadas y únicas para garantizar que no se repitan en la galaxia
+const bancoDeMensajes = [
+  { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
+  { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
+  { t: "MI PILOTO FAVORITO", p: "Aceleras mi corazón todos los días." },
+  { t: "A TODA VELOCIDAD", p: "Mi corazón late a mil por hora cuando te veo." },
+  { t: "MI DESTINO FINAL", p: "No importa la ruta, mi destino siempre eres tú." },
+  { t: "HOT WHEELS", p: "Gracias por dejarme hacer feliz a tu niño interior." },
+  { t: "MI COPILOTO IDEAL", p: "La vida es un viaje, gracias por ir a mi lado." },
+  { t: "PRIMERA POSICIÓN", p: "En la carrera de mi vida, tú siempre tienes el primer lugar." },
+  { t: "ADRENALINA PURA", p: "Eso es exactamente lo que siento cuando me miras." },
+  { t: "MI META", p: "De todos los caminos posibles, siempre te elegiré a ti." },
+  { t: "CERO A CIEN", p: "Me haces pasar de 0 a 100 de felicidad en un segundo." },
+  { t: "MOTOR DE MI VIDA", p: "Tú le das la fuerza y energía a todos mis días." },
+  { t: "PISTA FAVORITA", p: "Quiero recorrer cada curva de la vida a tu lado." },
+  { t: "TURBO ACTIVADO", p: "Mi sonrisa se enciende a máxima potencia contigo." },
+  { t: "LUCES EN LA NOCHE", p: "Tu amor ilumina mi camino cuando todo está oscuro." },
+  { t: "MI CAMPEÓN", p: "Ganar tu corazón ha sido mi mayor y mejor victoria." },
+  { t: "AMOR CLÁSICO", p: "Lo nuestro es como un buen auto clásico: nunca pasa de moda." },
+  { t: "SÚPER MOTOR", p: "Gracias por darle tanta fuerza y amor a mis días." },
+  { t: "LLANTAS AL ASFALTO", p: "Me mantienes con los pies en la tierra pero el corazón volando." },
+  { t: "ESCUDERÍA PERFECTA", p: "Juntos somos el mejor equipo que existe." },
+  { t: "V8 DE EMOCIONES", p: "Haces vibrar todo mi mundo con solo hablarme." },
+  { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
+  { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
+  { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
+  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." },
+  { t: "MI CHISPA", p: "Eres la bujía que enciende todos mis días." },
+  { t: "KILÓMETROS DE AMOR", p: "No hay distancia que pueda frenar lo que siento por ti." },
+  { t: "A TODO GAS", p: "Contigo vivo la vida con la máxima intensidad y alegría." },
+  { t: "FUERA DE SERIE", p: "Eres una edición limitada, el modelo más exclusivo de mi vida." },
+  { t: "ARRANQUE PERFECTO", p: "Cada mañana a tu lado es el mejor inicio posible." },
+  { t: "MI REFUGIO", p: "Eres mi parada de boxes favorita, donde encuentro paz." },
+  { t: "SIN LÍMITES", p: "Mi amor por ti no tiene límite de velocidad ni fronteras." },
+  { t: "RUMBO FIJO", p: "Mi brújula interior siempre apunta hacia donde tú estás." },
+  { t: "EN MARCHA", p: "Sigamos construyendo juntos este hermoso camino." },
+  { t: "MI TESORO", p: "Eres el trofeo más grande que la vida me ha dado." },
+  { t: "CABALLOS DE FUERZA", p: "Tú le das toda la potencia y sentido a mi existir." },
+  { t: "AMOR DE PLATINO", p: "Lo nuestro es resistente, brillante y para toda la vida." },
+  { t: "ACELERACIÓN ÚNICA", p: "Nadie más logra que mi corazón salte como tú lo haces." },
+  { t: "MI COMPAÑERO", p: "Gracias por recorrer cada ruta de la vida de mi mano." },
+  { t: "SIEMPRE TÚ", p: "En cualquier pista y en cualquier clima, te elijo a ti." },
+  { t: "AMOR SIN FRENOS", p: "Me lanzo a esta aventura contigo sin miedo a nada." },
+  { t: "A TU LADO", p: "El viaje no importa tanto como la persona que va en el asiento de al lado." },
+  { t: "MI GRAN PREMIO", p: "Tú eres mi recompensa favorita al final de cada día." },
+  { t: "SINFONÍA DE MOTOR", p: "Tu voz es la melodía que calma y alegra mi corazón." },
+  { t: "LLENO DE MAGIA", p: "Haces que la rutina se sienta como un viaje extraordinario." },
+  { t: "AL VOLANTE", p: "Me encanta cómo manejas nuestra relación con tanto amor." },
+  { t: "RUTAS NUEVAS", p: "Quiero explorar cada rincón del mundo a tu lado." },
+  { t: "COMBUSTIBLE IDEAL", p: "Tus besos y abrazos son mi gasolina diaria." },
+  { t: "INOLVIDABLE", p: "Cada momento contigo se graba a fuego en mi memoria." },
+  { t: "CARRERA PERFECTA", p: "Si la vida es una pista, tú eres mi mejor maniobra." }
+];
+
+// Función profesional para barajar (Shuffle) arrays sin repeticiones
+function shuffleArray(array) {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
 }
 
 // --- ESCENA 2: THREE.JS GALAXIA ---
@@ -217,8 +345,8 @@ const mouse = new THREE.Vector2();
 
 function initThreeJS() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x021024);
-  scene.fog = new THREE.FogExp2(0x021024, 0.0002);
+  scene.background = new THREE.Color(0x020510);
+  scene.fog = new THREE.FogExp2(0x020510, 0.00025);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 15000);
   camera.position.set(0, 400, 1600); 
@@ -232,7 +360,7 @@ function initThreeJS() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
   controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.5;
+  controls.autoRotateSpeed = 0.8;
   controls.maxDistance = 2500;
   controls.minDistance = 300;
 
@@ -251,7 +379,7 @@ function initThreeJS() {
   renderer.domElement.addEventListener('pointerdown', onPointerDown);
   renderer.domElement.addEventListener('pointerup', onPointerUp);
 
-  animate(); // Iniciar loop de renderizado
+  animate();
 }
 
 function crearSpriteTextoFlotante(texto) {
@@ -260,17 +388,17 @@ function crearSpriteTextoFlotante(texto) {
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#ffffff'; ctx.font = '50px "Caveat", cursive, sans-serif';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.shadowColor = '#00aaff'; ctx.shadowBlur = 10;
+  ctx.shadowColor = '#0055ff'; ctx.shadowBlur = 15;
   ctx.fillText(texto, 512, 64);
   const texture = new THREE.CanvasTexture(canvas);
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.8 }));
-  sprite.scale.set(400, 50, 1);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7 }));
+  sprite.scale.set(350, 45, 1);
   return sprite;
 }
 
 function crearFondoEstelar() {
   const starGeo = new THREE.BufferGeometry(); const starPos = [];
-  for(let i=0; i<4000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
+  for(let i=0; i<5000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
   starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
   scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
 }
@@ -279,53 +407,57 @@ function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
 
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(160, 240, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(240, 340, 64, 2), matAnillo(0x00aaff, 0.4));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(340, 500, 64, 1), matAnillo(0x0055ff, 0.2));
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 260, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(260, 360, 64, 2), matAnillo(0x00aaff, 0.4));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(360, 550, 64, 1), matAnillo(0x0055ff, 0.15));
   
   anillosGalaxia.push(ring1, ring2, ring3);
   diskGroup.add(ring1, ring2, ring3);
   diskGroup.rotation.x = Math.PI / 2;
   universoGroup.add(diskGroup);
-  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(158, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
+  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
 }
 
 function crearGalaxia() {
   const loader = new THREE.TextureLoader();
-  // AQUÍ ESTÁN TUS 6 AUTOS AHORA
   const texturasAutos = [
     loader.load('auto1.png'), loader.load('auto2.png'), loader.load('auto3.png'),
     loader.load('auto4.png'), loader.load('auto5.png'), loader.load('auto6.png')
   ];
 
-  const frasesFlotantes = ["Acelerando hacia lo que viene", "Contigo la carretera es mejor", "Me alegra conocerte", "Eres mi persona favorita", "Feliz día para ti", "No necesito un motivo para quererte"];
-  const mensajesTarjetas = [
-    { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
-    { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
-    { t: "MI PILOTO FAVORITO", p: "Aceleras mi corazón todos los días." }
-  ];
+  const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero", "A toda máquina"];
+  
+  // Barajamos el banco masivo de mensajes para garantizar que no se repitan los primeros N autos
+  const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
 
-  for(let i=0; i<60; i++) {
-    const radio = 400 + Math.random() * 2000;
+  // Textos ambientales (No interactivos)
+  for(let i=0; i<70; i++) {
+    const radio = 450 + Math.random() * 2200;
     const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2500); 
+    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2800); 
     const spriteTexto = crearSpriteTextoFlotante(frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)]);
     spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    spriteTexto.userData = { anguloBase: angulo, radio: radio, velocidad: 0.0005 + Math.random() * 0.001 };
+    spriteTexto.userData = { anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
     universoGroup.add(spriteTexto);
   }
 
-  for(let i=0; i<45; i++) {
-    const radio = 450 + Math.random() * 1800;
+  // Carritos Interactivos con MENSAJES ÚNICOS
+  const cantidadAutos = 45; // Máximo 50 para no agotar el banco de mensajes
+  for(let i=0; i<cantidadAutos; i++) {
+    const radio = 500 + Math.random() * 1900;
     const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 400; 
+    const altura = (Math.random() - 0.5) * 450; 
     
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturasAutos[Math.floor(Math.random() * texturasAutos.length)], transparent: true }));
-    sprite.scale.set(220, 110, 1); 
+    sprite.scale.set(200, 100, 1); 
     sprite.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
+    
+    // Asignamos el mensaje único usando el índice del bucle
     sprite.userData = { 
-      mensaje: mensajesTarjetas[Math.floor(Math.random() * mensajesTarjetas.length)],
-      anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0015 
+      mensaje: mensajesAleatorios[i], 
+      anguloBase: angulo, 
+      radio: radio, 
+      velocidad: 0.001 + Math.random() * 0.0012 
     };
 
     carritosInteractivos.push(sprite); 
@@ -333,6 +465,7 @@ function crearGalaxia() {
   }
 }
 
+// --- LÓGICA DE CLICS EXACTA ---
 let posInicio = { x: 0, y: 0 }, tiempoInicio = 0;
 function onPointerDown(e) {
   posInicio.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
@@ -343,14 +476,18 @@ function onPointerDown(e) {
 function onPointerUp(e) {
   let endX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : 0);
   let endY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : 0);
+  
   if (Math.hypot(endX - posInicio.x, endY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
     mouse.x = (endX / window.innerWidth) * 2 - 1; mouse.y = -(endY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(carritosInteractivos);
     if (intersects.length > 0) {
       const obj = intersects[0].object; 
-      abrirModalRamo(obj.userData.mensaje.t, obj.userData.mensaje.p);
-      obj.scale.set(286, 143, 1); setTimeout(() => obj.scale.set(220, 110, 1), 300);
+      abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
+      
+      const escX = 200, escY = 100;
+      obj.scale.set(escX*1.4, escY*1.4, 1); 
+      setTimeout(() => obj.scale.set(escX, escY, 1), 300);
     }
   }
 }
@@ -359,11 +496,15 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
   universoGroup.rotation.y -= 0.0005;
+  
   if(anillosGalaxia.length === 3) {
-    anillosGalaxia[0].rotation.z -= 0.02; anillosGalaxia[1].rotation.z -= 0.008; anillosGalaxia[2].rotation.z -= 0.003;
+    anillosGalaxia[0].rotation.z -= 0.02; 
+    anillosGalaxia[1].rotation.z -= 0.008; 
+    anillosGalaxia[2].rotation.z -= 0.003;
   }
+  
   universoGroup.children.forEach(c => {
-    if(c.userData.radio) {
+    if(c.userData && c.userData.radio) {
       c.userData.anguloBase += c.userData.velocidad;
       c.position.x = Math.cos(c.userData.anguloBase) * c.userData.radio;
       c.position.z = Math.sin(c.userData.anguloBase) * c.userData.radio;
