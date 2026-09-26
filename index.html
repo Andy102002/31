@@ -3,21 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feliz Día de los Hot Wheels 🏎️✨</title>
+<title>Feliz 30 de Septiembre 🏎️✨</title>
 <style>
-  body { margin: 0; background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; user-select: none; touch-action: none; }
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Nunito:wght@400;800&display=swap');
+
+  body { margin: 0; background: #000; overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
   /* --- PANTALLA DE CARGA --- */
   #pantallaEntrada {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #020205; z-index: 999; display: flex; flex-direction: column;
+    background: #020510; z-index: 999; display: flex; flex-direction: column;
     align-items: center; justify-content: center; transition: opacity 1s ease;
   }
   
-  #textoCarga { font-size: 1.2rem; color: #ffaa00; letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; }
+  #textoCarga { font-size: 1.5rem; color: #00d4ff; letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; }
   
   .barra-contenedor { width: 80%; max-width: 300px; height: 10px; background: #222; border-radius: 10px; overflow: hidden; position: relative; }
-  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, #ff0055, #ffaa00, #00d4ff); transition: width 0.1s linear; }
+  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, #0055ff, #00d4ff); transition: width 0.1s linear; }
 
   #btnDescubrir {
     display: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
@@ -36,33 +38,39 @@
   #ui-layer {
     position: absolute; top: 20px; width: 100%; text-align: center; z-index: 10; pointer-events: none;
   }
-  #ui-layer h1 { margin: 0; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px #00d4ff, 0 0 20px #ff0055; font-weight: bold; letter-spacing: 1px; }
-  #ui-layer p { margin: 5px 0 0 0; font-size: 1rem; color: #ffaa00; font-style: italic; }
-  #instruccion { margin-top: 15px; font-size: 0.9rem; color: #aaa; background: rgba(0,0,0,0.5); display: inline-block; padding: 5px 15px; border-radius: 15px; }
+  #ui-layer h1 { 
+    margin: 0; font-size: 3rem; color: #fff; 
+    text-shadow: 0 0 15px #00aaff, 0 0 30px #0055ff; font-weight: 800; letter-spacing: 2px; 
+    font-family: 'Caveat', cursive;
+  }
+  #instruccion { 
+    margin-top: 10px; font-size: 1.1rem; color: #ddd; background: rgba(0, 0, 20, 0.6); 
+    display: inline-block; padding: 8px 20px; border-radius: 20px; border: 1px solid #0055ff;
+  }
 
   /* --- TARJETA MODAL --- */
   #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
-    background: rgba(10, 15, 25, 0.95); border: 2px solid #ff5500; border-radius: 15px;
+    background: rgba(5, 10, 20, 0.95); border: 2px solid #00aaff; border-radius: 15px;
     width: 85%; max-width: 400px; padding: 30px 20px; text-align: center;
-    z-index: 1000; box-shadow: 0 10px 40px rgba(255, 85, 0, 0.4);
-    opacity: 0; pointer-events: none; transition: all 0.4s ease; backdrop-filter: blur(5px);
+    z-index: 1000; box-shadow: 0 10px 40px rgba(0, 170, 255, 0.5);
+    opacity: 0; pointer-events: none; transition: all 0.4s ease; backdrop-filter: blur(8px);
   }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
 
-  #modalTitulo { font-size: 1.5rem; color: #00d4ff; margin-bottom: 15px; font-weight: bold; text-shadow: 0 0 10px #00d4ff; }
-  .modal-car-img { font-size: 4rem; text-shadow: 0 0 20px #ff0055; margin: 10px 0; display: block; animation: flotar 3s ease-in-out infinite; }
-  #modalTexto { font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; margin-bottom: 25px; font-family: 'Courier New', monospace; }
+  #modalTitulo { font-size: 1.6rem; color: #00d4ff; margin-bottom: 15px; font-weight: 800; font-family: 'Nunito', sans-serif; }
+  .modal-car-img { font-size: 3.5rem; margin: 10px 0; display: block; animation: flotar 3s ease-in-out infinite; }
+  #modalTexto { font-size: 1.4rem; color: #fff; line-height: 1.4; margin-bottom: 25px; font-family: 'Caveat', cursive; }
   
   .btn-cerrar {
-    background: #ff5500; color: #fff; border: none; padding: 10px 30px; border-radius: 20px;
-    font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(255, 85, 0, 0.5); transition: 0.2s;
+    background: #00aaff; color: #fff; border: none; padding: 12px 35px; border-radius: 25px;
+    font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); transition: 0.2s;
   }
-  .btn-cerrar:hover { background: #ffaa00; color: #000; transform: scale(1.1); }
+  .btn-cerrar:hover { background: #00d4ff; color: #000; transform: scale(1.1); }
 
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-  @media (max-width: 768px) { #ui-layer h1 { font-size: 1.4rem; } }
+  @media (max-width: 768px) { #ui-layer h1 { font-size: 2.2rem; } }
 </style>
 </head>
 <body>
@@ -74,11 +82,11 @@
 
 <!-- PANTALLA DE CARGA -->
 <div id="pantallaEntrada">
-  <div id="textoCarga">ENSAMBLANDO CARRITOS... 0%</div>
+  <div id="textoCarga">ENSAMBLANDO UNIVERSO... 0%</div>
   <div class="barra-contenedor">
     <div class="barra-progreso" id="barraProgreso"></div>
   </div>
-  <button id="btnDescubrir">ABRIR REGALOS</button>
+  <button id="btnDescubrir">EXPLORAR GALAXIA</button>
 </div>
 
 <!-- CONTENEDOR 3D -->
@@ -86,17 +94,16 @@
 
 <!-- INTERFAZ FLOTANTE -->
 <div id="ui-layer">
-  <h1>Feliz Día de los Hot Wheels</h1>
-  <p>Con Todo Mi Amor Para Ti ❤️</p>
+  <h1>Feliz 30 de Septiembre</h1>
   <div id="instruccion">👆 Arrastra para girar • Toca un auto para leer</div>
 </div>
 
 <!-- TARJETA DE MENSAJE -->
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
-  <span class="modal-car-img">🏎️</span>
+  <span class="modal-car-img">🏎️💨</span>
   <div id="modalTexto">Texto</div>
-  <button class="btn-cerrar" onclick="cerrarModal()">SEGUIR EXPLORANDO</button>
+  <button class="btn-cerrar" onclick="cerrarModal()">CONTINUAR</button>
 </div>
 
 <!-- LIBRERÍAS THREE.JS -->
@@ -115,12 +122,11 @@ const intervaloCarga = setInterval(() => {
   if(porcentaje >= 100) {
     porcentaje = 100;
     clearInterval(intervaloCarga);
-    textoCarga.innerText = "¡MOTORES LISTOS!";
-    textoCarga.style.color = "#00d4ff";
+    textoCarga.innerText = "¡TODO LISTO!";
     barraProgreso.parentElement.style.display = 'none';
     btnDescubrir.style.display = 'block';
   }
-  textoCarga.innerText = `ENSAMBLANDO CARRITOS... ${porcentaje}%`;
+  textoCarga.innerText = `ENSAMBLANDO UNIVERSO... ${porcentaje}%`;
   barraProgreso.style.width = `${porcentaje}%`;
 }, 100);
 
@@ -133,51 +139,41 @@ btnDescubrir.addEventListener('click', () => {
 // --- 2. CONFIGURACIÓN DEL UNIVERSO 3D ---
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
-let carritosInteractivos = [];
+let carritosInteractivos = []; 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+const textureLoader = new THREE.TextureLoader();
 
-// GRAN BATERÍA DE FRASES ÚNICAS
-const frases = [
+// FRASES ESTILO "TEXTO FLOTANTE"
+const frasesFlotantes = [
+  "Acelerando hacia lo que viene", "Contigo la carretera es mejor", "Me alegra conocerte", 
+  "Eres mi persona favorita", "Feliz día para ti", "No necesito un motivo para quererte", 
+  "Hoy celebro tenerte cerca", "Solo pienso en ti", "Mi copiloto ideal", "Siempre tienes un lugar aquí",
+  "Gracias por ser tú", "Contigo todo lugar es bonito", "Mi mundo gira por ti"
+];
+
+// FRASES PARA LAS TARJETAS (Al tocar un auto)
+const mensajesTarjetas = [
   { t: "Mi mejor decisión", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "Sin frenos", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
   { t: "Mi piloto favorito", p: "Aceleras mi corazón todos los días." },
-  { t: "Motor de mi vida", p: "Tú eres la chispa que me impulsa a ser mejor." },
   { t: "A toda velocidad", p: "Mi corazón late a mil por hora cuando te veo." },
   { t: "Mi destino final", p: "No importa la ruta, mi destino siempre eres tú." },
   { t: "Hot Wheels", p: "Gracias por dejarme hacer feliz a tu niño interior." },
   { t: "Mi copiloto ideal", p: "La vida es un viaje, gracias por ir a mi lado." },
   { t: "Primera posición", p: "En la carrera de mi vida, tú siempre tienes el primer lugar." },
   { t: "Adrenalina pura", p: "Eso es exactamente lo que siento cuando me miras." },
-  { t: "Mi meta", p: "De todos los caminos posibles, siempre te elegiré a ti." },
-  { t: "Pista favorita", p: "Quiero recorrer cada curva de tu vida." },
-  { t: "Tan único", p: "Eres mi edición limitada, el modelo más exclusivo." },
-  { t: "Tracción total", p: "Contigo me siento segura en cualquier terreno." },
-  { t: "Turbo activado", p: "Mi felicidad se multiplica cuando estoy contigo." },
-  { t: "Luces en la noche", p: "Tu sonrisa ilumina mi camino cuando todo está oscuro." },
-  { t: "Mi trofeo", p: "Ganar tu corazón ha sido mi mayor victoria." },
-  { t: "Cero a cien", p: "Me haces pasar de 0 a 100 en un segundo de alegría." },
-  { t: "Amor clásico", p: "Lo nuestro es como un buen clásico: nunca pasa de moda." },
-  { t: "Súper motor", p: "Gracias por darle tanta fuerza y amor a mis días." },
-  { t: "Llantas al asfalto", p: "Me mantienes con los pies en la tierra pero el corazón volando." },
-  { t: "Escudería perfecta", p: "Juntos somos el mejor equipo que existe." },
-  { t: "V8 de emociones", p: "Haces vibrar todo mi mundo con solo hablarme." },
-  { t: "Alineación y balanceo", p: "Tú le das el equilibrio perfecto a mi vida." },
-  { t: "Mi campeón", p: "Hoy y siempre celebraré cada uno de tus logros." },
-  { t: "Amor en pista", p: "Nuestro amor es a prueba de choques y raspones." },
-  { t: "Llenas mi tanque", p: "Con solo un abrazo tuyo tengo energía para todo el día." },
-  { t: "Mi supercar", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
-  { t: "Vuelta rápida", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
-  { t: "Te amo", p: "Simplemente te amo, en cada kilómetro de esta vida." }
+  { t: "Mi meta", p: "De todos los caminos posibles, siempre te elegiré a ti." }
 ];
 
 function init() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x020205);
-  scene.fog = new THREE.FogExp2(0x020205, 0.0003);
+  // Fondo azul oscuro como en la imagen
+  scene.background = new THREE.Color(0x021024);
+  scene.fog = new THREE.FogExp2(0x021024, 0.0002);
 
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(0, 500, 1600); 
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 15000);
+  camera.position.set(0, 400, 1600); 
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -190,206 +186,124 @@ function init() {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.5;
   controls.maxDistance = 2500;
-  controls.minDistance = 400;
+  controls.minDistance = 300;
 
   scene.add(universoGroup);
 
   crearFondoEstelar();
   crearAgujeroNegro();
-  crearGalaxiaDeCarros();
+  crearGalaxia();
 
   window.addEventListener('resize', onResize);
   
-  // LOGICA SEPARADA PARA CLICS Y ARRASTRE
+  // LOGICA DE CLICS
   renderer.domElement.addEventListener('pointerdown', onPointerDown);
   renderer.domElement.addEventListener('pointerup', onPointerUp);
 }
 
-// --- DIBUJOS DE AUTOS EN CANVAS (4 MODELOS) ---
-function dibujarLogoHW(ctx, x, y) {
-  ctx.fillStyle = '#e60000'; // Llama roja
-  ctx.beginPath();
-  ctx.ellipse(x, y, 30, 10, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#ffcc00'; // Letras amarillas
-  ctx.font = 'italic bold 12px Arial';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('HOT WHEELS', x, y+1);
-}
-
-// 1. HYPERCAR (Tipo Lamborghini)
-function crearHypercar(colorHex) {
-  const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128; const ctx = canvas.getContext('2d');
+function crearSpriteTextoFlotante(texto) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024; canvas.height = 128;
+  const ctx = canvas.getContext('2d');
   
-  // Pintura metalizada
-  let grad = ctx.createLinearGradient(0, 40, 0, 100);
-  grad.addColorStop(0, '#ffffff'); grad.addColorStop(0.3, colorHex); grad.addColorStop(1, '#222222');
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '50px "Caveat", cursive, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
   
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.moveTo(15, 95); ctx.lineTo(35, 65); // Cola afilada
-  ctx.lineTo(60, 60); // Alerón
-  ctx.lineTo(110, 35); // Techo trasero
-  ctx.lineTo(150, 35); // Techo plano
-  ctx.lineTo(210, 55); // Parabrisas largo
-  ctx.lineTo(240, 75); // Trompa en picada
-  ctx.lineTo(245, 95); // Frente bajo
-  ctx.closePath(); ctx.fill();
-
-  // Vidrios
-  ctx.fillStyle = 'rgba(0,0,0,0.8)';
-  ctx.beginPath(); ctx.moveTo(115, 38); ctx.lineTo(145, 38); ctx.lineTo(195, 58); ctx.lineTo(110, 58); ctx.fill();
-
-  // Luces
-  ctx.fillStyle = '#ff0000'; ctx.fillRect(15, 70, 5, 15); // Trasera
-  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(235, 78); ctx.lineTo(245, 82); ctx.lineTo(235, 86); ctx.fill(); // Faro
+  // Sombra ligera azulada
+  ctx.shadowColor = '#00aaff';
+  ctx.shadowBlur = 10;
+  ctx.fillText(texto, 512, 64);
   
-  dibujarLogoHW(ctx, 130, 75);
-
-  // Ruedas deportivas
-  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(65, 95, 20, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(195, 95, 20, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#ccc'; ctx.beginPath(); ctx.arc(65, 95, 10, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(195, 95, 10, 0, Math.PI*2); ctx.fill();
-
-  return new THREE.CanvasTexture(canvas);
-}
-
-// 2. MUSCLE CAR (Tipo Mustang)
-function crearMuscleCar(colorHex) {
-  const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128; const ctx = canvas.getContext('2d');
-  
-  let grad = ctx.createLinearGradient(0, 30, 0, 100);
-  grad.addColorStop(0, '#ffffff'); grad.addColorStop(0.4, colorHex); grad.addColorStop(1, '#111111');
-  
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.moveTo(20, 95); ctx.lineTo(20, 55); // Baúl alto
-  ctx.lineTo(70, 55); // Cajuela
-  ctx.lineTo(100, 30); // Vidrio trasero
-  ctx.lineTo(160, 30); // Techo recto
-  ctx.lineTo(190, 50); // Parabrisas recto
-  ctx.lineTo(235, 50); // Capó largo
-  ctx.lineTo(235, 95); // Frente robusto
-  ctx.closePath(); ctx.fill();
-
-  ctx.fillStyle = 'rgba(0,0,0,0.8)';
-  ctx.beginPath(); ctx.moveTo(105, 33); ctx.lineTo(155, 33); ctx.lineTo(180, 50); ctx.lineTo(105, 50); ctx.fill();
-
-  // Franja clásica
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(200, 50, 10, 45);
-
-  ctx.fillStyle = '#ff0000'; ctx.fillRect(20, 60, 8, 12);
-  ctx.fillStyle = '#ffdd00'; ctx.fillRect(225, 60, 10, 10);
-  
-  dibujarLogoHW(ctx, 130, 75);
-
-  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(60, 95, 22, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(190, 95, 22, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#aaa'; ctx.beginPath(); ctx.arc(60, 95, 12, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(190, 95, 12, 0, Math.PI*2); ctx.fill();
-
-  return new THREE.CanvasTexture(canvas);
-}
-
-// 3. FÓRMULA 1
-function crearF1(colorHex) {
-  const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128; const ctx = canvas.getContext('2d');
-  
-  ctx.fillStyle = colorHex;
-  ctx.beginPath();
-  ctx.moveTo(20, 80); ctx.lineTo(50, 80); // Alerón trasero inf
-  ctx.lineTo(50, 40); ctx.lineTo(80, 40); // Alerón trasero sup
-  ctx.lineTo(80, 60); ctx.lineTo(130, 60); // Motor
-  ctx.lineTo(150, 45); ctx.lineTo(170, 45); // Cabina
-  ctx.lineTo(190, 70); ctx.lineTo(240, 75); // Nariz
-  ctx.lineTo(240, 90); ctx.lineTo(220, 90); // Alerón del
-  ctx.lineTo(20, 90);
-  ctx.closePath(); ctx.fill();
-
-  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(160, 45, 10, Math.PI, 0); ctx.fill(); // Casco piloto
-  
-  dibujarLogoHW(ctx, 120, 75);
-
-  // Llantas grandes expuestas
-  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(60, 90, 25, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(200, 90, 20, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#ff0000'; ctx.beginPath(); ctx.arc(60, 90, 8, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(200, 90, 8, 0, Math.PI*2); ctx.fill();
-
-  return new THREE.CanvasTexture(canvas);
-}
-
-// 4. NEÓN (Tron)
-function crearNeon(colorHex) {
-  const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128; const ctx = canvas.getContext('2d');
-  ctx.shadowColor = colorHex; ctx.shadowBlur = 15;
-  ctx.strokeStyle = colorHex; ctx.lineWidth = 6; ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(40, 80); ctx.lineTo(80, 80); ctx.lineTo(110, 40); ctx.lineTo(180, 40); 
-  ctx.lineTo(210, 60); ctx.lineTo(230, 80); ctx.lineTo(230, 100); ctx.lineTo(40, 100); 
-  ctx.closePath(); ctx.stroke();
-  ctx.beginPath(); ctx.arc(80, 100, 15, 0, Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(190, 100, 15, 0, Math.PI*2); ctx.stroke();
-  return new THREE.CanvasTexture(canvas);
+  const texture = new THREE.CanvasTexture(canvas);
+  const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.8 });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(400, 50, 1);
+  return sprite;
 }
 
 function crearFondoEstelar() {
   const starGeo = new THREE.BufferGeometry(); const starPos = [];
-  for(let i=0; i<3000; i++) starPos.push((Math.random()-0.5)*5000, (Math.random()-0.5)*5000, (Math.random()-0.5)*5000);
+  for(let i=0; i<4000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
   starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 2, transparent: true, opacity: 0.5})));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
 }
 
 function crearAgujeroNegro() {
-  const ring = new THREE.Mesh(
-    new THREE.RingGeometry(150, 220, 64),
-    new THREE.MeshBasicMaterial({ color: 0x0055ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
-  );
-  ring.rotation.x = Math.PI / 2;
-  universoGroup.add(ring);
-  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(145, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
+  // Disco de acreción (Anillos celestes y blancos idénticos a tu imagen)
+  const diskGroup = new THREE.Group();
+  
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(160, 240, 64), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(240, 340, 64), new THREE.MeshBasicMaterial({color: 0x00aaff, side: THREE.DoubleSide, transparent: true, opacity: 0.6}));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(340, 500, 64), new THREE.MeshBasicMaterial({color: 0x0055ff, side: THREE.DoubleSide, transparent: true, opacity: 0.3}));
+  
+  diskGroup.add(ring1, ring2, ring3);
+  diskGroup.rotation.x = Math.PI / 2;
+  universoGroup.add(diskGroup);
+
+  // Esfera negra central
+  const bhGeo = new THREE.SphereGeometry(158, 32, 32);
+  const bhMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  universoGroup.add(new THREE.Mesh(bhGeo, bhMat));
 }
 
-function crearGalaxiaDeCarros() {
-  const colores = ['#ff5500', '#00d4ff', '#ff0055', '#00ff88', '#ffffff', '#ffcc00', '#bf00ff'];
-  
-  // Crear 120 carritos en la galaxia
-  for(let i=0; i<120; i++) {
-    const radio = 300 + Math.random() * 1800;
+function crearGalaxia() {
+  // CARGAR LAS IMÁGENES PNG (Asegúrate de tener auto1.png, auto2.png, auto3.png, auto4.png en tu carpeta)
+  const texturasAutos = [
+    textureLoader.load('auto1.png'),
+    textureLoader.load('auto2.png'),
+    textureLoader.load('auto3.png'),
+    textureLoader.load('auto4.png')
+  ];
+
+  // Generar Textos Flotantes
+  for(let i=0; i<80; i++) {
+    const radio = 400 + Math.random() * 2000;
     const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2200); 
+    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2500); 
     
-    const colorCarro = colores[Math.floor(Math.random() * colores.length)];
-    let textura;
-    const tipo = Math.random();
+    const frase = frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)];
+    const spriteTexto = crearSpriteTextoFlotante(frase);
     
-    if(tipo < 0.3) textura = crearHypercar(colorCarro);
-    else if(tipo < 0.6) textura = crearMuscleCar(colorCarro);
-    else if(tipo < 0.8) textura = crearF1(colorCarro);
-    else textura = crearNeon(colorCarro);
+    spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
+    spriteTexto.userData = { anguloBase: angulo, radio: radio, velocidad: 0.0005 + Math.random() * 0.001 };
+    universoGroup.add(spriteTexto);
+  }
 
-    // Los neón necesitan blending aditivo, los demás son opacos para verse sólidos
-    const blendingType = (tipo >= 0.8) ? THREE.AdditiveBlending : THREE.NormalBlending;
-    const spriteMat = new THREE.SpriteMaterial({ map: textura, transparent: true, blending: blendingType });
+  // Generar Carritos Hot Wheels (PNGs)
+  for(let i=0; i<40; i++) {
+    const radio = 450 + Math.random() * 1800;
+    const angulo = Math.random() * Math.PI * 2;
+    const altura = (Math.random() - 0.5) * 400; 
+    
+    const texturaRandom = texturasAutos[Math.floor(Math.random() * texturasAutos.length)];
+    
+    const spriteMat = new THREE.SpriteMaterial({ map: texturaRandom, transparent: true });
     const carrito = new THREE.Sprite(spriteMat);
-    carrito.scale.set(160, 80, 1);
+    // Ajusta la escala dependiendo de la resolución de tus PNGs
+    carrito.scale.set(200, 100, 1); 
 
-    // Hitbox invisible
-    const hitBoxGeo = new THREE.SphereGeometry(70, 8, 8);
+    // HITBOX EXCLUSIVO Y ESTRICTO (Para evitar clics en el vacío)
+    const hitBoxGeo = new THREE.PlaneGeometry(180, 90);
     const hitbox = new THREE.Mesh(hitBoxGeo, new THREE.MeshBasicMaterial({visible: false}));
     carrito.add(hitbox);
     
-    // ASIGNAR UNA FRASE ÚNICA ALEATORIA
-    const fraseElegida = frases[Math.floor(Math.random() * frases.length)];
-    carrito.userData = { 
+    const fraseElegida = mensajesTarjetas[Math.floor(Math.random() * mensajesTarjetas.length)];
+    hitbox.userData = { 
       mensaje: fraseElegida,
-      anguloBase: angulo,
-      radio: radio,
-      velocidad: 0.001 + Math.random() * 0.002
+      parentSprite: carrito
     };
 
-    carritosInteractivos.push(hitbox); 
+    carritosInteractivos.push(hitbox); // SOLO LOS HITBOX DE LOS AUTOS SON CLIQUEABLES
+    
     carrito.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
+    carrito.userData = { anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0015 };
     universoGroup.add(carrito);
   }
 }
 
-// --- 3. LÓGICA DE NAVEGACIÓN Y CLICS (PERFECTA) ---
+// --- 3. LÓGICA DE CLICS AISLADA Y SEGURA ---
 let posInicio = { x: 0, y: 0 };
 let tiempoInicio = 0;
 
@@ -403,26 +317,28 @@ function onPointerUp(event) {
   let endX = event.clientX || (event.changedTouches ? event.changedTouches[0].clientX : 0);
   let endY = event.clientY || (event.changedTouches ? event.changedTouches[0].clientY : 0);
   
-  // Distancia recorrida por el dedo/ratón
   let distancia = Math.hypot(endX - posInicio.x, endY - posInicio.y);
   let tiempo = Date.now() - tiempoInicio;
   
-  // SI SE MOVIÓ MUY POCO Y FUE RÁPIDO, ES UN CLIC/TOQUE. SI NO, ES UN ARRASTRE DE CÁMARA.
-  if (distancia < 15 && tiempo < 500) {
+  // Validar que fue un toque rápido y no un arrastre de cámara
+  if (distancia < 15 && tiempo < 400) {
     mouse.x = (endX / window.innerWidth) * 2 - 1;
     mouse.y = -(endY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
+    
+    // SOLO INTERSECTA LA LISTA DE CARRITOS, EL VACÍO SE IGNORA
     const intersects = raycaster.intersectObjects(carritosInteractivos);
 
     if (intersects.length > 0) {
-      const carritoTocado = intersects[0].object.parent; 
-      mostrarModal(carritoTocado.userData.mensaje);
+      const datosAuto = intersects[0].object.userData; 
+      mostrarModal(datosAuto.mensaje);
       
-      // Animación de latido
-      const escalaOrg = carritoTocado.scale.x;
-      carritoTocado.scale.set(escalaOrg*1.4, (escalaOrg*1.4)/2, 1);
-      setTimeout(() => { carritoTocado.scale.set(escalaOrg, escalaOrg/2, 1); }, 300);
+      const spriteAnimar = datosAuto.parentSprite;
+      const escalaOrgX = 200;
+      const escalaOrgY = 100;
+      spriteAnimar.scale.set(escalaOrgX*1.3, escalaOrgY*1.3, 1);
+      setTimeout(() => { spriteAnimar.scale.set(escalaOrgX, escalaOrgY, 1); }, 300);
     }
   }
 }
@@ -448,7 +364,7 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
-  universoGroup.rotation.y -= 0.001;
+  universoGroup.rotation.y -= 0.0005;
 
   universoGroup.children.forEach(child => {
     if(child.userData.radio) {
