@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz 30 de Septiembre 🏎️🔥</title>
+<style>
+  body { margin: 0; background: #050505; overflow: hidden; font-family: 'Courier New', monospace; color: white; }
+  
+  /* PANTALLA DE CARGA */
+  #pantallaEntrada {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #1a0500 0%, #000000 100%);
+    z-index: 999; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 1s ease;
+  }
+
+  .titulo-neon {
+    font-size: 2.5rem; text-align: center; margin-bottom: 30px;
+    color: #ff5500; font-weight: bold; text-transform: uppercase;
+    text-shadow: 0 0 10px #ff3300, 0 0 20px #ff8800, 0 0 40px #ffaa00;
+    animation: palpitarNeon 1.5s infinite alternate;
+  }
+
+  @keyframes palpitarNeon {
+    0% { text-shadow: 0 0 10px #ff3300, 0 0 20px #ff8800; }
+    100% { text-shadow: 0 0 20px #ff3300, 0 0 40px #ff8800, 0 0 60px #ffaa00; transform: scale(1.05); }
+  }
+
+  #btnArrancar {
+    padding: 15px 40px; font-size: 1.5rem; font-weight: bold;
+    background: transparent; color: white; border: 2px solid #00d4ff;
+    border-radius: 50px; cursor: not-allowed; pointer-events: none; opacity: 0.5;
+    box-shadow: 0 0 15px #00d4ff inset, 0 0 20px #00d4ff;
+    transition: all 0.5s ease; text-transform: uppercase; letter-spacing: 2px;
+  }
+
+  #btnArrancar.listo {
+    opacity: 1; cursor: pointer; pointer-events: auto;
+    animation: botonListo 1.5s infinite;
+  }
+
+  #btnArrancar.listo:hover {
+    background: #00d4ff; color: #000; box-shadow: 0 0 40px #00d4ff, 0 0 40px #00d4ff inset;
+  }
+
+  @keyframes botonListo {
+    0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); }
+  }
+
+  /* CANVAS 3D */
+  #canvasContainer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+  /* UI Y MENSAJES */
+  #ui-layer {
+    position: absolute; top: 30px; width: 100%; text-align: center;
+    z-index: 10; pointer-events: none;
+  }
+
+  #instruccion {
+    font-size: 1.2rem; color: #00d4ff; text-shadow: 0 0 10px #00d4ff;
+    opacity: 0; transition: opacity 2s;
+  }
+
+  #mensajeFlotante {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+    background: rgba(10, 0, 0, 0.85); border: 2px solid #ff5500; color: white;
+    padding: 20px 40px; border-radius: 15px; font-size: 1.5rem; text-align: center;
+    z-index: 1000; box-shadow: 0 0 40px #ff5500; font-weight: bold;
+    opacity: 0; pointer-events: none; transition: all 0.3s ease;
+  }
+
+  #mensajeFlotante.mostrar {
+    opacity: 1; transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* CARTA FINAL */
+  #cartaFinal {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(5, 5, 10, 0.9); border: 2px solid #00d4ff; color: white;
+    padding: 40px; border-radius: 15px; text-align: center; z-index: 2000;
+    box-shadow: 0 0 50px #00d4ff, 0 0 30px #ff5500 inset; opacity: 0; transition: opacity 2s ease;
+    max-width: 85%; width: 500px; backdrop-filter: blur(8px);
+  }
+
+  #cartaFinal h3 { font-size: 2.2rem; margin-top: 0; color: #ff5500; text-shadow: 0 0 15px #ff3300; margin-bottom: 20px;}
+  #cartaFinal p { font-size: 1.1rem; line-height: 1.8; color: #e0e0e0; margin-bottom: 15px;}
+  #cartaFinal .firma { font-weight: bold; color: #00d4ff; font-size: 1.4rem; text-align: right; margin-top: 30px; text-shadow: 0 0 10px #00d4ff;}
+
+  @media (max-width: 768px) {
+    .titulo-neon { font-size: 1.8rem; }
+    #btnArrancar { font-size: 1.2rem; padding: 12px 30px; }
+    #mensajeFlotante { font-size: 1.2rem; width: 80%; }
+    #cartaFinal { padding: 25px; width: 90%; }
+    #cartaFinal h3 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Pon aquí la ruta de tu canción (ej: una de The Weeknd o algo con ritmo de carreras) -->
+<audio id="musicaFondo" loop crossorigin="anonymous">
+  <source src="tumusica.mp3" type="audio/mpeg">
+</audio>
+
+<div id="pantallaEntrada">
+  <div class="titulo-neon">30 de Septiembre 🏎️🔥</div>
+  <button id="btnArrancar">Cargando Nitro... (4s)</button>
+</div>
+
+<div id="canvasContainer"></div>
+
+<div id="ui-layer">
+  <div id="instruccion">Toca los orbes de luz para descubrir tu regalo ✨</div>
+</div>
+
+<div id="mensajeFlotante"></div>
+
+<div id="cartaFinal">
+  <h3>¡Feliz Día, Piloto! 🏎️❤️</h3>
+  <p>Así como las flores amarillas nos llenan de emoción, hoy quiero que tú seas el protagonista de esta historia.</p>
+  <p>Nunca pierdas esa chispa y a ese niño interior que llevas dentro. Te regalo estos carritos (¡y esta pista virtual!) para recordarte que tú aceleras mi corazón todos los días.</p>
+  <p>Eres y siempre serás mi piloto favorito en la carrera de la vida. ¡Te amo a toda velocidad!</p>
+  <p class="firma">- Tu copiloto de vida ✨</p>
+  <button onclick="cerrarCarta()" style="margin-top:20px; padding:10px 25px; background:#ff5500; color:white; border:none; border-radius:50px; cursor:pointer; font-size:1.1rem; font-weight:bold; box-shadow:0 0 15px #ff5500;">Seguir Corriendo 🏁</button>
+</div>
+
+<!-- LIBRERÍAS DE THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+<script>
+const esCelular = window.innerWidth < 768;
+
+// Textos para revelar
+const mensajes = [
+  "Aceleraste mi corazón desde el primer día ❤️",
+  "Tú eres la chispa de mi motor 🔥",
+  "Contigo, la vida es la mejor aventura 🏎️",
+  "Para mi niño interior y el hombre de mi vida 🚗",
+  "No hay límite de velocidad para lo que siento por ti ✨",
+  "Eres mi pista favorita para recorrer 🛣️"
+];
+
+let recolectados = 0;
+let mostrandosMensaje = false;
+let orbesInteractivos = [];
+let particulasNitro = [];
+
+// Temporizador del botón
+let contador = 4;
+const btnArrancar = document.getElementById('btnArrancar');
+const intervalo = setInterval(() => {
+  contador--;
+  if (contador > 0) {
+    btnArrancar.innerText = `Cargando Nitro... (${contador}s)`;
+  } else {
+    clearInterval(intervalo);
+    btnArrancar.innerText = "ENCENDER MOTORES 🏁";
+    btnArrancar.classList.add("listo");
+  }
+}, 1000);
+
+btnArrancar.addEventListener('click', () => {
+  const audio = document.getElementById('musicaFondo');
+  audio.play().catch(e => console.log("Audio bloqueado por el navegador"));
+  
+  document.getElementById('pantallaEntrada').style.opacity = '0';
+  setTimeout(() => { 
+    document.getElementById('pantallaEntrada').style.display = 'none'; 
+    document.getElementById('instruccion').style.opacity = '1';
+  }, 1000);
+});
+
+// VARIABLES 3D
+let scene, camera, renderer, composer, controls;
+let trackLoop, gridHelper;
+let cars = [];
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function init() {
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x000000, 0.0015);
+
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+  camera.position.set(0, 300, 800);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  document.getElementById('canvasContainer').appendChild(renderer.domElement);
+
+  // POST PROCESADO (Brillo Neon)
+  const renderScene = new THREE.RenderPass(scene, camera);
+  const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2.5, 0.5, 0.1);
+  composer = new THREE.EffectComposer(renderer);
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.maxPolarAngle = Math.PI / 2 + 0.1; 
+  controls.minDistance = 200;
+  controls.maxDistance = 1500;
+
+  // LUCES
+  scene.add(new THREE.AmbientLight(0x222222));
+
+  // ENTORNO: Suelo estilo Synthwave
+  gridHelper = new THREE.GridHelper(5000, 100, 0x00d4ff, 0x002244);
+  gridHelper.position.y = -200;
+  scene.add(gridHelper);
+
+  // ESTRELLAS/POLVO
+  const starGeo = new THREE.BufferGeometry();
+  const starPos = [];
+  for(let i=0; i<3000; i++) {
+    starPos.push((Math.random()-0.5)*4000, (Math.random()-0.5)*2000, (Math.random()-0.5)*4000);
+  }
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+  const starMat = new THREE.PointsMaterial({color: 0xffffff, size: 2, transparent: true, opacity: 0.6});
+  scene.add(new THREE.Points(starGeo, starMat));
+
+  // PISTA HOT WHEELS (Un loop gigante)
+  const trackGeo = new THREE.TorusGeometry(350, 15, 16, 100);
+  const trackMat = new THREE.MeshStandardMaterial({ 
+    color: 0xff4400, emissive: 0xff2200, emissiveIntensity: 0.8, roughness: 0.2 
+  });
+  trackLoop = new THREE.Mesh(trackGeo, trackMat);
+  trackLoop.rotation.x = Math.PI / 2;
+  trackLoop.rotation.y = Math.PI / 8; // Inclinación épica
+  scene.add(trackLoop);
+
+  // CARRITOS RECORRIENDO LA PISTA
+  crearCarritos();
+
+  // ORBES DE REGALO (Clickables)
+  crearOrbes();
+
+  // EVENTOS
+  window.addEventListener('resize', onResize);
+  window.addEventListener('click', onClick);
+  window.addEventListener('touchstart', (e) => {
+    if(e.touches.length > 0) {
+      mouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+      verificarInterseccion();
+    }
+  }, {passive: false});
+}
+
+function crearCarritos() {
+  const coloresCarros = [0x00d4ff, 0x00ff00, 0xff00ff, 0xffff00];
+  
+  for(let i=0; i<4; i++) {
+    // Un pivote en el centro que rotará
+    const pivot = new THREE.Group();
+    pivot.rotation.x = trackLoop.rotation.x;
+    pivot.rotation.y = trackLoop.rotation.y;
+    scene.add(pivot);
+
+    // El cuerpo del carrito (Cajita luminosa)
+    const carGeo = new THREE.BoxGeometry(10, 5, 25);
+    const carMat = new THREE.MeshBasicMaterial({color: coloresCarros[i]});
+    const carMesh = new THREE.Mesh(carGeo, carMat);
+    
+    // Lo alejamos del centro al borde de la pista
+    carMesh.position.set(350, 20, 0); 
+    
+    // Luz propia
+    const light = new THREE.PointLight(coloresCarros[i], 2, 100);
+    carMesh.add(light);
+
+    pivot.add(carMesh);
+
+    // Guardamos para animar
+    cars.push({
+      pivot: pivot,
+      speed: 0.02 + (Math.random() * 0.015),
+      offset: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function crearOrbes() {
+  for(let i=0; i<mensajes.length; i++) {
+    const geo = new THREE.SphereGeometry(15, 16, 16);
+    const mat = new THREE.MeshBasicMaterial({color: 0xffaa00, transparent: true, opacity: 0.8});
+    const orb = new THREE.Mesh(geo, mat);
+
+    // Corona luminosa (Glow)
+    const glowGeo = new THREE.SphereGeometry(25, 16, 16);
+    const glowMat = new THREE.MeshBasicMaterial({color: 0xff3300, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending});
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    orb.add(glow);
+
+    // Posición aleatoria cerca de la pista
+    const angle = (i / mensajes.length) * Math.PI * 2;
+    const radius = 200 + Math.random() * 300;
+    orb.position.set(Math.cos(angle)*radius, (Math.random()-0.5)*200, Math.sin(angle)*radius);
+    
+    orb.userData = { mensaje: mensajes[i], index: i, recolectado: false };
+    orbesInteractivos.push(orb);
+    scene.add(orb);
+  }
+}
+
+function onClick(event) {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 - 1;
+  verificarInterseccion();
+}
+
+function verificarInterseccion() {
+  if(mostrandosMensaje) return;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(orbesInteractivos);
+
+  if (intersects.length > 0) {
+    const orb = intersects[0].object;
+    if(!orb.userData.recolectado) {
+      orb.userData.recolectado = true;
+      orb.material.opacity = 0; // Se oculta
+      orb.children[0].material.opacity = 0; // Oculta el glow
+
+      mostrarMensaje(orb.userData.mensaje);
+      recolectados++;
+
+      if(recolectados === mensajes.length) {
+        setTimeout(activarFinalEstandar, 3500);
+      }
+    }
+  }
+}
+
+function mostrarMensaje(texto) {
+  mostrandosMensaje = true;
+  const div = document.getElementById('mensajeFlotante');
+  div.innerText = texto;
+  div.classList.add('mostrar');
+
+  setTimeout(() => {
+    div.classList.remove('mostrar');
+    mostrandosMensaje = false;
+  }, 3000);
+}
+
+function activarFinalEstandar() {
+  // Explosión de nitro
+  for(let i=0; i<300; i++) {
+    const geo = new THREE.BoxGeometry(2, 2, 10);
+    const mat = new THREE.MeshBasicMaterial({color: Math.random() > 0.5 ? 0xff5500 : 0x00d4ff});
+    const particle = new THREE.Mesh(geo, mat);
+    particle.position.set((Math.random()-0.5)*100, 0, (Math.random()-0.5)*100);
+    
+    const v = new THREE.Vector3((Math.random()-0.5), Math.random(), (Math.random()-0.5)).normalize().multiplyScalar(10 + Math.random()*20);
+    particle.userData = { vel: v };
+    scene.add(particle);
+    particulasNitro.push(particle);
+  }
+
+  setTimeout(() => {
+    document.getElementById('cartaFinal').style.display = 'block';
+    setTimeout(() => { document.getElementById('cartaFinal').style.opacity = '1'; }, 100);
+  }, 1500);
+}
+
+function cerrarCarta() {
+  document.getElementById('cartaFinal').style.opacity = '0';
+  setTimeout(() => { document.getElementById('cartaFinal').style.display = 'none'; }, 1000);
+}
+
+function onResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+}
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+  const delta = clock.getDelta();
+
+  controls.update();
+
+  // Movimiento del suelo (Sensación de velocidad)
+  gridHelper.position.z = (time * 150) % 100;
+
+  // Animar Carritos en la pista
+  cars.forEach(car => {
+    car.pivot.rotation.z -= car.speed; // Rotan sobre el eje Z del pivote
+  });
+
+  // Flotar orbes
+  orbesInteractivos.forEach(orb => {
+    if(!orb.userData.recolectado) {
+      orb.position.y += Math.sin(time * 2 + orb.userData.index) * 0.5;
+      orb.rotation.y += 0.01;
+    }
+  });
+
+  // Partículas de Nitro final
+  particulasNitro.forEach(p => {
+    p.position.add(p.userData.vel);
+    p.rotation.x += 0.1;
+    p.rotation.y += 0.1;
+  });
+
+  composer.render();
+}
+
+init();
+animate();
+</script>
+</body>
+</html>
