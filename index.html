@@ -5,58 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Feliz Día de los Hot Wheels 🏎️✨</title>
 <style>
-  body { margin: 0; background: #000; overflow: hidden; font-family: 'Georgia', serif; color: white; user-select: none; }
+  body { margin: 0; background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; user-select: none; touch-action: none; }
   
-  /* --- PANTALLA DE CARGA --- */
+  /* --- PANTALLA DE CARGA Y ENTRADA --- */
   #pantallaEntrada {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: #020205; z-index: 999; display: flex; flex-direction: column;
     align-items: center; justify-content: center; transition: opacity 1s ease;
   }
   
-  .logo-carga { width: 150px; margin-bottom: 20px; animation: flotar 2s infinite ease-in-out; }
-  #textoCarga { font-size: 1.2rem; color: #ffaa00; letter-spacing: 2px; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
+  #textoCarga { font-size: 1.2rem; color: #00d4ff; letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; }
   
-  .barra-contenedor { width: 80%; max-width: 300px; height: 8px; background: #222; border-radius: 10px; overflow: hidden; position: relative; }
-  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, #ff0055, #ffaa00); transition: width 0.1s linear; }
+  .barra-contenedor { width: 80%; max-width: 300px; height: 10px; background: #222; border-radius: 10px; overflow: hidden; position: relative; }
+  .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, #ff0055, #ffaa00, #00d4ff); transition: width 0.1s linear; }
 
   #btnDescubrir {
-    display: none; padding: 12px 35px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
-    background: transparent; color: #ffaa00; border: 2px solid #ffaa00; border-radius: 30px;
-    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
-    transition: all 0.3s; margin-top: 30px; animation: latido 2s infinite; font-family: 'Courier New', Courier, monospace;
+    display: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;
+    background: transparent; color: #00d4ff; border: 2px solid #00d4ff; border-radius: 30px;
+    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s; margin-top: 30px; animation: latido 2s infinite;
   }
-  #btnDescubrir:hover { background: #ffaa00; color: #000; box-shadow: 0 0 30px #ffaa00; }
+  #btnDescubrir:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
 
-  /* --- CANVAS Y UI ESTILO VIDEO --- */
+  @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+  /* --- CANVAS Y UI FLOTANTE --- */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
   
   #ui-layer {
-    position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; pointer-events: none;
+    position: absolute; top: 20px; width: 100%; text-align: center; z-index: 10; pointer-events: none;
   }
-  #ui-layer h1 { 
-    margin: 0; font-size: 2.2rem; color: #ffcc00; 
-    text-shadow: 0 0 10px #ff5500, 2px 2px 5px #000; font-weight: bold; font-style: italic;
-  }
-  #ui-layer p { 
-    margin: 5px 0 0 0; font-size: 1.4rem; color: #fff; font-style: italic;
-    text-shadow: 0 0 10px #ffaa00; font-family: 'Dancing Script', cursive, serif;
-  }
+  #ui-layer h1 { margin: 0; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff; font-weight: 300; letter-spacing: 1px; }
+  #ui-layer p { margin: 5px 0 0 0; font-size: 0.9rem; color: #ccc; }
 
   /* --- MODAL ESTILO TIKTOK --- */
   #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
     background: rgba(10, 15, 25, 0.95); border: 1px solid #00d4ff; border-radius: 15px;
-    width: 85%; max-width: 380px; padding: 30px 20px; text-align: center;
-    z-index: 1000; box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
-    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    backdrop-filter: blur(10px);
+    width: 85%; max-width: 400px; padding: 30px 20px; text-align: center;
+    z-index: 1000; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    opacity: 0; pointer-events: none; transition: all 0.4s ease; backdrop-filter: blur(5px);
   }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
 
-  #modalTitulo { font-size: 1.4rem; color: #00d4ff; margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px #00d4ff; }
-  .modal-car-img { font-size: 4rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; }
-  #modalTexto { font-size: 1.1rem; color: #e0e0e0; line-height: 1.6; margin-bottom: 25px; font-family: 'Courier New', Courier, monospace; }
+  #modalTitulo { font-size: 1.4rem; color: #ffaa00; margin-bottom: 20px; font-weight: bold; }
+  .modal-car-img { font-size: 4rem; text-shadow: 0 0 20px #ff0055; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; }
+  #modalTexto { font-size: 1rem; color: #e0e0e0; line-height: 1.5; margin-bottom: 25px; }
   
   .btn-cerrar {
     background: #00d4ff; color: #000; border: none; padding: 10px 30px; border-radius: 20px;
@@ -64,17 +59,13 @@
   }
 
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-  @media (max-width: 768px) { 
-    #ui-layer h1 { font-size: 1.6rem; }
-    #ui-layer p { font-size: 1.1rem; }
-  }
+  @media (max-width: 768px) { #ui-layer h1 { font-size: 1.4rem; } }
 </style>
 </head>
 <body>
 
-<!-- MÚSICA DE FONDO -->
+<!-- MÚSICA DE FONDO (Con el nombre exacto que pediste) -->
 <audio id="musicaFondo" loop crossorigin="anonymous">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
@@ -93,16 +84,17 @@
 
 <!-- INTERFAZ -->
 <div id="ui-layer">
-  <h1>Feliz Día De Los Carritos Hot Wheels</h1>
-  <p>Con Todo Mi Amor Para Ti</p>
+  <h1>Feliz Día de los Hot Wheels</h1>
+  <p>PARA ALGUIEN MUY ESPECIAL ✨</p>
+  <p style="color: #ffaa00; font-size: 0.8rem; margin-top:10px;">(Gira el universo y toca los carritos)</p>
 </div>
 
 <!-- TARJETA MODAL -->
 <div id="modalMensaje">
   <div id="modalTitulo">Amarte es mi mejor decisión</div>
-  <span class="modal-car-img">🏎️</span>
-  <div id="modalTexto">Gracias por existir en mi vida.</div>
-  <button class="btn-cerrar" onclick="cerrarModal()">✕</button>
+  <span class="modal-car-img">🏎️💨</span>
+  <div id="modalTexto">Gracias por existir en mi vida y acelerar mi corazón todos los días.</div>
+  <button class="btn-cerrar" onclick="cerrarModal()">SEGUIR EXPLORANDO</button>
 </div>
 
 <!-- LIBRERÍAS THREE.JS -->
@@ -117,21 +109,21 @@ const barraProgreso = document.getElementById('barraProgreso');
 const btnDescubrir = document.getElementById('btnDescubrir');
 
 const intervaloCarga = setInterval(() => {
-  porcentaje += Math.floor(Math.random() * 8) + 2;
+  porcentaje += Math.floor(Math.random() * 5) + 1;
   if(porcentaje >= 100) {
     porcentaje = 100;
     clearInterval(intervaloCarga);
-    textoCarga.innerText = "SISTEMA LISTO";
-    textoCarga.style.color = "#00d4ff";
+    textoCarga.innerText = "FELIZ DÍA DE LOS HOT WHEELS";
+    textoCarga.style.color = "#ffaa00";
     barraProgreso.parentElement.style.display = 'none';
     btnDescubrir.style.display = 'block';
   }
   textoCarga.innerText = `PREPARANDO TU UNIVERSO... ${porcentaje}%`;
   barraProgreso.style.width = `${porcentaje}%`;
-}, 150);
+}, 100);
 
 btnDescubrir.addEventListener('click', () => {
-  document.getElementById('musicaFondo').play().catch(e=>console.log("Audio bloqueado", e));
+  document.getElementById('musicaFondo').play().catch(e=>console.log(e));
   document.getElementById('pantallaEntrada').style.opacity = '0';
   setTimeout(() => { document.getElementById('pantallaEntrada').style.display = 'none'; }, 1000);
 });
@@ -143,16 +135,12 @@ let carritosInteractivos = [];
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// Textos flotantes del universo
 const palabras = ["Amor", "Destino", "Mi paz", "Rayo", "Universo", "Confianza", "Brillamos", "Meta", "Velocidad", "Sueños", "Mi noche", "Único"];
-
-// Mensajes para las tarjetas
 const mensajesRomanticos = [
-  { titulo: "Amarte es mi mejor decisión", texto: "Gracias por existir en mi vida y acelerar mi corazón todos los días." },
-  { titulo: "Contigo todo tiene sentido", texto: "Tu amor es mi lugar favorito. Eres la chispa de mi motor." },
-  { titulo: "Mi piloto favorito", texto: "No hay límite de velocidad para lo que siento por ti." },
-  { titulo: "Universo de aventuras", texto: "Cada momento a tu lado es una carrera que nunca quiero terminar." },
-  { titulo: "Eres mi meta", texto: "De todos los caminos posibles, siempre elegiré el que me lleve a ti." }
+  { titulo: "Amarte es mi mejor decisión", texto: "Gracias por existir en mi vida. Eres mi pista favorita." },
+  { titulo: "Contigo todo tiene sentido", texto: "Tu amor es mi lugar favorito. Aceleras mi mundo." },
+  { titulo: "Eres mi piloto favorito", texto: "No hay límite de velocidad para lo que siento por ti." },
+  { titulo: "Mi universo entero", texto: "Cada momento a tu lado es una carrera que no quiero que termine." }
 ];
 
 function init() {
@@ -161,7 +149,7 @@ function init() {
   scene.fog = new THREE.FogExp2(0x020205, 0.0003);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(0, 600, 1800); 
+  camera.position.set(0, 500, 1800); 
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -172,7 +160,7 @@ function init() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
   controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.8;
+  controls.autoRotateSpeed = 0.5;
   controls.maxDistance = 3000;
   controls.minDistance = 500;
 
@@ -183,10 +171,13 @@ function init() {
   crearGalaxiaDePalabrasYCarros();
 
   window.addEventListener('resize', onResize);
+  
+  // EVENTOS ARREGLADOS: Detectar si es arrastre o clic
   renderer.domElement.addEventListener('pointerdown', onPointerDown);
+  renderer.domElement.addEventListener('pointerup', onPointerUp);
 }
 
-// Generador de textos 3D flotantes
+// TEXTOS FLOTANTES
 function crearSpriteTexto(texto, colorHex) {
   const canvas = document.createElement('canvas');
   canvas.width = 512; canvas.height = 128;
@@ -198,7 +189,6 @@ function crearSpriteTexto(texto, colorHex) {
   ctx.shadowColor = colorHex;
   ctx.shadowBlur = 15;
   ctx.fillText(texto, 256, 64);
-  
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, blending: THREE.AdditiveBlending });
   const sprite = new THREE.Sprite(spriteMat);
@@ -206,39 +196,85 @@ function crearSpriteTexto(texto, colorHex) {
   return sprite;
 }
 
-// Generador de carritos deportivos en puro código Canvas (Carga instantánea)
+// DISEÑO 1: CARRITO NEÓN (El que ya te había gustado)
 function crearSpriteCarritoNeon(colorHex) {
   const canvas = document.createElement('canvas');
   canvas.width = 256; canvas.height = 128;
   const ctx = canvas.getContext('2d');
   
-  ctx.shadowColor = colorHex; ctx.shadowBlur = 20;
-  ctx.strokeStyle = colorHex; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.shadowColor = colorHex; ctx.shadowBlur = 15;
+  ctx.strokeStyle = colorHex; ctx.lineWidth = 6; ctx.lineCap = 'round';
   
-  // Dibujar silueta de auto deportivo
   ctx.beginPath();
-  ctx.moveTo(30, 90); ctx.lineTo(30, 60); // Trasera
-  ctx.lineTo(80, 50); // Vidrio trasero
-  ctx.lineTo(130, 30); // Techo
-  ctx.lineTo(180, 40); // Parabrisas
-  ctx.lineTo(230, 60); // Capó
-  ctx.lineTo(240, 90); // Trompa
-  ctx.lineTo(30, 90); // Base
-  ctx.stroke();
+  ctx.moveTo(40, 80); ctx.lineTo(80, 80); 
+  ctx.lineTo(110, 40); ctx.lineTo(180, 40); 
+  ctx.lineTo(210, 60); ctx.lineTo(230, 80); 
+  ctx.lineTo(230, 100); ctx.lineTo(40, 100); 
+  ctx.closePath(); ctx.stroke();
   
-  // Ruedas
-  ctx.beginPath(); ctx.arc(70, 90, 20, 0, Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.arc(190, 90, 20, 0, Math.PI*2); ctx.stroke();
-  
-  // Detalle HW
-  ctx.fillStyle = colorHex;
-  ctx.font = 'bold 24px Arial';
-  ctx.fillText('HW', 110, 75);
+  ctx.beginPath(); ctx.arc(80, 100, 15, 0, Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(190, 100, 15, 0, Math.PI*2); ctx.stroke();
 
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, blending: THREE.AdditiveBlending });
   const sprite = new THREE.Sprite(spriteMat);
-  sprite.scale.set(180, 90, 1);
+  sprite.scale.set(150, 75, 1);
+  return sprite;
+}
+
+// DISEÑO 2: CARRITO DETALLADO CON LOGO HOT WHEELS
+function crearSpriteCarritoLogo(colorCarro) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  
+  // Cuerpo sólido del auto estilo deportivo agresivo
+  ctx.fillStyle = colorCarro;
+  ctx.beginPath();
+  ctx.moveTo(20, 95); ctx.lineTo(20, 70); 
+  ctx.lineTo(60, 60); // Alerón trasero
+  ctx.lineTo(100, 35); // Techo trasero
+  ctx.lineTo(160, 35); // Techo
+  ctx.lineTo(210, 60); // Parabrisas
+  ctx.lineTo(240, 80); // Trompa baja
+  ctx.lineTo(240, 95); // Frente inferior
+  ctx.closePath();
+  ctx.fill();
+
+  // Ventanas (vidrios oscuros)
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.beginPath(); 
+  ctx.moveTo(105, 38); ctx.lineTo(155, 38); 
+  ctx.lineTo(195, 60); ctx.lineTo(95, 60); 
+  ctx.fill();
+
+  // LOGO HOT WHEELS (Flama roja y letras amarillas)
+  ctx.fillStyle = '#e60000'; // Rojo clásico
+  ctx.beginPath();
+  ctx.ellipse(130, 77, 35, 12, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffcc00'; // Amarillo clásico
+  ctx.font = 'italic bold 14px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('HOT WHEELS', 130, 78);
+
+  // Ruedas detalladas
+  ctx.fillStyle = '#111';
+  ctx.beginPath(); ctx.arc(65, 95, 18, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(195, 95, 18, 0, Math.PI*2); ctx.fill();
+  
+  // Rines
+  ctx.fillStyle = '#ddd';
+  ctx.beginPath(); ctx.arc(65, 95, 8, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(195, 95, 8, 0, Math.PI*2); ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  // Aquí usamos un material opaco normal para que se vea sólido y no transparente
+  const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(160, 80, 1);
   return sprite;
 }
 
@@ -254,7 +290,7 @@ function crearFondoEstelar() {
 }
 
 function crearAgujeroNegro() {
-  const ringGeo = new THREE.RingGeometry(150, 220, 64);
+  const ringGeo = new THREE.RingGeometry(150, 200, 64);
   const ringMat = new THREE.MeshBasicMaterial({ color: 0x0055ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
   const ring = new THREE.Mesh(ringGeo, ringMat);
   ring.rotation.x = Math.PI / 2;
@@ -266,10 +302,12 @@ function crearAgujeroNegro() {
 }
 
 function crearGalaxiaDePalabrasYCarros() {
-  const colores = ['#00d4ff', '#ff0055', '#ffaa00', '#00ff88', '#bf00ff'];
+  const colores = ['#00d4ff', '#ff0055', '#ffaa00', '#00ff88'];
+  // Colores para los autos sólidos (naranja Lambo, azul, rojo oscuro, blanco)
+  const coloresSolidos = ['#ff6600', '#0055ff', '#cc0000', '#ffffff'];
   
-  for(let i=0; i<200; i++) {
-    const radio = 350 + Math.random() * 1600;
+  for(let i=0; i<150; i++) {
+    const radio = 300 + Math.random() * 1500;
     const angulo = Math.random() * Math.PI * 2;
     const altura = (Math.random() - 0.5) * 600 * (1 - radio/2000); 
     
@@ -279,18 +317,23 @@ function crearGalaxiaDePalabrasYCarros() {
 
     let elemento;
     
-    if (Math.random() > 0.25) {
-      // Crear Palabra
+    if (Math.random() > 0.35) {
+      // 65% de probabilidad de ser una palabra
       const palabraRandom = palabras[Math.floor(Math.random() * palabras.length)];
       const colorRandom = colores[Math.floor(Math.random() * colores.length)];
       elemento = crearSpriteTexto(palabraRandom, colorRandom);
     } else {
-      // Crear Carrito
-      const colorRandom = colores[Math.floor(Math.random() * colores.length)];
-      elemento = crearSpriteCarritoNeon(colorRandom);
+      // 35% de probabilidad de ser un carrito
+      // Mezclar 50/50 entre diseño Neón y diseño Sólido con Logo
+      if (Math.random() > 0.5) {
+         const colorRandom = colores[Math.floor(Math.random() * colores.length)];
+         elemento = crearSpriteCarritoNeon(colorRandom);
+      } else {
+         const colorSolido = coloresSolidos[Math.floor(Math.random() * coloresSolidos.length)];
+         elemento = crearSpriteCarritoLogo(colorSolido);
+      }
       
-      // Hitbox invisible para detectar clics fácilmente
-      const hitBoxGeo = new THREE.SphereGeometry(80, 8, 8);
+      const hitBoxGeo = new THREE.SphereGeometry(60, 8, 8);
       const hitBoxMat = new THREE.MeshBasicMaterial({visible: false});
       const hitbox = new THREE.Mesh(hitBoxGeo, hitBoxMat);
       elemento.add(hitbox);
@@ -311,23 +354,37 @@ function crearGalaxiaDePalabrasYCarros() {
   }
 }
 
-// --- 3. LÓGICA DE CLICS Y TARJETAS ---
+// --- 3. LÓGICA DE CLICS (ARREGLADA PARA NO CONFUNDIR ARRASTRE CON CLIC) ---
+let posInicioClic = { x: 0, y: 0 };
+
 function onPointerDown(event) {
-  let clientX = event.clientX || (event.touches ? event.touches[0].clientX : 0);
-  let clientY = event.clientY || (event.touches ? event.touches[0].clientY : 0);
+  posInicioClic.x = event.clientX || (event.touches ? event.touches[0].clientX : 0);
+  posInicioClic.y = event.clientY || (event.touches ? event.touches[0].clientY : 0);
+}
 
-  mouse.x = (clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+function onPointerUp(event) {
+  let endX = event.clientX || (event.changedTouches ? event.changedTouches[0].clientX : 0);
+  let endY = event.clientY || (event.changedTouches ? event.changedTouches[0].clientY : 0);
+  
+  // Calculamos la distancia que se movió el dedo/mouse
+  let distancia = Math.hypot(endX - posInicioClic.x, endY - posInicioClic.y);
+  
+  // Si se movió menos de 10 píxeles, es un CLIC. Si es mayor, es que estaba girando la cámara.
+  if (distancia < 10) {
+    mouse.x = (endX / window.innerWidth) * 2 - 1;
+    mouse.y = -(endY / window.innerHeight) * 2 + 1;
 
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(carritosInteractivos);
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(carritosInteractivos);
 
-  if (intersects.length > 0) {
-    const carritoTocado = intersects[0].object.parent; 
-    mostrarModal(carritoTocado.userData.mensaje);
-    
-    carritoTocado.scale.set(300, 150, 1);
-    setTimeout(() => { carritoTocado.scale.set(180, 90, 1); }, 400);
+    if (intersects.length > 0) {
+      const carritoTocado = intersects[0].object.parent; 
+      mostrarModal(carritoTocado.userData.mensaje);
+      
+      // Animación de latido al tocar el carrito
+      carritoTocado.scale.set(220, 110, 1);
+      setTimeout(() => { carritoTocado.scale.set(160, 80, 1); }, 400);
+    }
   }
 }
 
