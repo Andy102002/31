@@ -14,14 +14,13 @@
     --hw-blue: #0033cc;
     --hw-red: #e60000;
     --hw-yellow: #ffcc00;
-    --leaf-green: #2e8b57;
-    --flower-blue: #4da6ff;
+    --leaf-green: #15803d;
   }
 
   * { box-sizing: border-box; }
   body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
-  /* --- 1. PANTALLA DE CARGA CENTRADA --- */
+  /* --- 1. PANTALLA DE CARGA --- */
   #pantallaEntrada {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
     display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
@@ -39,7 +38,7 @@
   }
   #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
 
-  /* --- 2. ESCENA DEL RAMO (PERFECTAMENTE ARMADO) --- */
+  /* --- 2. ESCENA DEL RAMO --- */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #0a1535 0%, var(--bg-dark) 100%);
@@ -50,57 +49,54 @@
   .ramo-titulo { 
     font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; 
     text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
-    margin-bottom: 2vh; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
+    margin-bottom: 10px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
   }
   
-  .ramo-wrapper {
-    position: relative; width: 380px; height: 550px; display: flex; justify-content: center; align-items: flex-end;
+  /* CONTENEDOR MAESTRO - Garantiza que nada se descuadre */
+  .ramo-master {
+    position: relative; width: 380px; height: 500px; 
+    display: flex; justify-content: center; align-items: flex-end;
   }
 
-  /* El papel del ramo (Atrás y Frente) */
+  /* Papel del ramo */
   .papel-atras {
-    position: absolute; bottom: 80px; width: 340px; height: 400px;
-    background: linear-gradient(to bottom, #749cff, #1e3a8a);
-    clip-path: polygon(10% 0, 90% 0, 60% 100%, 40% 100%);
-    border-radius: 10px; opacity: 0; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+    position: absolute; bottom: 50px; left: 0; width: 100%; height: 420px;
+    background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
+    clip-path: polygon(15% 0, 85% 0, 60% 100%, 40% 100%);
+    z-index: 1; opacity: 0; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
   }
   .papel-frente {
-    position: absolute; bottom: 80px; width: 360px; height: 280px;
-    background: linear-gradient(135deg, #9bb8ff, #2563eb);
-    clip-path: polygon(0 0, 100% 0, 65% 100%, 35% 100%);
-    opacity: 0; z-index: 30; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
-    box-shadow: 0 -15px 30px rgba(0,0,0,0.5); border-radius: 5px;
+    position: absolute; bottom: 50px; left: 0; width: 100%; height: 260px;
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    clip-path: polygon(0 0, 100% 0, 60% 100%, 40% 100%);
+    z-index: 30; opacity: 0; animation: surgir 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
+    box-shadow: 0 -15px 30px rgba(0,0,0,0.5);
   }
 
-  /* Sistema de Flores Dibujadas con CSS (Literalmente Flores) */
-  .tallos-container { position: absolute; bottom: 150px; width: 100%; height: 300px; z-index: 10; pointer-events: none; }
+  /* Tallos */
+  .tallos-container { position: absolute; bottom: 50px; left: 0; width: 100%; height: 350px; z-index: 2; }
   .tallo { position: absolute; bottom: 0; width: 6px; background: var(--leaf-green); transform-origin: bottom center; border-radius: 5px; opacity: 0; animation: crecer 1s forwards; }
+  .t1 { left: 40%; height: 320px; transform: rotate(-25deg); animation-delay: 1.2s; }
+  .t2 { left: 50%; height: 350px; transform: rotate(-5deg); animation-delay: 1.4s; }
+  .t3 { left: 60%; height: 330px; transform: rotate(20deg); animation-delay: 1.6s; }
+  .t4 { left: 35%; height: 250px; transform: rotate(-40deg); animation-delay: 1.8s; }
+  .t5 { left: 65%; height: 260px; transform: rotate(35deg); animation-delay: 2.0s; }
+
+  /* FLORES INTEGRADAS SVG (Capas de Fondo y Frente para dar profundidad 3D) */
+  .flor { position: absolute; width: 90px; height: 90px; opacity: 0; transform-origin: center; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+  .flor-fondo { z-index: 3; }
+  .flor-frente { z-index: 25; } /* Van encima de los autos */
   
-  /* Hojas */
-  .hoja { position: absolute; width: 30px; height: 30px; background: var(--leaf-green); border-radius: 0 100% 0 100%; opacity: 0; animation: florecer 0.8s forwards; }
-  
-  /* Flor SVG Nativa */
-  .flor-nativa { position: absolute; width: 70px; height: 70px; opacity: 0; transform-origin: center; animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 20; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4)); }
+  .ff1 { bottom: 280px; left: 20px; animation-delay: 1.8s; transform: rotate(-15deg); }
+  .ff2 { bottom: 330px; left: 145px; width: 110px; height: 110px; animation-delay: 2.0s; }
+  .ff3 { bottom: 290px; right: 20px; animation-delay: 2.2s; transform: rotate(20deg); }
+  .ff4 { bottom: 190px; left: -10px; animation-delay: 2.4s; width: 80px; height: 80px; }
+  .ff5 { bottom: 200px; right: -10px; animation-delay: 2.6s; width: 85px; height: 85px; }
+  .ff6 { bottom: 220px; left: 100px; animation-delay: 3.6s; width: 75px; height: 75px; } /* Flor frontal */
+  .ff7 { bottom: 230px; right: 90px; animation-delay: 3.8s; width: 80px; height: 80px; transform: rotate(45deg); } /* Flor frontal */
 
-  /* Posicionamiento y Timing de Flores (Crecen después del papel) */
-  .t1 { left: 40%; height: 280px; transform: rotate(-25deg); animation-delay: 1.2s; }
-  .t2 { left: 50%; height: 320px; transform: rotate(-5deg); animation-delay: 1.4s; }
-  .t3 { left: 60%; height: 290px; transform: rotate(20deg); animation-delay: 1.6s; }
-  .t4 { left: 35%; height: 220px; transform: rotate(-40deg); animation-delay: 1.8s; }
-  .t5 { left: 65%; height: 230px; transform: rotate(35deg); animation-delay: 2.0s; }
-
-  .h1 { bottom: 100px; left: 30%; transform: rotate(-60deg); animation-delay: 1.5s; }
-  .h2 { bottom: 150px; left: 55%; transform: rotate(20deg); animation-delay: 1.7s; }
-  .h3 { bottom: 120px; left: 70%; transform: rotate(60deg); animation-delay: 1.9s; }
-
-  .f1 { bottom: 250px; left: 10%; animation-delay: 2.2s; }
-  .f2 { bottom: 310px; left: 35%; width: 85px; height: 85px; animation-delay: 2.4s; z-index: 25;}
-  .f3 { bottom: 270px; right: 15%; animation-delay: 2.6s; }
-  .f4 { bottom: 180px; left: 0%; width: 60px; height: 60px; animation-delay: 2.8s; }
-  .f5 { bottom: 200px; right: 5%; width: 75px; height: 75px; animation-delay: 3.0s; }
-
-  /* CAJAS HOT WHEELS (Diseño Blister Empaque Realista) */
-  .cajas-container { position: absolute; bottom: 160px; width: 100%; height: 400px; z-index: 15; }
+  /* CAJAS HOT WHEELS */
+  .cajas-container { position: absolute; bottom: 50px; left: 0; width: 100%; height: 400px; z-index: 15; }
   .blister-card {
     position: absolute; width: 85px; height: 130px;
     background: linear-gradient(180deg, var(--hw-blue) 0%, #001144 100%);
@@ -109,45 +105,37 @@
     cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: bottom center;
   }
-  .blister-card:hover { transform: scale(1.3) translateY(-15px) !important; z-index: 50 !important; box-shadow: 0 15px 30px var(--neon-blue); }
-  
+  .blister-card:hover { transform: scale(1.3) translateY(-15px) !important; z-index: 50 !important; box-shadow: 0 15px 30px var(--neon-blue); filter: brightness(1.2); }
   .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.5); border-top: none; margin-bottom: 5px; }
   .blister-logo { background: var(--hw-red); color: var(--hw-yellow); font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 10px; border: 1px solid #fff; margin-bottom: auto; }
-  
-  /* Burbuja plástica del auto */
   .blister-burbuja { width: 90%; height: 70px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 10px rgba(255,255,255,0.2); }
   .blister-auto-img { width: 95%; height: 50px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
-  /* Aparición de Autos (Brotan después de las flores) */
-  .hw1 { bottom: 190px; left: 10px; transform: rotate(-25deg); animation: popUp 0.7s forwards 3.6s; z-index: 14;}
-  .hw2 { bottom: 250px; left: 80px; transform: rotate(-10deg); animation: popUp 0.7s forwards 3.8s; z-index: 16;}
-  .hw3 { bottom: 260px; right: 80px; transform: rotate(10deg); animation: popUp 0.7s forwards 4.0s; z-index: 14;}
-  .hw4 { bottom: 180px; right: 10px; transform: rotate(25deg); animation: popUp 0.7s forwards 4.2s; z-index: 16;}
-  .hw5 { bottom: 140px; left: 140px; transform: rotate(0deg); animation: popUp 0.7s forwards 4.4s; z-index: 18;}
+  .hw1 { bottom: 180px; left: 20px; transform: rotate(-25deg); animation: popUp 0.7s forwards 2.8s; }
+  .hw2 { bottom: 250px; left: 80px; transform: rotate(-10deg); animation: popUp 0.7s forwards 3.0s; }
+  .hw3 { bottom: 260px; right: 80px; transform: rotate(10deg); animation: popUp 0.7s forwards 3.2s; }
+  .hw4 { bottom: 190px; right: 20px; transform: rotate(25deg); animation: popUp 0.7s forwards 3.4s; }
+  .hw5 { bottom: 130px; left: 145px; transform: rotate(0deg); animation: popUp 0.7s forwards 3.6s; z-index: 18;}
 
-  /* Botón Lazo "Ir a la Galaxia" */
-  .lazo-boton-wrapper { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 50; }
+  /* Botón GALAXIA (El Lazo del Ramo) */
   #btnGalaxia {
-    position: relative; width: 160px; height: 55px; background: linear-gradient(to bottom, #ff0055, #cc0044);
-    border: 2px solid #ff4d88; border-radius: 40px; color: #fff; font-weight: 900; font-size: 1.1rem; letter-spacing: 2px;
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    width: 180px; height: 60px; background: linear-gradient(to bottom, #ff0055, #cc0044);
+    border: 2px solid #ff4d88; border-radius: 40px; color: #fff; font-weight: 900; font-size: 1.2rem; letter-spacing: 2px;
     cursor: pointer; opacity: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.3);
-    display: flex; align-items: center; justify-content: center;
-    animation: fadeIn 1.5s forwards 5.0s, latido 2s infinite 5.0s; transition: 0.3s;
+    display: flex; align-items: center; justify-content: center; z-index: 50;
+    animation: fadeIn 1.5s forwards 4.5s, latidoLazo 2s infinite 4.5s; transition: 0.3s;
   }
-  #btnGalaxia:hover { background: #ff3377; transform: scale(1.1); box-shadow: 0 10px 40px #ff0055; }
-  
-  /* Orejas del lazo rojo */
-  #btnGalaxia::before, #btnGalaxia::after {
-    content: ''; position: absolute; top: 5px; width: 55px; height: 45px; background: #cc0044; border-radius: 50%; z-index: -1; box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
-  }
-  #btnGalaxia::before { left: -25px; transform: rotate(-20deg); }
-  #btnGalaxia::after { right: -25px; transform: rotate(20deg); }
+  #btnGalaxia:hover { background: #ff3377; transform: translateX(-50%) scale(1.1); box-shadow: 0 10px 40px #ff0055; }
+  #btnGalaxia::before, #btnGalaxia::after { content: ''; position: absolute; top: 5px; width: 60px; height: 50px; background: #cc0044; border-radius: 50%; z-index: -1; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); }
+  #btnGalaxia::before { left: -30px; transform: rotate(-20deg); }
+  #btnGalaxia::after { right: -30px; transform: rotate(20deg); }
 
   /* --- 3. ESCENA GALAXIA 3D --- */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
-  #ui-galaxia { position: absolute; top: 40px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
-  #ui-galaxia h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
-  #ui-galaxia p { margin-top: 15px; font-size: 1.1rem; color: #fff; background: rgba(0, 0, 20, 0.7); display: inline-block; padding: 10px 25px; border-radius: 30px; border: 1px solid var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+  #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
+  #ui-galaxia h1 { margin: 0; font-size: clamp(2.5rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
+  #ui-galaxia p { margin-top: 10px; font-size: 1.1rem; color: #fff; background: rgba(0, 0, 20, 0.7); display: inline-block; padding: 8px 25px; border-radius: 30px; border: 1px solid var(--neon-blue); text-transform: uppercase; font-weight: bold; }
 
   /* --- TARJETA MODAL --- */
   #modalMensaje {
@@ -158,39 +146,25 @@
     opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
   .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
-  #modalTexto { font-size: 1.3rem; line-height: 1.5; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
+  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
   .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
   .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
-  /* ANIMACIONES CLAVE */
+  /* ANIMACIONES */
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes latidoLazo { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes surgir { 0% { transform: translateX(-50%) translateY(150px) scale(0.8); opacity: 0; } 100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; } }
+  @keyframes surgir { 0% { transform: translateY(150px) scale(0.8); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
   @keyframes crecer { 0% { transform: scaleY(0); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
   @keyframes florecer { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
   @keyframes popUp { 0% { transform: scale(0) translateY(100px); opacity: 0; } 100% { opacity: 1; } }
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
 </style>
 </head>
 <body>
-
-<!-- COMPONENTES SVG REUTILIZABLES (Flores azules literales) -->
-<svg style="display: none;">
-  <defs>
-    <g id="flor-azul">
-      <path d="M35 15 C40 -5, 60 10, 35 35 C10 10, 30 -5, 35 15" fill="#4da6ff" stroke="#0055ff" stroke-width="1"/>
-      <path d="M35 35 C60 10, 75 30, 35 35" fill="#1a8cff" stroke="#0044cc" stroke-width="1" transform="rotate(72 35 35)"/>
-      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0073e6" stroke="#0033aa" stroke-width="1" transform="rotate(144 35 35)"/>
-      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0055ff" stroke="#002288" stroke-width="1" transform="rotate(216 35 35)"/>
-      <path d="M35 35 C60 10, 75 30, 35 35" fill="#0033cc" stroke="#001155" stroke-width="1" transform="rotate(288 35 35)"/>
-      <circle cx="35" cy="35" r="10" fill="#ffcc00" stroke="#e6a800" stroke-width="2"/>
-    </g>
-  </defs>
-</svg>
 
 <audio id="musicaFondo" loop crossorigin="anonymous"><source src="cancion.mp3" type="audio/mpeg"></audio>
 
@@ -201,28 +175,56 @@
   <button id="btnDescubrir">ABRIR REGALO</button>
 </div>
 
-<!-- 2. ESCENA DEL RAMO (CON FLORES DE VERDAD Y CAJAS BLISTER) -->
+<!-- 2. ESCENA DEL RAMO -->
 <div id="escenaRamo">
   <div class="ramo-titulo">❤️ Feliz 30 de Septiembre ❤️</div>
   
-  <div class="ramo-wrapper">
+  <div class="ramo-master">
     <!-- Papel Trasero -->
     <div class="papel-atras"></div>
     
-    <!-- Naturaleza Viva (Crecen solas por CSS) -->
+    <!-- Tallos -->
     <div class="tallos-container">
       <div class="tallo t1"></div><div class="tallo t2"></div><div class="tallo t3"></div>
       <div class="tallo t4"></div><div class="tallo t5"></div>
-      <div class="hoja h1"></div><div class="hoja h2"></div><div class="hoja h3"></div>
-      <!-- Las flores llaman al SVG nativo -->
-      <svg class="flor-nativa f1" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
-      <svg class="flor-nativa f2" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
-      <svg class="flor-nativa f3" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
-      <svg class="flor-nativa f4" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
-      <svg class="flor-nativa f5" viewBox="0 0 70 70"><use href="#flor-azul"/></svg>
     </div>
 
-    <!-- Cajas Blister Hot Wheels -->
+    <!-- FLORES DE FONDO (SVG directo, imposible que fallen) -->
+    <div class="flor flor-fondo ff1">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#00d4ff" stroke="#0055ff" stroke-width="2"/>
+        <path d="M50 20 C55 5 75 20 65 45 C85 35 95 55 70 65 C80 85 60 95 50 75 C40 95 20 85 30 65 C5 55 15 35 35 45 C25 20 45 5 50 20 Z" fill="#0055ff"/>
+        <circle cx="50" cy="50" r="12" fill="#ffcc00" stroke="#e60000" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="flor flor-fondo ff2">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#3388ff" stroke="#0033aa" stroke-width="2"/>
+        <path d="M50 20 C55 5 75 20 65 45 C85 35 95 55 70 65 C80 85 60 95 50 75 C40 95 20 85 30 65 C5 55 15 35 35 45 C25 20 45 5 50 20 Z" fill="#0044cc"/>
+        <circle cx="50" cy="50" r="14" fill="#ffcc00" stroke="#e60000" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="flor flor-fondo ff3">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#66aaff" stroke="#0055ff" stroke-width="2"/>
+        <path d="M50 20 C55 5 75 20 65 45 C85 35 95 55 70 65 C80 85 60 95 50 75 C40 95 20 85 30 65 C5 55 15 35 35 45 C25 20 45 5 50 20 Z" fill="#0055ff"/>
+        <circle cx="50" cy="50" r="12" fill="#ffaa00" stroke="#cc0000" stroke-width="3"/>
+      </svg>
+    </div>
+    <div class="flor flor-fondo ff4">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#00aaff" stroke="#0033cc" stroke-width="2"/>
+        <circle cx="50" cy="50" r="10" fill="#ffcc00" stroke="#e60000" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="flor flor-fondo ff5">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#00d4ff" stroke="#0055ff" stroke-width="2"/>
+        <circle cx="50" cy="50" r="11" fill="#ffcc00" stroke="#e60000" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <!-- CAJAS HOT WHEELS -->
     <div class="cajas-container">
       <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
         <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
@@ -241,20 +243,31 @@
       </div>
     </div>
 
+    <!-- FLORES DE FRENTE (Crean el efecto 3D tapando partes de los autos) -->
+    <div class="flor flor-frente ff6">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#0088ff" stroke="#0033cc" stroke-width="2"/>
+        <circle cx="50" cy="50" r="10" fill="#ffcc00" stroke="#e60000" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="flor flor-frente ff7">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C60 -10 90 10 75 40 C100 25 110 55 80 70 C95 95 65 110 50 85 C35 110 5 95 20 70 C-10 55 0 25 25 40 C10 10 40 -10 50 10 Z" fill="#0055ff" stroke="#0022aa" stroke-width="2"/>
+        <circle cx="50" cy="50" r="11" fill="#ffcc00" stroke="#e60000" stroke-width="2"/>
+      </svg>
+    </div>
+
     <!-- Papel Delantero -->
     <div class="papel-frente"></div>
     
-    <!-- Botón Lazo Rojo -->
-    <div class="lazo-boton-wrapper">
-      <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
-    </div>
+    <!-- Botón Lazo Rojo Galaxia -->
+    <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA 🌌</button>
   </div>
 </div>
 
 <!-- 3. ESCENA GALAXIA 3D -->
 <div id="threeCanvas"></div>
 
-<!-- TÍTULO DE LA GALAXIA -->
 <div id="ui-galaxia">
   <h1>❤️ Feliz 30 de Septiembre ❤️</h1>
   <p>👆 Gira el universo y toca un auto 🏎️</p>
@@ -314,7 +327,7 @@ function iniciarTransicionGalaxia() {
   }, 1500);
 }
 
-// --- BANCO MASIVO DE MENSAJES ÚNICOS (MÁS DE 50 FRASES) ---
+// --- BANCO DE MENSAJES ---
 const bancoDeMensajes = [
   { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
@@ -340,22 +353,7 @@ const bancoDeMensajes = [
   { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
   { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
   { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
-  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." },
-  { t: "MI CHISPA", p: "Eres la bujía que enciende todos mis días." },
-  { t: "KILÓMETROS DE AMOR", p: "No hay distancia que pueda frenar lo que siento por ti." },
-  { t: "A TODO GAS", p: "Contigo vivo la vida con la máxima intensidad y alegría." },
-  { t: "FUERA DE SERIE", p: "Eres una edición limitada, el modelo más exclusivo de mi vida." },
-  { t: "ARRANQUE PERFECTO", p: "Cada mañana a tu lado es el mejor inicio posible." },
-  { t: "MI REFUGIO", p: "Eres mi parada de boxes favorita, donde encuentro paz." },
-  { t: "SIN LÍMITES", p: "Mi amor por ti no tiene límite de velocidad ni fronteras." },
-  { t: "RUMBO FIJO", p: "Mi brújula interior siempre apunta hacia donde tú estás." },
-  { t: "EN MARCHA", p: "Sigamos construyendo juntos este hermoso camino." },
-  { t: "MI TESORO", p: "Eres el trofeo más grande que la vida me ha dado." },
-  { t: "CABALLOS DE FUERZA", p: "Tú le das toda la potencia y sentido a mi existir." },
-  { t: "AMOR DE PLATINO", p: "Lo nuestro es resistente, brillante y para toda la vida." },
-  { t: "ACELERACIÓN ÚNICA", p: "Nadie más logra que mi corazón salte como tú lo haces." },
-  { t: "MI COMPAÑERO", p: "Gracias por recorrer cada ruta de la vida de mi mano." },
-  { t: "SIEMPRE TÚ", p: "En cualquier pista y en cualquier clima, te elijo a ti." }
+  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." }
 ];
 
 function shuffleArray(array) {
