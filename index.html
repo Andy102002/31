@@ -19,9 +19,6 @@
   * { box-sizing: border-box; }
   body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
-  /* =========================================
-     1. PANTALLA DE CARGA
-  ========================================= */
   #pantallaEntrada {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
     display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
@@ -39,25 +36,22 @@
   }
   #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
 
-  /* =========================================
-     2. ESCENA DEL RAMO (GRANDE, DIRECTO Y NEÓN)
-  ========================================= */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%);
-    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px;
     transition: opacity 1.5s ease;
   }
   
   .ramo-titulo { 
-    font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 5rem); color: #fff; 
+    font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 5.5rem); color: #fff; 
     text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
     opacity: 0; animation: fadeIn 1.5s forwards 0.2s; 
     text-align: center; z-index: 200; 
-    display: flex; align-items: center; justify-content: center; gap: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 15px;
+    margin-top: -30px;
   }
   
-  /* RAMO MASTER: Ahora aparece todo armado y es un 35% más grande */
   .ramo-master {
     position: relative; width: 420px; height: 500px; 
     display: flex; justify-content: center; align-items: flex-end;
@@ -67,17 +61,16 @@
 
   @keyframes nacerRamoMaster {
     0% { transform: translateY(250px) scale(0.2); opacity: 0; }
-    100% { transform: translateY(0) scale(1.35); opacity: 1; } /* Escala 1.35 para que sea GIGANTE */
+    100% { transform: translateY(30px) scale(1.6); opacity: 1; }
   }
 
   @media (max-width: 600px) {
     @keyframes nacerRamoMaster {
       0% { transform: translateY(250px) scale(0.2); opacity: 0; }
-      100% { transform: translateY(20px) scale(1.05); opacity: 1; } /* En móvil un poco más medido para no salirse */
+      100% { transform: translateY(40px) scale(1.15); opacity: 1; } 
     }
   }
 
-  /* CAPAS: Ya no tienen delay, aparecen junto con el master */
   .capa-fondo {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
     background-image: url('ramo_atras.png'); 
@@ -91,39 +84,41 @@
     z-index: 20; pointer-events: none; 
   }
 
-  /* =========================================
-     LUCIÉRNAGAS DE NEÓN (EFECTO BRILLITOS)
-  ========================================= */
   .luces-atras, .luces-frente { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
-  .luces-atras { z-index: 5; } /* Detrás de todo */
-  .luces-frente { z-index: 22; } /* Delante del papel */
+  .luces-atras { z-index: 5; } 
+  .luces-frente { z-index: 25; } 
   
   .luciernaga {
-    position: absolute; width: 5px; height: 5px; border-radius: 50%;
-    animation: flotarLuz 3s infinite alternate ease-in-out;
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    animation: flotarLuz 2.5s infinite alternate ease-in-out;
   }
   
-  .l1 { top: 15%; left: 15%; background: #00d4ff; box-shadow: 0 0 15px 3px #00d4ff; animation-delay: 0s; }
-  .l2 { top: 35%; right: 10%; background: #9b00ff; box-shadow: 0 0 15px 3px #9b00ff; animation-delay: 0.5s; }
-  .l3 { top: 10%; left: 50%; background: #ffcc00; box-shadow: 0 0 15px 3px #ffcc00; animation-delay: 1.2s; }
-  .l4 { top: 40%; left: 20%; background: #00d4ff; box-shadow: 0 0 15px 3px #00d4ff; animation-delay: 0.8s; }
-  .l5 { top: 55%; right: 25%; background: #ff007f; box-shadow: 0 0 15px 3px #ff007f; animation-delay: 1.5s; }
-  .l6 { top: 25%; right: 35%; background: #00d4ff; box-shadow: 0 0 15px 3px #00d4ff; animation-delay: 0.3s; }
-  .l7 { top: 60%; left: 40%; background: #ffcc00; box-shadow: 0 0 15px 3px #ffcc00; animation-delay: 2.2s; }
+  .l1 { top: 10%; left: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0s; }
+  .l2 { top: 25%; right: 10%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 0.5s; }
+  .l3 { top: 5%; left: 50%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.2s; }
+  .l4 { top: 35%; left: 10%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.8s; }
+  .l5 { top: 50%; right: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 1.5s; }
+  .l6 { top: 20%; right: 30%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.3s; }
+  .l7 { top: 55%; left: 35%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 2.2s; }
+  .l8 { top: 15%; right: 45%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.7s; }
+  .l9 { top: 40%; left: 45%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 1.8s; }
+  .l10 { top: 65%; right: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.9s; }
+  .l11 { top: 70%; left: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 2.5s; }
+  .l12 { top: 30%; left: 25%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.1s; }
+  .l13 { top: 45%; right: 5%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.4s; }
+  .l14 { top: 10%; right: 20%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 2.0s; }
+  .l15 { top: 75%; left: 50%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 1.3s; }
 
   @keyframes flotarLuz {
-    0% { transform: translate(0, 0) scale(0.8); opacity: 0.4; }
-    100% { transform: translate(15px, -20px) scale(1.3); opacity: 1; }
+    0% { transform: translate(0, 0) scale(0.6); opacity: 0.3; }
+    100% { transform: translate(20px, -25px) scale(1.5); opacity: 1; }
   }
 
-  /* =========================================
-     CARRITOS Y ANIMACIONES 3D
-  ========================================= */
   .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
   
   .blister-card {
     --rot: 0deg; 
-    position: absolute; width: 90px; height: 140px; pointer-events: auto;
+    position: absolute; width: 85px; height: 130px; pointer-events: auto;
     background: linear-gradient(180deg, #0a1f44 0%, #020617 100%);
     border-radius: 8px 8px 5px 5px; 
     border: 2px solid rgba(100, 180, 255, 0.7);
@@ -141,9 +136,9 @@
   }
   
   .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
-  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.55rem; font-weight: 900; font-style: italic; padding: 3px 10px; border-radius: 12px; border: 1px solid #fff; margin-top: 8px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-  .blister-burbuja { width: 85%; height: 75px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.5); }
-  .blister-auto-img { width: 90%; height: auto; max-height: 60px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
+  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.5); }
+  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
   @keyframes saltarAuto { 
     0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 
@@ -151,47 +146,38 @@
     100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
   }
   
-  /* Ahora saltan de atrás hacia adelante en orden */
-  .hw2 { --rot: -20deg; bottom: 250px; left: 60px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
-  .hw3 { --rot: 20deg;  bottom: 250px; right: 60px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
-  .hw1 { --rot: -35deg; bottom: 180px; left: 5px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
-  .hw4 { --rot: 35deg;  bottom: 180px; right: 5px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
-  .hw5 { --rot: 0deg;   bottom: 160px; left: 50%; margin-left: -45px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
+  .hw2 { --rot: -22deg; bottom: 200px; left: 75px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
+  .hw3 { --rot: 22deg;  bottom: 200px; right: 75px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
+  .hw1 { --rot: -40deg; bottom: 130px; left: 15px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
+  .hw4 { --rot: 40deg;  bottom: 130px; right: 15px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
+  .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
 
-  /* =========================================
-     BOTÓN GALAXIA (EFECTO CÓSMICO MEJORADO)
-  ========================================= */
   #btnGalaxia {
-    position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
-    width: 220px; height: 55px; 
-    /* Gradiente animado estilo galaxia */
+    position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+    width: 240px; height: 60px; 
     background: linear-gradient(45deg, #020024, #4a00e0, #8e2de2, #00d4ff, #020024);
     background-size: 300% 300%;
     border: 2px solid #00d4ff; border-radius: 30px; 
-    color: #fff; font-weight: 900; font-size: 1.3rem; letter-spacing: 4px;
+    color: #fff; font-weight: 900; font-size: 1.4rem; letter-spacing: 4px;
     cursor: pointer; opacity: 0; 
-    box-shadow: 0 0 20px #00d4ff, inset 0 0 15px #8e2de2;
+    box-shadow: 0 0 25px #00d4ff, inset 0 0 15px #8e2de2;
     display: flex; align-items: center; justify-content: center; z-index: 50;
     animation: nacerBoton 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s, fondoGalaxia 4s ease infinite, latidoLazo 2s infinite 4.5s; 
     overflow: hidden; text-shadow: 0 0 8px #fff, 0 0 15px #00d4ff;
   }
   
-  /* Estrellitas moviéndose dentro del botón */
   #btnGalaxia::before {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#fff 1px, transparent 1px);
-    background-size: 20px 20px, 15px 15px; background-position: 0 0, 10px 10px;
-    opacity: 0.5; animation: moverEstrellas 5s linear infinite; pointer-events: none;
+    background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#fff 2px, transparent 2px);
+    background-size: 20px 20px, 35px 35px; background-position: 0 0, 15px 15px;
+    opacity: 0.6; animation: moverEstrellas 3s linear infinite; pointer-events: none;
   }
   
-  #btnGalaxia:hover { box-shadow: 0 0 35px #00d4ff, inset 0 0 25px #ff007f; transform: translateX(-50%) scale(1.05); }
+  #btnGalaxia:hover { box-shadow: 0 0 40px #00d4ff, inset 0 0 30px #ff007f; transform: translateX(-50%) scale(1.05); }
 
   @keyframes fondoGalaxia { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-  @keyframes moverEstrellas { from { background-position: 0 0, 10px 10px; } to { background-position: -100px -100px, -90px -90px; } }
+  @keyframes moverEstrellas { from { background-position: 0 0, 15px 15px; } to { background-position: -100px -100px, -85px -85px; } }
 
-  /* =========================================
-     ESCENA GALAXIA 3D Y MODAL
-  ========================================= */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
   #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
@@ -233,14 +219,16 @@
   <div class="ramo-titulo">💙 Feliz 30 de Septiembre 💙</div>
   
   <div class="ramo-master">
-    <!-- Luces traseras -->
+    
     <div class="luces-atras">
       <div class="luciernaga l1"></div>
       <div class="luciernaga l2"></div>
       <div class="luciernaga l3"></div>
+      <div class="luciernaga l8"></div>
+      <div class="luciernaga l9"></div>
+      <div class="luciernaga l10"></div>
     </div>
 
-    <!-- Capa 1: Fondo de flores -->
     <div class="capa-fondo"></div>
     
     <div class="cajas-container">
@@ -251,15 +239,18 @@
         <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
 
-      <!-- Capa 3: Papel frontal y lazo -->
       <div class="capa-frente"></div>
 
-      <!-- Luces delanteras -->
       <div class="luces-frente">
         <div class="luciernaga l4"></div>
         <div class="luciernaga l5"></div>
         <div class="luciernaga l6"></div>
         <div class="luciernaga l7"></div>
+        <div class="luciernaga l11"></div>
+        <div class="luciernaga l12"></div>
+        <div class="luciernaga l13"></div>
+        <div class="luciernaga l14"></div>
+        <div class="luciernaga l15"></div>
       </div>
 
       <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
@@ -281,6 +272,7 @@
 
 <div id="ui-galaxia">
   <h1>💙 Feliz 30 de Septiembre 💙</h1>
+  <p>👆 Gira el universo y toca un auto 🏎️</p>
 </div>
 
 <div id="modalMensaje">
@@ -481,11 +473,11 @@ function crearGalaxia() {
     const altura = (Math.random() - 0.5) * 450; 
     
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturasAutos[Math.floor(Math.random() * texturasAutos.length)], transparent: true }));
-    sprite.scale.set(200, 100, 1); 
+    sprite.scale.set(160, 90, 1); 
     sprite.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
     
     sprite.userData = { 
-      mensaje: mensajesAleatorios[i], 
+      mensaje: mensajesAleatorios[i % mensajesAleatorios.length], 
       anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0012 
     };
 
@@ -512,7 +504,7 @@ function onPointerUp(e) {
     if (intersects.length > 0) {
       const obj = intersects[0].object; 
       abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
-      const escX = 200, escY = 100;
+      const escX = 160, escY = 90;
       obj.scale.set(escX*1.4, escY*1.4, 1); 
       setTimeout(() => obj.scale.set(escX, escY, 1), 300);
     }
