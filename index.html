@@ -40,7 +40,7 @@
   #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
 
   /* =========================================
-     2. ESCENA DEL RAMO (MÉTODO 3 CAPAS)
+     2. ESCENA DEL RAMO (CORRECCIÓN DE ESCALA)
   ========================================= */
   #escenaRamo {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -52,28 +52,30 @@
   .ramo-titulo { 
     font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; 
     text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
-    margin-bottom: 20px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
+    margin-bottom: 10px; opacity: 0; animation: fadeIn 2s forwards 0.5s; text-align: center; 
+    z-index: 200;
   }
   
-  /* Lienzo Maestro: Mantiene la proporción estricta para que nada se descuadre */
+  /* Lienzo Maestro: Más ancho para que tus imágenes cuadren mejor */
   .ramo-master {
-    position: relative; width: 380px; height: 550px; 
+    position: relative; width: 420px; height: 500px; 
     display: flex; justify-content: center; align-items: flex-end;
   }
 
-  /* CAPA 1: FONDO DEL RAMO (PNG Transparente) */
+  /* CAPA 1: FONDO DEL RAMO (Forzado al 100% de ancho) */
   .capa-fondo {
-    position: absolute; bottom: 0; width: 100%; height: 100%;
+    position: absolute; bottom: 40px; width: 100%; height: 100%;
     background-image: url('ramo_atras.png'); 
-    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    background-size: 100% auto; /* Fuerza a ocupar todo el ancho, ignorando si es cuadrada */
+    background-position: bottom center; background-repeat: no-repeat;
     z-index: 1; opacity: 0; animation: nacerCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s;
   }
 
-  /* CAPA 2: CAJAS HOT WHEELS */
-  .cajas-container { position: absolute; bottom: 80px; width: 100%; height: 420px; z-index: 2; }
+  /* CAPA 2: CAJAS HOT WHEELS (Coordenadas bajadas drásticamente) */
+  .cajas-container { position: absolute; bottom: 40px; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
   
   .blister-card {
-    position: absolute; width: 85px; height: 130px;
+    position: absolute; width: 85px; height: 130px; pointer-events: auto;
     background: linear-gradient(180deg, var(--hw-blue) 0%, #000a22 100%);
     border-radius: 8px 8px 5px 5px; border: 2px solid rgba(255,255,255,0.7);
     box-shadow: 0 10px 25px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center;
@@ -86,26 +88,27 @@
   .blister-burbuja { width: 90%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); border-radius: 10px; margin-bottom: 5px; border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.1); }
   .blister-auto-img { width: 95%; height: 50px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
-  /* Animación y posiciones de los autos brotando del ramo */
+  /* Ajuste de posiciones: Ahora nacen profundo en el ramo */
   @keyframes saltarAuto { 0% { transform: translateY(150px) scale(0); opacity: 0; } 70% { transform: translateY(-10px) scale(1.1); opacity: 1; } 100% { opacity: 1; } }
-  .hw1 { bottom: 150px; left: 10px; transform: rotate(-25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.0s; }
-  .hw2 { bottom: 220px; left: 70px; transform: rotate(-10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.2s; }
-  .hw3 { bottom: 230px; right: 70px; transform: rotate(10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.4s; }
-  .hw4 { bottom: 160px; right: 10px; transform: rotate(25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.6s; }
-  .hw5 { bottom: 100px; left: 145px; transform: rotate(0deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.8s; z-index: 25;}
+  .hw1 { bottom: 120px; left: 15px; transform: rotate(-25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.0s; }
+  .hw2 { bottom: 180px; left: 80px; transform: rotate(-10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.2s; }
+  .hw3 { bottom: 190px; right: 80px; transform: rotate(10deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.4s; }
+  .hw4 { bottom: 130px; right: 15px; transform: rotate(25deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.6s; }
+  .hw5 { bottom: 90px; left: 165px; transform: rotate(0deg); animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.8s; z-index: 25;}
 
-  /* CAPA 3: FRENTE DEL RAMO (PNG Transparente) */
+  /* CAPA 3: PNG FRENTE (Forzado al 100% de ancho) */
   .capa-frente {
-    position: absolute; bottom: 0; width: 100%; height: 100%;
+    position: absolute; bottom: 40px; width: 100%; height: 100%;
     background-image: url('ramo_frente.png'); 
-    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    background-size: 100% auto; 
+    background-position: bottom center; background-repeat: no-repeat;
     z-index: 3; opacity: 0; animation: nacerCono 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
-    pointer-events: none; /* Permite hacer clic a los autos que están detrás del papel */
+    pointer-events: none; 
   }
 
-  /* BOTÓN GALAXIA */
+  /* BOTÓN GALAXIA (Bajado a -10px para que no tape las flores) */
   #btnGalaxia {
-    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
     width: 180px; height: 60px; background: linear-gradient(to bottom, #ff0055, #cc0044);
     border: 2px solid #ff4d88; border-radius: 40px; color: #fff; font-weight: 900; font-size: 1.2rem; letter-spacing: 2px;
     cursor: pointer; opacity: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.3);
