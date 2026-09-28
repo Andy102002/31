@@ -156,33 +156,30 @@ async function verificarPermisosUsuario(user) {
   }
 }
 
+ocultarPanelCreador();
+
+    const textoEspera = document.getElementById('textoEspera');
+    const modalEspera = document.getElementById('modalEspera');
+    if(textoEspera) textoEspera.innerText = `Hola ${user.displayName} (${correo}), tu solicitud ha sido enviada al administrador. En cuanto acepte tu acceso, podrás crear tus propios ramos.`;
+    if(modalEspera) modalEspera.style.display = 'flex';
+  }
+}
+
+// ==========================================
+// AQUÍ EMPIEZA EL CAMBIO EXACTO:
+// ==========================================
 function activarPanelCreador() {
   const urlParams = new URLSearchParams(window.location.search);
   // Solo mostramos el botón si NO estamos viendo un enlace de regalo compartido (?id=...)
   if (!urlParams.get('id')) {
     let btnCreador = document.getElementById('btnAbrirCreador');
-    if (!btnCreador) {
-      // Si el botón no existe, lo creamos flotante
-      btnCreador = document.createElement('button');
-      btnCreador.id = 'btnAbrirCreador';
-      btnCreador.innerText = "✨ Crear tu propio ramo";
-      btnCreador.style.cssText = "position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3);";
-      
-      // Aseguramos que al hacer clic se abra el panel de creación
+    if (btnCreador) {
+      btnCreador.style.display = 'block';
       btnCreador.onclick = () => {
         const panel = document.getElementById('panelCreacion');
         if (panel) panel.style.display = 'flex';
       };
-      
-      document.body.appendChild(btnCreador);
     }
-    btnCreador.style.display = 'block';
-
-    // Por si el botón ya existía estático en el HTML, le forzamos la apertura también
-    btnCreador.onclick = () => {
-      const panel = document.getElementById('panelCreacion');
-      if (panel) panel.style.display = 'flex';
-    };
   }
 }
 
