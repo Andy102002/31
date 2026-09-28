@@ -227,5 +227,6 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// Arrancar validando
-iniciarApp();
+document.addEventListener('DOMContentLoaded', () => {
+  iniciarApp();
+});
