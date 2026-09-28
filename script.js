@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -12,98 +12,11 @@ const firebaseConfig = {
   measurementId: "G-3DWY1YM28Z"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-// 🛑 PON TU CORREO PERSONAL AQUÍ (Tú eres el administrador supremo)
-const TU_CORREO_ADMIN = "andyodar2122@gmail.com"; 
-
-// ... (mantén tus funciones de Cloudinary, Three.js, etc., aquí abajo)
-
-// ==========================================
-// SISTEMA DE SEGURIDAD Y ACCESOS
-// ==========================================
-document.getElementById('btnLoginGoogle').onclick = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    verificarPermisosUsuario(user);
-  } catch (error) {
-    console.error("Error en el login:", error);
-  }
-};
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    verificarPermisosUsuario(user);
-  } else {
-    // Si no está logueado, ocultamos el botón de crear
-    const btnCreador = document.getElementById('btnAbrirCreador');
-    if(btnCreador) btnCreador.style.display = 'none';
-    document.getElementById('btnLoginGoogle').innerText = "🔑 Acceso Creador";
-  }
-});
-
-async function verificarPermisosUsuario(user) {
-  const correo = user.email;
-  document.getElementById('btnLoginGoogle').innerText = `👤 ${user.displayName.split(' ')[0]}`;
-
-  // 1. Si eres tú el administrador, acceso total inmediato
-  if (correo === TU_CORREO_ADMIN) {
-    activarPanelCreador();
-    return;
-  }
-
-  // 2. Revisar en Firestore si su correo está en la lista de permitidos
-  const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists() && docSnap.data().aprobado === true) {
-    // ¡Aprobado! Mostrar botón de crear
-    activarPanelCreador();
-  } else {
-    // No está aprobado o es primera vez que pide acceso
-    await setDoc(docRef, {
-      email: correo,
-      nombre: user.displayName,
-      aprobado: false,
-      fechaSolicitud: new Date().toISOString()
-    }, { merge: true });
-
-    // Mostrar ventana de espera
-    document.getElementById('textoEspera').innerText = `Hola ${user.displayName}, tu cuenta está registrada pero el administrador (Andy) aún no aprueba tu acceso para crear ramos. ¡Pídele que te autorice!`;
-    document.getElementById('modalEspera').style.display = 'flex';
-  }
-}
-
-function activarPanelCreador() {
-  // Asegurarnos de que el botón de abrir creador aparezca solo si no estamos viendo un enlace compartido `?id=`
-  const urlParams = new URLSearchParams(window.location.search);
-  if (!urlParams.get('id')) {
-    let btnCreador = document.getElementById('btnAbrirCreador');
-    if (!btnCreador) {
-      // Si el botón no existe en el HTML, lo creamos flotante
-      btnCreador = document.createElement('button');
-      btnCreador.id = 'btnAbrirCreador';
-      btnCreador.innerText = "✨ Crear tu propio ramo";
-      btnCreador.style.cssText = "position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3);";
-      btnCreador.onclick = () => document.getElementById('panelCreacion').style.display = 'flex';
-      document.body.appendChild(btnCreador);
-    }
-    btnCreador.style.display = 'block';
-  }
-}
-
-window.cerrarEspera = () => {
-  document.getElementById('modalEspera').style.display = 'none';
-  signOut(auth);
-};
-
 const CLOUD_NAME = "d3xvtf0l"; 
 const UPLOAD_PRESET = "ramo_preset"; 
+const TU_CORREO_ADMIN = "andyodar2122@gmail.com"; 
 
+// Seguridad de protección de código
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.onkeydown = function(e) {
   if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
@@ -113,6 +26,8 @@ document.onkeydown = function(e) {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 let configuracionRegalo = {
   titulo: "💙 Feliz 30 de Septiembre 💙",
@@ -123,7 +38,7 @@ let configuracionRegalo = {
 };
 
 // ==========================================
-// CARGAR DATOS DESDE FIREBASE SI HAY ?id=
+// 1. CARGAR DATOS DESDE FIREBASE SI HAY ?id=
 // ==========================================
 async function iniciarApp() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -141,6 +56,9 @@ async function iniciarApp() {
         if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
         if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
         
+        // Ocultar botones de acceso si es un enlace compartido
+        const contenedorAuth = document.getElementById('contenedorAuth');
+        if(contenedorAuth) contenedorAuth.style.display = 'none';
         const btnCreador = document.getElementById('btnAbrirCreador');
         if(btnCreador) btnCreador.style.display = 'none';
       }
@@ -153,10 +71,11 @@ async function iniciarApp() {
 }
 
 // ==========================================
-// DIBUJAR CARTAS DEL RAMO
+// 2. DIBUJAR CARTAS DEL RAMO
 // ==========================================
 function dibujarCartas() {
   const cont = document.getElementById('contenedorCartas');
+  if(!cont) return;
   cont.innerHTML = `
     <div class="blister-card hw2" style="--rot: -16deg; bottom: 205px; left: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s;" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img"></div>
@@ -179,72 +98,147 @@ function dibujarCartas() {
 }
 
 // ==========================================
-// CREADOR DE ENLACES (CLOUDINARY + FIREBASE)
+// 3. SISTEMA DE AUTENTICACIÓN Y ACCESOS
 // ==========================================
-document.getElementById('btnAbrirCreador').onclick = () => document.getElementById('panelCreacion').style.display = 'flex';
-document.getElementById('btnCerrarCreador').onclick = () => document.getElementById('panelCreacion').style.display = 'none';
-
-document.getElementById('btnGenerarEnlace').onclick = async function() {
-  this.innerText = "Subiendo y creando... ⏳";
-  this.disabled = true;
-
-  let titulo = document.getElementById('inputTitulo').value;
-  let msgCentral = document.getElementById('inputMsgCentral').value;
-  let inputFoto = document.getElementById('inputFoto');
-  
-  let msgGalaxia = document.getElementById('inputMsgGalaxia').value;
-  let inputFotoGalaxia = document.getElementById('inputFotoGalaxia');
-  
-  let fotoUrl = null;
-  let fotoGalaxiaUrl = null;
-
-  // Subir foto del ramo
-  if (inputFoto.files.length > 0) {
-    const formData = new FormData();
-    formData.append("file", inputFoto.files[0]);
-    formData.append("upload_preset", UPLOAD_PRESET);
+const btnLogin = document.getElementById('btnLoginGoogle');
+if (btnLogin) {
+  btnLogin.onclick = async () => {
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
-      const data = await res.json();
-      fotoUrl = data.secure_url;
-    } catch (e) { alert("Error subiendo foto del ramo."); }
+      const result = await signInWithPopup(auth, provider);
+      verificarPermisosUsuario(result.user);
+    } catch (error) {
+      console.error("Error en el login:", error);
+    }
+  };
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    verificarPermisosUsuario(user);
+  } else {
+    const btnCreador = document.getElementById('btnAbrirCreador');
+    if(btnCreador) btnCreador.style.display = 'none';
+    if(btnLogin) btnLogin.innerText = "🔑 Acceso Creador";
+  }
+});
+
+async function verificarPermisosUsuario(user) {
+  const correo = user.email;
+  if(btnLogin) btnLogin.innerText = `👤 ${user.displayName.split(' ')[0]}`;
+
+  if (correo === TU_CORREO_ADMIN) {
+    activarPanelCreador();
+    return;
   }
 
-  // Subir foto de la galaxia
-  if (inputFotoGalaxia.files.length > 0) {
-    const formData2 = new FormData();
-    formData2.append("file", inputFotoGalaxia.files[0]);
-    formData2.append("upload_preset", UPLOAD_PRESET);
-    try {
-      const res2 = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData2 });
-      const data2 = await res2.json();
-      fotoGalaxiaUrl = data2.secure_url;
-    } catch (e2) { alert("Error subiendo foto de la galaxia."); }
-  }
+  const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
+  const docSnap = await getDoc(docRef);
 
-  let nuevoId = 'regalo_' + Math.random().toString(36).substring(2, 9);
-  
-  try {
-    await setDoc(doc(db, "regalos", nuevoId), {
-      titulo: titulo,
-      mensajeCentral: msgCentral,
-      fotoUrl: fotoUrl,
-      mensajeGalaxia: msgGalaxia,
-      fotoGalaxia: fotoGalaxiaUrl
-    });
+  if (docSnap.exists() && docSnap.data().aprobado === true) {
+    activarPanelCreador();
+  } else {
+    await setDoc(docRef, {
+      email: correo,
+      nombre: user.displayName,
+      aprobado: false,
+      fechaSolicitud: new Date().toISOString()
+    }, { merge: true });
 
-    let enlaceFinal = window.location.origin + window.location.pathname + "?id=" + nuevoId;
-    document.getElementById('resultadoEnlace').innerHTML = `¡Enlace creado con éxito!<br><br><a href="${enlaceFinal}" target="_blank" style="color:#fff; background:#000; padding:10px; border-radius:5px; display:inline-block;">${enlaceFinal}</a>`;
-  } catch (err) {
-    alert("Error al guardar en Firebase.");
+    const textoEspera = document.getElementById('textoEspera');
+    const modalEspera = document.getElementById('modalEspera');
+    if(textoEspera) textoEspera.innerText = `Hola ${user.displayName}, tu cuenta está registrada pero el administrador aún no aprueba tu acceso para crear ramos.`;
+    if(modalEspera) modalEspera.style.display = 'flex';
   }
-  
-  this.innerText = "Generar Enlace Mágico";
-  this.disabled = false;
+}
+
+function activarPanelCreador() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.get('id')) {
+    let btnCreador = document.getElementById('btnAbrirCreador');
+    if (btnCreador) btnCreador.style.display = 'block';
+  }
+}
+
+window.cerrarEspera = () => {
+  const modalEspera = document.getElementById('modalEspera');
+  if(modalEspera) modalEspera.style.display = 'none';
+  signOut(auth);
 };
 
+// Abrir y cerrar panel de creación
+const btnAbrir = document.getElementById('btnAbrirCreador');
+const btnCerrar = document.getElementById('btnCerrarCreador');
+const panelCreacion = document.getElementById('panelCreacion');
+
+if(btnAbrir && panelCreacion) btnAbrir.onclick = () => panelCreacion.style.display = 'flex';
+if(btnCerrar && panelCreacion) btnCerrar.onclick = () => panelCreacion.style.display = 'none';
+
 // ==========================================
-// CONTROL DE UI Y CARGA INICIAL
+// 4. CREADOR DE ENLACES (CLOUDINARY + FIREBASE)
+// ==========================================
+const btnGenerar = document.getElementById('btnGenerarEnlace');
+if(btnGenerar) {
+  btnGenerar.onclick = async function() {
+    this.innerText = "Subiendo y creando... ⏳";
+    this.disabled = true;
+
+    let titulo = document.getElementById('inputTitulo').value;
+    let msgCentral = document.getElementById('inputMsgCentral').value;
+    let inputFoto = document.getElementById('inputFoto');
+    
+    let msgGalaxia = document.getElementById('inputMsgGalaxia').value;
+    let inputFotoGalaxia = document.getElementById('inputFotoGalaxia');
+    
+    let fotoUrl = null;
+    let fotoGalaxiaUrl = null;
+
+    if (inputFoto && inputFoto.files.length > 0) {
+      const formData = new FormData();
+      formData.append("file", inputFoto.files[0]);
+      formData.append("upload_preset", UPLOAD_PRESET);
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
+        const data = await res.json();
+        fotoUrl = data.secure_url;
+      } catch (e) { alert("Error subiendo foto del ramo."); }
+    }
+
+    if (inputFotoGalaxia && inputFotoGalaxia.files.length > 0) {
+      const formData2 = new FormData();
+      formData2.append("file", inputFotoGalaxia.files[0]);
+      formData2.append("upload_preset", UPLOAD_PRESET);
+      try {
+        const res2 = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData2 });
+        const data2 = await res2.json();
+        fotoGalaxiaUrl = data2.secure_url;
+      } catch (e2) { alert("Error subiendo foto de la galaxia."); }
+    }
+
+    let nuevoId = 'regalo_' + Math.random().toString(36).substring(2, 9);
+    
+    try {
+      await setDoc(doc(db, "regalos", nuevoId), {
+        titulo: titulo,
+        mensajeCentral: msgCentral,
+        fotoUrl: fotoUrl,
+        mensajeGalaxia: msgGalaxia,
+        fotoGalaxia: fotoGalaxiaUrl
+      });
+
+      let enlaceFinal = window.location.origin + window.location.pathname + "?id=" + nuevoId;
+      const resEnlace = document.getElementById('resultadoEnlace');
+      if(resEnlace) resEnlace.innerHTML = `¡Enlace creado con éxito!<br><br><a href="${enlaceFinal}" target="_blank" style="color:#fff; background:#000; padding:10px; border-radius:5px; display:inline-block;">${enlaceFinal}</a>`;
+    } catch (err) {
+      alert("Error al guardar en Firebase.");
+    }
+    
+    this.innerText = "Generar Enlace Mágico";
+    this.disabled = false;
+  };
+}
+
+// ==========================================
+// 5. CONTROL DE UI Y BARRA DE CARGA
 // ==========================================
 let porcentaje = 0;
 const intervaloCarga = setInterval(() => {
@@ -252,43 +246,73 @@ const intervaloCarga = setInterval(() => {
   if(porcentaje >= 100) {
     porcentaje = 100;
     clearInterval(intervaloCarga);
-    document.getElementById('textoCarga').innerText = "¡SISTEMA LISTO!";
-    document.getElementById('barraProgreso').parentElement.style.display = 'none';
-    document.getElementById('btnDescubrir').style.display = 'block';
+    const textoCarga = document.getElementById('textoCarga');
+    const barraProg = document.getElementById('barraProgreso');
+    const btnDescubrir = document.getElementById('btnDescubrir');
+    if(textoCarga) textoCarga.innerText = "¡SISTEMA LISTO!";
+    if(barraProg && barraProg.parentElement) barraProg.parentElement.style.display = 'none';
+    if(btnDescubrir) btnDescubrir.style.display = 'block';
   }
-  document.getElementById('textoCarga').innerText = `ENSAMBLANDO SORPRESA... ${porcentaje}%`;
-  document.getElementById('barraProgreso').style.width = `${porcentaje}%`;
+  const textoCarga = document.getElementById('textoCarga');
+  const barraProg = document.getElementById('barraProgreso');
+  if(textoCarga) textoCarga.innerText = `ENSAMBLANDO SORPRESA... ${porcentaje}%`;
+  if(barraProg) barraProg.style.width = `${porcentaje}%`;
 }, 100);
 
-document.getElementById('btnDescubrir').onclick = () => {
-  document.getElementById('musicaFondo').play().catch(e=>console.log(e));
-  document.getElementById('pantallaEntrada').style.opacity = '0';
-  setTimeout(() => document.getElementById('pantallaEntrada').style.display = 'none', 1000);
-};
+const btnDescubrir = document.getElementById('btnDescubrir');
+if(btnDescubrir) {
+  btnDescubrir.onclick = () => {
+    const musica = document.getElementById('musicaFondo');
+    if(musica) musica.play().catch(e=>console.log(e));
+    const pantalla = document.getElementById('pantallaEntrada');
+    if(pantalla) {
+      pantalla.style.opacity = '0';
+      setTimeout(() => pantalla.style.display = 'none', 1000);
+    }
+  };
+}
 
 window.abrirModal = (titulo, texto) => {
-  document.getElementById('modalTitulo').innerText = titulo;
-  document.getElementById('modalTexto').innerText = texto;
-  document.getElementById('modalMensaje').classList.add('mostrar');
+  const mTit = document.getElementById('modalTitulo');
+  const mTxt = document.getElementById('modalTexto');
+  const mBox = document.getElementById('modalMensaje');
+  if(mTit) mTit.innerText = titulo;
+  if(mTxt) mTxt.innerText = texto;
+  if(mBox) mBox.classList.add('mostrar');
 };
-document.getElementById('btnCerrarModal').onclick = () => document.getElementById('modalMensaje').classList.remove('mostrar');
 
-document.getElementById('btnGalaxia').onclick = () => {
-  const escenaRamo = document.getElementById('escenaRamo');
-  escenaRamo.style.opacity = '0';
-  setTimeout(() => {
-    escenaRamo.style.display = 'none';
-    document.getElementById('threeCanvas').style.display = 'block';
-    document.getElementById('ui-galaxia').style.display = 'block';
-    initThreeJS();
-  }, 1500);
-};
+const btnCerrarModal = document.getElementById('btnCerrarModal');
+if(btnCerrarModal) {
+  btnCerrarModal.onclick = () => {
+    const mBox = document.getElementById('modalMensaje');
+    if(mBox) mBox.classList.remove('mostrar');
+  };
+}
+
+const btnGalaxia = document.getElementById('btnGalaxia');
+if(btnGalaxia) {
+  btnGalaxia.onclick = () => {
+    const escenaRamo = document.getElementById('escenaRamo');
+    if(escenaRamo) {
+      escenaRamo.style.opacity = '0';
+      setTimeout(() => {
+        escenaRamo.style.display = 'none';
+        const tCanvas = document.getElementById('threeCanvas');
+        const uiGal = document.getElementById('ui-galaxia');
+        if(tCanvas) tCanvas.style.display = 'block';
+        if(uiGal) uiGal.style.display = 'block';
+        initThreeJS();
+      }, 1500);
+    }
+  };
+}
 
 // ==========================================
-// POLVO ESTELAR AL MOVER EL MOUSE/DEDO
+// 6. POLVO ESTELAR Y EFECTOS VISUALES
 // ==========================================
 document.addEventListener('pointermove', (e) => {
-  if(document.getElementById('threeCanvas').style.display !== 'block') return;
+  const tCanvas = document.getElementById('threeCanvas');
+  if(!tCanvas || tCanvas.style.display !== 'block') return;
   if(e.buttons === 0 && !e.touches) return; 
   let clientX = e.clientX; let clientY = e.clientY;
   if(e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
@@ -334,7 +358,7 @@ function shuffleArray(array) {
 }
 
 // ==========================================
-// GALAXIA THREE.JS (Sin auto especial y sin líneas negras)
+// 7. GALAXIA THREE.JS
 // ==========================================
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
@@ -422,7 +446,6 @@ function resetShootingStar(star) {
 function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   
-  // Materiales dinámicos con wireframe y texturas translúcidas como antes
   const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ 
     color: color, 
     side: THREE.DoubleSide, 
@@ -431,27 +454,15 @@ function crearAgujeroNegroAnimado() {
     wireframe: true 
   });
 
-  const ring1 = new THREE.Mesh(
-    new THREE.RingGeometry(180, 260, 64, 4), 
-    new THREE.MeshBasicMaterial({ color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9 })
-  );
-  
-  const ring2 = new THREE.Mesh(
-    new THREE.RingGeometry(260, 360, 64, 2), 
-    matAnillo(0x00aaff, 0.4)
-  );
-  
-  const ring3 = new THREE.Mesh(
-    new THREE.RingGeometry(360, 550, 64, 1), 
-    matAnillo(0x0055ff, 0.15)
-  );
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 260, 64, 4), new THREE.MeshBasicMaterial({ color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9 }));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(260, 360, 64, 2), matAnillo(0x00aaff, 0.4));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(360, 550, 64, 1), matAnillo(0x0055ff, 0.15));
   
   anillosGalaxia.push(ring1, ring2, ring3);
   diskGroup.add(ring1, ring2, ring3);
   diskGroup.rotation.x = Math.PI / 2;
   universoGroup.add(diskGroup);
   
-  // Esfera central negra del agujero
   universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
 }
 
@@ -481,7 +492,6 @@ function crearGalaxiaConEstelas() {
     universoGroup.add(spriteTexto);
   }
 
-  // Autos normales flotando (sin auto dorado especial)
   for(let i=0; i<40; i++) {
     const radio = 600 + Math.random() * 2000;
     const angulo = Math.random() * Math.PI * 2;
@@ -569,9 +579,6 @@ function onPointerUp(e) {
   }
 }
 
-// ==========================================
-// PANTALLA SECRETA DEL AGUJERO NEGRO (Con foto y texto personalizados)
-// ==========================================
 function mostrarSecretoAgujeroNegro() {
   let sec = document.createElement('div');
   sec.id = 'pantalla-secreta';
@@ -639,6 +646,7 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+// Arrancar validando al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   iniciarApp();
 });
