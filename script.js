@@ -61,7 +61,7 @@ async function iniciarApp() {
 }
 
 // ==========================================
-// DIBUJAR CARTAS DEL RAMO
+// DIBUJAR CARTAS DEL RAMO (Con foto y texto dinámicos)
 // ==========================================
 function dibujarCartas() {
   const cont = document.getElementById('contenedorCartas');
@@ -231,7 +231,7 @@ function shuffleArray(array) {
 }
 
 // ==========================================
-// GALAXIA THREE.JS COMPLETA
+// GALAXIA THREE.JS COMPLETA CON AUTO DORADO BRILLANTE
 // ==========================================
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
@@ -243,6 +243,8 @@ const mouse = new THREE.Vector2();
 window.secretoRevelado = false;
 
 function initThreeJS() {
+  if (scene) return;
+
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x020510);
   scene.fog = new THREE.FogExp2(0x020510, 0.00025);
@@ -253,7 +255,10 @@ function initThreeJS() {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  document.getElementById('threeCanvas').appendChild(renderer.domElement);
+  
+  const canvasContainer = document.getElementById('threeCanvas');
+  canvasContainer.innerHTML = "";
+  canvasContainer.appendChild(renderer.domElement);
 
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -267,7 +272,7 @@ function initThreeJS() {
 
   crearFondoEstelar();
   crearAgujeroNegroAnimado();
-  crearGalaxia();
+  crearGalaxiaConEstelas();
   crearEstrellasFugaces();
 
   window.addEventListener('resize', () => {
@@ -282,32 +287,18 @@ function initThreeJS() {
   animate();
 }
 
-function crearSpriteTextoFlotante(texto) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024; canvas.height = 128;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff'; ctx.font = '50px "Caveat", cursive, sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.shadowColor = '#0055ff'; ctx.shadowBlur = 15;
-  ctx.fillText(texto, 512, 64);
-  const texture = new THREE.CanvasTexture(canvas);
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7 }));
-  sprite.scale.set(350, 45, 1);
-  return sprite;
-}
-
 function crearFondoEstelar() {
   const starGeo = new THREE.BufferGeometry(); const starPos = [];
-  for(let i=0; i<5000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
+  for(let i=0; i<6000; i++) starPos.push((Math.random()-0.5)*8000, (Math.random()-0.5)*8000, (Math.random()-0.5)*8000);
   starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2.5, transparent: true, opacity: 0.8})));
 }
 
 function crearEstrellasFugaces() {
-  for(let i=0; i<8; i++) {
-    let geo = new THREE.CylinderGeometry(1, 4, 300, 4);
+  for(let i=0; i<10; i++) {
+    let geo = new THREE.CylinderGeometry(0.5, 3, 400, 4);
     geo.rotateZ(Math.PI/2);
-    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending});
+    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending});
     let star = new THREE.Mesh(geo, mat);
     resetShootingStar(star);
     scene.add(star);
@@ -316,11 +307,11 @@ function crearEstrellasFugaces() {
 }
 
 function resetShootingStar(star) {
-  star.position.set((Math.random()-0.5)*6000, Math.random()*2000 + 500, (Math.random()-0.5)*6000);
+  star.position.set((Math.random()-0.5)*7000, Math.random()*2500 + 800, (Math.random()-0.5)*7000);
   star.userData = {
-    vx: (Math.random()-0.5)*40 + 30,
-    vy: -Math.random()*20 - 10,
-    vz: (Math.random()-0.5)*40
+    vx: (Math.random()-0.5)*50 + 40,
+    vy: -Math.random()*30 - 15,
+    vz: (Math.random()-0.5)*50
   };
   star.lookAt(star.position.x + star.userData.vx, star.position.y + star.userData.vy, star.position.z + star.userData.vz);
 }
@@ -329,9 +320,9 @@ function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
 
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 260, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(260, 360, 64, 2), matAnillo(0x00aaff, 0.4));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(360, 550, 64, 1), matAnillo(0x0055ff, 0.15));
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 280, 64, 6), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(280, 400, 64, 4), matAnillo(0x00aaff, 0.6));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(400, 650, 64, 2), matAnillo(0x0055ff, 0.3));
   
   anillosGalaxia.push(ring1, ring2, ring3);
   diskGroup.add(ring1, ring2, ring3);
@@ -340,69 +331,109 @@ function crearAgujeroNegroAnimado() {
   universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
 }
 
-function crearGalaxia() {
+function crearGalaxiaConEstelas() {
   const loader = new THREE.TextureLoader();
-  const texturasAutos = [
-    loader.load('auto1.png'), loader.load('auto2.png'), loader.load('auto3.png'),
-    loader.load('auto4.png'), loader.load('auto5.png'), loader.load('auto6.png')
-  ];
-
-  const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero"];
+  const texturasAutos = ['auto1.png', 'auto2.png', 'auto3.png', 'auto4.png', 'auto5.png', 'auto6.png'].map(n => loader.load(n));
   const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
 
-  for(let i=0; i<70; i++) {
-    const radio = 450 + Math.random() * 2200;
+  // Textos flotantes
+  for(let i=0; i<60; i++) {
+    const radio = 500 + Math.random() * 2300;
     const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2800); 
-    const spriteTexto = crearSpriteTextoFlotante(frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)]);
+    const altura = (Math.random() - 0.5) * 900 * (1 - radio/3000); 
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024; canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.font = '50px "Caveat", cursive, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.shadowColor = '#00d4ff'; ctx.shadowBlur = 20;
+    ctx.fillText("Acelerando hacia ti 🏎️", 512, 64);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    const spriteTexto = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.8 }));
+    spriteTexto.scale.set(380, 50, 1);
     spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    spriteTexto.userData = { isText: true, anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
+    spriteTexto.userData = { isText: true, anguloBase: angulo, radio: radio, velocidad: 0.0003 + Math.random() * 0.0006 };
     universoGroup.add(spriteTexto);
   }
 
-  for(let i=0; i<35; i++) {
-    const radio = 500 + Math.random() * 1900;
+  // Autos con estelas y auto especial dorado brillante
+  for(let i=0; i<40; i++) {
+    const radio = 600 + Math.random() * 2000;
     const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 450; 
+    const altura = (Math.random() - 0.5) * 500; 
     
     const textIdx = Math.floor(Math.random() * texturasAutos.length);
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturasAutos[textIdx], transparent: true }));
     
-    let baseWidth = 160;
-    let baseHeight = 100;
-    if(textIdx === 4 || textIdx === 5) baseHeight = 150;
+    let baseWidth = 170;
+    let baseHeight = 110;
+    if(textIdx === 4 || textIdx === 5) baseHeight = 160;
     
     let carPivot = new THREE.Group();
     carPivot.position.y = altura;
     carPivot.rotation.y = angulo;
-    carPivot.userData = { isPivot: true, velocidad: 0.001 + Math.random() * 0.0012 };
+    carPivot.userData = { isPivot: true, velocidad: 0.0008 + Math.random() * 0.001 };
 
     let tColor = (i%3===0) ? 0x9b00ff : ((i%2===0) ? 0xff007f : 0x00d4ff);
-    sprite.userData = { 
-      mensaje: mensajesAleatorios[i % mensajesAleatorios.length] || {t: "MI PILOTO", p: "Aceleras mi mundo entero 🏎️"}, 
-      baseWidth: baseWidth, baseHeight: baseHeight
-    };
+
+    // ✨ AUTO ESPECIAL DORADO BRILLANTE (i === 0)
+    if(i === 0) {
+      tColor = 0xffcc00;
+      sprite.material.color.setHex(0xffddaa);
+      baseWidth *= 1.4; baseHeight *= 1.4;
+      
+      const canvasGlow = document.createElement('canvas');
+      canvasGlow.width = 128; canvasGlow.height = 128;
+      const ctxG = canvasGlow.getContext('2d');
+      const grd = ctxG.createRadialGradient(64,64,10, 64,64,64);
+      grd.addColorStop(0, 'rgba(255, 204, 0, 1)');
+      grd.addColorStop(1, 'rgba(255, 204, 0, 0)');
+      ctxG.fillStyle = grd; ctxG.fillRect(0,0,128,128);
+      const glowTex = new THREE.CanvasTexture(canvasGlow);
+      const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.8}));
+      glowSprite.scale.set(baseWidth*1.8, baseHeight*1.8, 1);
+      glowSprite.position.set(0, 0, -5);
+      carPivot.add(glowSprite);
+
+      sprite.userData = { 
+        mensaje: { t: "✨ MI TESORO ✨", p: "Encontraste el auto dorado. Eres lo más valioso en mi universo entero. ¡Feliz 30 de Septiembre! ❤️" }, 
+        baseWidth: baseWidth, baseHeight: baseHeight 
+      };
+    } else {
+      sprite.userData = { 
+        mensaje: mensajesAleatorios[i % mensajesAleatorios.length], 
+        baseWidth: baseWidth, 
+        baseHeight: baseHeight
+      };
+    }
 
     sprite.scale.set(baseWidth, baseHeight, 1); 
     sprite.position.set(radio, 0, 0);
 
-    let positions = new Float32Array(20 * 3);
-    let colors = new Float32Array(20 * 3);
+    // Estela de neón
+    let puntosEstela = 30;
+    let positions = new Float32Array(puntosEstela * 3);
+    let colors = new Float32Array(puntosEstela * 3);
     let tColorObj = new THREE.Color(tColor);
-    for(let j=0; j<20; j++) {
-      let a = -0.5 * (j/19);
-      positions[j*3] = Math.cos(a)*radio;
+    
+    for(let j=0; j<puntosEstela; j++) {
+      let a = -0.7 * (j / (puntosEstela - 1));
+      positions[j*3] = Math.cos(a) * radio;
       positions[j*3+1] = 0;
-      positions[j*3+2] = Math.sin(a)*radio;
-      let fade = Math.pow(1 - (j/19), 2);
+      positions[j*3+2] = Math.sin(a) * radio;
+      
+      let fade = Math.pow(1 - (j / (puntosEstela - 1)), 2);
       colors[j*3] = tColorObj.r * fade;
       colors[j*3+1] = tColorObj.g * fade;
       colors[j*3+2] = tColorObj.b * fade;
     }
+    
     let trailGeo = new THREE.BufferGeometry();
     trailGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     trailGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    let trailMat = new THREE.LineBasicMaterial({vertexColors: true, blending: THREE.AdditiveBlending, transparent: true});
+    let trailMat = new THREE.LineBasicMaterial({vertexColors: true, blending: THREE.AdditiveBlending, transparent: true, linewidth: 3});
     let trail = new THREE.Line(trailGeo, trailMat);
 
     carPivot.add(trail);
@@ -424,15 +455,16 @@ function onPointerUp(e) {
   let endY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : 0);
   
   if (Math.hypot(endX - posInicio.x, endY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
-    mouse.x = (endX / window.innerWidth) * 2 - 1; mouse.y = -(endY / window.innerHeight) * 2 + 1;
+    mouse.x = (endX / window.innerWidth) * 2 - 1; 
+    mouse.y = -(endY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(carritosInteractivos, false);
     if (intersects.length > 0) {
       const obj = intersects[0].object; 
       if(obj.userData && obj.userData.mensaje) {
         abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
-        const w = obj.userData.baseWidth || 160;
-        const h = obj.userData.baseHeight || 100;
+        const w = obj.userData.baseWidth || 170;
+        const h = obj.userData.baseHeight || 110;
         obj.scale.set(w * 1.4, h * 1.4, 1); 
         setTimeout(() => obj.scale.set(w, h, 1), 300);
       }
@@ -450,17 +482,19 @@ function mostrarSecretoAgujeroNegro() {
 
 window.cerrarSecreto = function() {
   let sec = document.getElementById('pantalla-secreta');
-  sec.style.opacity = '0';
-  setTimeout(() => sec.remove(), 800);
+  if(sec) {
+    sec.style.opacity = '0';
+    setTimeout(() => sec.remove(), 800);
+  }
   let dir = camera.position.clone().normalize().multiplyScalar(500);
   camera.position.copy(dir);
   setTimeout(() => { window.secretoRevelado = false; }, 1000);
-}
+};
 
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  universoGroup.rotation.y -= 0.0005;
+  universoGroup.rotation.y -= 0.0004;
   
   if(anillosGalaxia.length === 3) {
     anillosGalaxia[0].rotation.z -= 0.02; 
@@ -482,7 +516,7 @@ function animate() {
     s.position.x += s.userData.vx;
     s.position.y += s.userData.vy;
     s.position.z += s.userData.vz;
-    if(s.position.y < -1500 || s.position.x > 4000 || s.position.x < -4000) resetShootingStar(s);
+    if(s.position.y < -1800 || s.position.x > 5000 || s.position.x < -5000) resetShootingStar(s);
   });
 
   if(camera.position.length() < 190 && !window.secretoRevelado && document.getElementById('threeCanvas').style.display === 'block') {
