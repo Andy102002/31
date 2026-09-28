@@ -3,77 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sorpresa Especial 💙</title>
+<title>Feliz 30 de Septiembre 💙</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@800&display=swap');
 
   :root {
-    --bg-dark: #0b1021; --primary-blue: #0055ff; --neon-blue: #00d4ff;
+    --bg-dark: #0b1021;
+    --primary-blue: #0055ff;
+    --neon-blue: #00d4ff;
+    --hw-blue: #002299;
+    --hw-red: #e60000;
+    --hw-yellow: #ffcc00;
   }
 
   * { box-sizing: border-box; }
   body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
-  #pantallaEntrada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: opacity 1s ease; }
+  #pantallaEntrada {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    transition: opacity 1s ease;
+  }
   #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; text-transform: uppercase; }
   .barra-contenedor { width: 80%; max-width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0 auto; }
   .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); transition: width 0.1s linear; }
 
-  #btnDescubrir { display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px; cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); margin-top: 40px; animation: latido 2s infinite; }
-  
-  #escenaRamo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1.5s ease; }
-  .ramo-titulo { font-family: 'Caveat', cursive; font-size: clamp(2.2rem, 5.5vw, 4.5rem); color: #fff; text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); opacity: 0; animation: fadeIn 1.5s forwards 0.2s; text-align: center; z-index: 200; margin-top: -50px; }
-  .ramo-master { position: relative; width: 420px; height: 500px; display: flex; justify-content: center; align-items: flex-end; opacity: 0; animation: nacerRamoMaster 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s; transform-origin: bottom center; }
+  #btnDescubrir {
+    display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase;
+    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px;
+    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s; margin-top: 40px; animation: latido 2s infinite;
+  }
+  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
 
-  @keyframes nacerRamoMaster { 0% { transform: translateY(250px) scale(0.2); opacity: 0; } 100% { transform: translateY(-40px) scale(1.3); opacity: 1; } }
-  @media (max-width: 600px) { @keyframes nacerRamoMaster { 0% { transform: translateY(250px) scale(0.2); opacity: 0; } 100% { transform: translateY(-30px) scale(1.05); opacity: 1; } } }
+  #escenaRamo {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%);
+    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+    transition: opacity 1.5s ease;
+  }
+  
+  .ramo-titulo { 
+    font-family: 'Caveat', cursive; font-size: clamp(2.2rem, 5.5vw, 4.5rem); color: #fff; 
+    text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
+    opacity: 0; animation: fadeIn 1.5s forwards 0.2s; 
+    text-align: center; z-index: 200; 
+    display: flex; align-items: center; justify-content: center; gap: 15px;
+    margin-top: -50px;
+  }
+  
+  .ramo-master {
+    position: relative; width: 420px; height: 500px; 
+    display: flex; justify-content: center; align-items: flex-end;
+    opacity: 0; transform-origin: bottom center;
+    animation: nacerRamoMaster 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s;
+  }
 
-  .capa-fondo { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-image: url('ramo_atras.png'); background-size: contain; background-position: bottom center; background-repeat: no-repeat; z-index: 10; }
-  .capa-frente { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-image: url('ramo_frente.png'); background-size: contain; background-position: bottom center; background-repeat: no-repeat; z-index: 20; pointer-events: none; }
+  @keyframes nacerRamoMaster {
+    0% { transform: translateY(250px) scale(0.2); opacity: 0; }
+    100% { transform: translateY(-40px) scale(1.3); opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    @keyframes nacerRamoMaster {
+      0% { transform: translateY(250px) scale(0.2); opacity: 0; }
+      100% { transform: translateY(-30px) scale(1.05); opacity: 1; } 
+    }
+  }
+
+  .capa-fondo {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('ramo_atras.png'); 
+    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    z-index: 10; 
+  }
+  .capa-frente {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('ramo_frente.png'); 
+    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
+    z-index: 20; pointer-events: none; 
+  }
+
+  .luces-atras, .luces-frente { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+  .luces-atras { z-index: 5; } 
+  .luces-frente { z-index: 25; } 
   
-  .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15; }
+  .luciernaga {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    animation: flotarLuz 2.5s infinite alternate ease-in-out;
+  }
   
+  .l1 { top: 10%; left: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0s; }
+  .l2 { top: 25%; right: 10%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 0.5s; }
+  .l3 { top: 5%; left: 50%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.2s; }
+  .l4 { top: 35%; left: 10%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.8s; }
+  .l5 { top: 50%; right: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 1.5s; }
+  .l6 { top: 20%; right: 30%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.3s; }
+  .l7 { top: 55%; left: 35%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 2.2s; }
+  .l8 { top: 15%; right: 45%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.7s; }
+  .l9 { top: 40%; left: 45%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 1.8s; }
+  .l10 { top: 65%; right: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.9s; }
+  .l11 { top: 70%; left: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 2.5s; }
+  .l12 { top: 30%; left: 25%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.1s; }
+  .l13 { top: 45%; right: 5%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.4s; }
+  .l14 { top: 10%; right: 20%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 2.0s; }
+  .l15 { top: 75%; left: 50%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 1.3s; }
+  .l16 { top: 75%; left: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.2s; width: 4px; height: 4px; }
+  .l17 { top: 82%; right: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.6s; width: 5px; height: 5px; }
+  .l18 { top: 80%; left: 45%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.1s; }
+  .l19 { top: 72%; right: 43%; background: #ffcc00; box-shadow: 0 0 10px 3px #ffcc00; animation-delay: 0.9s; width: 5px; height: 5px; }
+  .l20 { top: 88%; left: 47%; background: #9b00ff; box-shadow: 0 0 10px 3px #9b00ff; animation-delay: 1.4s; }
+  .l21 { top: 85%; right: 47%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.5s; width: 4px; height: 4px; }
+  .l22 { top: 78%; left: 32%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.8s; }
+  .l23 { top: 76%; right: 32%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.1s; width: 5px; height: 5px; }
+
+  @keyframes flotarLuz {
+    0% { transform: translate(0, 0) scale(0.6); opacity: 0.3; }
+    100% { transform: translate(20px, -25px) scale(1.5); opacity: 1; }
+  }
+
+  .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+  
+  /* Tarjetas Hot Wheels */
+  .blister-card {
+    --rot: 0deg; 
+    position: absolute; width: 85px; height: 130px; pointer-events: auto;
+    background: linear-gradient(180deg, #0a1f44 0%, #020617 100%);
+    border-radius: 8px 8px 5px 5px; 
+    border: 2px solid rgba(100, 180, 255, 0.7);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 10px rgba(0, 212, 255, 0.3); 
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: bottom center;
+    transform: rotate(var(--rot));
+  }
+  .blister-card:hover { 
+    transform: translateY(-20px) scale(1.3) rotate(var(--rot)) !important; 
+    z-index: 100 !important; 
+    box-shadow: 0 15px 40px var(--neon-blue); filter: brightness(1.2); 
+  }
+  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
+  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.5); overflow: hidden; }
+  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
+
+  @keyframes saltarAuto { 
+    0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 
+    70% { transform: translateY(-10px) scale(1.1) rotate(var(--rot)); opacity: 1; } 
+    100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
+  }
+
   /* Botón Galaxia */
-  #btnGalaxia { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 240px; height: 60px; background: linear-gradient(45deg, #020024, #4a00e0, #8e2de2, #00d4ff, #020024); background-size: 300% 300%; border: 2px solid #00d4ff; border-radius: 30px; color: #fff; font-weight: 900; font-size: 1.4rem; letter-spacing: 4px; cursor: pointer; opacity: 0; box-shadow: 0 0 25px #00d4ff; display: flex; align-items: center; justify-content: center; z-index: 50; animation: nacerBoton 1s forwards 3.5s, fondoGalaxia 4s ease infinite; }
-  
+  #btnGalaxia {
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    width: 240px; height: 60px; 
+    background: linear-gradient(45deg, #020024, #4a00e0, #8e2de2, #00d4ff, #020024);
+    background-size: 300% 300%;
+    border: 2px solid #00d4ff; border-radius: 30px; 
+    color: #fff; font-weight: 900; font-size: 1.4rem; letter-spacing: 4px;
+    cursor: pointer; opacity: 0; 
+    box-shadow: 0 0 25px #00d4ff, inset 0 0 15px #8e2de2;
+    display: flex; align-items: center; justify-content: center; z-index: 50;
+    animation: nacerBoton 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s, fondoGalaxia 4s ease infinite, latidoLazo 2s infinite 4.5s; 
+    overflow: hidden; text-shadow: 0 0 8px #fff, 0 0 15px #00d4ff;
+  }
+  #btnGalaxia::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#fff 2px, transparent 2px);
+    background-size: 20px 20px, 35px 35px; background-position: 0 0, 15px 15px;
+    opacity: 0.6; animation: moverEstrellas 3s linear infinite; pointer-events: none;
+  }
+  #btnGalaxia:hover { box-shadow: 0 0 40px #00d4ff, inset 0 0 30px #ff007f; transform: translateX(-50%) scale(1.05); }
+
   /* Canvas ThreeJS */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
-  #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; }
+  #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
   
-  /* Modal */
-  #modalMensaje { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9); background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px; width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111; z-index: 10000; box-shadow: 0 20px 60px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.4s; }
+  /* Modal de Mensajes */
+  #modalMensaje {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
+    background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
+    width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111;
+    z-index: 10000; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 85, 255, 0.3);
+    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; }
-  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; }
-  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; font-family: 'Caveat', cursive; }
-  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
+  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
+  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
+  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
+  .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
-  /* MODO CREADOR (NUEVO) */
-  #btnAbrirCreador { position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold; }
-  #panelCreacion { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,8,20,0.98); z-index: 30000; display: none; flex-direction: column; align-items: center; overflow-y: auto; padding: 30px 20px; }
-  .form-box { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-blue); border-radius: 15px; padding: 25px; width: 100%; max-width: 500px; }
-  .form-box h2 { color: var(--neon-blue); font-family: 'Caveat', cursive; font-size: 2rem; margin-top: 0; text-align: center; }
-  .form-group { margin-bottom: 15px; }
-  .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
-  .form-group input, .form-group textarea { width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-family: 'Nunito', sans-serif; }
-  .btn-crear { background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); border: none; padding: 12px; width: 100%; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
-
-  /* Animaciones y utilidades de las cartas (Sacadas de tu código) */
-  .blister-card { --rot: 0deg; position: absolute; width: 85px; height: 130px; pointer-events: auto; background: linear-gradient(180deg, #0a1f44 0%, #020617 100%); border-radius: 8px 8px 5px 5px; border: 2px solid rgba(100, 180, 255, 0.7); display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0; transform-origin: bottom center; transform: rotate(var(--rot)); transition: 0.3s; }
-  .blister-card:hover { transform: translateY(-20px) scale(1.3) rotate(var(--rot)) !important; z-index: 100 !important; filter: brightness(1.2); }
-  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
-  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; }
-  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; overflow: hidden; }
-  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; }
+  /* MODO CREADOR FLOTANTE */
+  #btnAbrirCreador { position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3); backdrop-filter: blur(5px); }
+  #btnAbrirCreador:hover { background: var(--neon-blue); color: #000; }
   
-  @keyframes saltarAuto { 0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 70% { transform: translateY(-10px) scale(1.1) rotate(var(--rot)); opacity: 1; } 100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } }
+  #panelCreacion { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,8,20,0.96); backdrop-filter: blur(10px); z-index: 30000; display: none; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; padding: 30px 20px; }
+  .form-box { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-blue); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; box-shadow: 0 0 30px rgba(0,212,255,0.2); }
+  .form-box h2 { color: var(--neon-blue); font-family: 'Caveat', cursive; font-size: 2.2rem; margin-top: 0; text-align: center; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 0.9rem; margin-bottom: 8px; font-weight: bold; color: #a5f3fc; }
+  .form-group input, .form-group textarea { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; color: #fff; font-family: 'Nunito', sans-serif; font-size: 1rem; }
+  .btn-crear { background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); border: none; padding: 14px; width: 100%; color: #fff; font-weight: bold; font-size: 1.1rem; border-radius: 10px; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,85,255,0.4); }
+  .btn-crear:hover { opacity: 0.9; }
+
+  /* Polvo Estelar (Mouse/Touch Drag) */
+  .polvo-estelar {
+    position: fixed; width: 5px; height: 5px; background: #fff;
+    box-shadow: 0 0 10px 3px #00d4ff; border-radius: 50%; pointer-events: none;
+    z-index: 99999; animation: desvanecerPolvo 0.6s ease-out forwards;
+  }
+  @keyframes desvanecerPolvo {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
+  }
+
+  /* Pantalla Secreta Agujero Negro */
+  #pantalla-secreta {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); z-index: 20000; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.8s ease; text-align: center;
+    box-shadow: inset 0 0 150px #9b00ff;
+  }
+  #pantalla-secreta h1 { font-family: 'Caveat', cursive; font-size: clamp(3rem, 8vw, 5rem); color: #fff; text-shadow: 0 0 20px #00d4ff, 0 0 40px #ff007f; margin-bottom: 20px; animation: latido 2s infinite; padding: 0 20px; }
+  #pantalla-secreta p { font-size: 1.5rem; color: #ddd; font-weight: bold; margin-bottom: 40px; padding: 0 20px; }
+  #pantalla-secreta button { background: transparent; border: 2px solid #00d4ff; color: #00d4ff; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.4); text-transform: uppercase; }
+  #pantalla-secreta button:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
+
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes latidoLazo { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @keyframes fondoGalaxia { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
   @keyframes nacerBoton { 0% { transform: translateX(-50%) scale(0); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+  @keyframes fondoGalaxia { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  @keyframes moverEstrellas { from { background-position: 0 0, 15px 15px; } to { background-position: -100px -100px, -85px -85px; } }
 </style>
 </head>
 <body>
@@ -88,7 +254,7 @@
   <div class="form-box">
     <h2>Personaliza tu Regalo</h2>
     <div class="form-group">
-      <label>Título (ej. Feliz 30 de Septiembre):</label>
+      <label>Título principal (ej. Feliz 30 de Septiembre):</label>
       <input type="text" id="inputTitulo" value="Feliz 30 de Septiembre">
     </div>
     <div class="form-group">
@@ -98,35 +264,56 @@
     <div class="form-group">
       <label>Sube una foto para el centro (Opcional):</label>
       <input type="file" id="inputFoto" accept="image/*">
-      <p style="font-size:0.8rem; color:#aaa;">(Si no subes nada, quedará el auto normal).</p>
     </div>
     <button class="btn-crear" id="btnGenerarEnlace">Generar Enlace Mágico</button>
     <div id="resultadoEnlace" style="margin-top: 15px; word-break: break-all; font-size: 0.9rem; color: var(--neon-blue); text-align: center;"></div>
   </div>
-  <button id="btnCerrarCreador" style="background:none; border:none; color:#aaa; cursor:pointer; margin-top:15px;">Cerrar panel</button>
+  <button id="btnCerrarCreador" style="background:none; border:none; color:#aaa; cursor:pointer; margin-top:20px; font-weight:bold;">Cerrar panel</button>
 </div>
 
-<!-- PANTALLAS DEL REGALO -->
+<!-- PANTALLA DE CARGA -->
 <div id="pantallaEntrada">
   <div id="textoCarga">ENSAMBLANDO SORPRESA... 0%</div>
   <div class="barra-contenedor"><div class="barra-progreso" id="barraProgreso"></div></div>
   <button id="btnDescubrir">ABRIR REGALO</button>
 </div>
 
+<!-- ESCENA DEL RAMO -->
 <div id="escenaRamo">
   <div class="ramo-titulo" id="tituloDinamico">💙 Feliz 30 de Septiembre 💙</div>
+  
   <div class="ramo-master">
-    <div class="capa-fondo"></div>
-    <div class="cajas-container" id="contenedorCartas">
-      <!-- Las cartas se inyectan desde JavaScript -->
+    <div class="luces-atras">
+      <div class="luciernaga l1"></div><div class="luciernaga l2"></div><div class="luciernaga l3"></div>
+      <div class="luciernaga l8"></div><div class="luciernaga l9"></div><div class="luciernaga l10"></div>
     </div>
+
+    <div class="capa-fondo"></div>
+    
+    <div class="cajas-container" id="contenedorCartas">
+      <!-- Las cartas se cargan dinámicamente desde JavaScript -->
+    </div>
+
     <div class="capa-frente"></div>
+
+    <div class="luces-frente">
+      <div class="luciernaga l4"></div><div class="luciernaga l5"></div><div class="luciernaga l6"></div>
+      <div class="luciernaga l7"></div><div class="luciernaga l11"></div><div class="luciernaga l12"></div>
+      <div class="luciernaga l13"></div><div class="luciernaga l14"></div><div class="luciernaga l15"></div>
+      <div class="luciernaga l16"></div><div class="luciernaga l17"></div><div class="luciernaga l18"></div>
+      <div class="luciernaga l19"></div><div class="luciernaga l20"></div><div class="luciernaga l21"></div>
+      <div class="luciernaga l22"></div><div class="luciernaga l23"></div>
+    </div>
+    
     <button id="btnGalaxia">GALAXIA</button>
   </div>
 </div>
 
 <div id="threeCanvas"></div>
-<div id="ui-galaxia"><h1 id="tituloGalaxia">💙 Feliz 30 de Septiembre 💙</h1></div>
+
+<div id="ui-galaxia">
+  <h1 id="tituloGalaxia">💙 Feliz 30 de Septiembre 💙</h1>
+</div>
 
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
@@ -138,8 +325,7 @@
 <!-- LIBRERÍAS DE THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<!-- TU SCRIPT PROTEGIDO -->
+<!-- SCRIPT PRINCIPAL -->
 <script type="module" src="script.js"></script>
 </body>
 </html>
-
