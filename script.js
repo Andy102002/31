@@ -89,7 +89,7 @@ function dibujarCartas() {
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img"></div>
     </div>
     
-    <div class="blister-card hw5" style="--rot: 0deg; bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;" onclick="abrirModal('PARA TI', '${configuracionRegalo.mensajeCentral}')">
+    <div class="blister-card hw5" style="--rot: 0deg; bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 35; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;" onclick="abrirModal('PARA TI', '${configuracionRegalo.mensajeCentral}')">
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div>
       <div class="blister-burbuja"><img src="${configuracionRegalo.fotoCentral}" class="blister-auto-img" style="border-radius:5px; object-fit:cover; width:100%; height:100%;"></div>
     </div>
