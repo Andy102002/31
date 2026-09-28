@@ -155,17 +155,31 @@ async function verificarPermisosUsuario(user) {
 
 function activarPanelCreador() {
   const urlParams = new URLSearchParams(window.location.search);
+  // Solo mostramos el botón si NO estamos viendo un enlace de regalo compartido (?id=...)
   if (!urlParams.get('id')) {
     let btnCreador = document.getElementById('btnAbrirCreador');
     if (!btnCreador) {
+      // Si el botón no existe, lo creamos flotante
       btnCreador = document.createElement('button');
       btnCreador.id = 'btnAbrirCreador';
       btnCreador.innerText = "✨ Crear tu propio ramo";
       btnCreador.style.cssText = "position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3);";
-      btnCreador.onclick = () => document.getElementById('panelCreacion').style.display = 'flex';
+      
+      // Aseguramos que al hacer clic se abra el panel de creación
+      btnCreador.onclick = () => {
+        const panel = document.getElementById('panelCreacion');
+        if (panel) panel.style.display = 'flex';
+      };
+      
       document.body.appendChild(btnCreador);
     }
     btnCreador.style.display = 'block';
+
+    // Por si el botón ya existía estático en el HTML, le forzamos la apertura también
+    btnCreador.onclick = () => {
+      const panel = document.getElementById('panelCreacion');
+      if (panel) panel.style.display = 'flex';
+    };
   }
 }
 
