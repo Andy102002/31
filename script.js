@@ -14,7 +14,6 @@ const firebaseConfig = {
 const CLOUD_NAME = "d3xvtf0l"; 
 const UPLOAD_PRESET = "ramo_preset"; 
 
-// Seguridad de protección de código
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.onkeydown = function(e) {
   if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
@@ -28,7 +27,9 @@ const db = getFirestore(app);
 let configuracionRegalo = {
   titulo: "💙 Feliz 30 de Septiembre 💙",
   mensajeCentral: "Aceleras mi mundo en cada kilómetro recorrido 🏎️",
-  fotoCentral: "auto5.png"
+  fotoCentral: "auto5.png",
+  mensajeGalaxia: "Gracias por ser el centro de mi galaxia.\n¡Feliz 30 de Septiembre!",
+  fotoGalaxia: null
 };
 
 // ==========================================
@@ -44,11 +45,12 @@ async function iniciarApp() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let data = docSnap.data();
-        configuracionRegalo.titulo = data.titulo;
-        configuracionRegalo.mensajeCentral = data.mensajeCentral;
+        if(data.titulo) configuracionRegalo.titulo = data.titulo;
+        if(data.mensajeCentral) configuracionRegalo.mensajeCentral = data.mensajeCentral;
         if(data.fotoUrl) configuracionRegalo.fotoCentral = data.fotoUrl;
+        if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
+        if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
         
-        // Ocultar botón de crear si es un enlace compartido
         const btnCreador = document.getElementById('btnAbrirCreador');
         if(btnCreador) btnCreador.style.display = 'none';
       }
@@ -61,7 +63,7 @@ async function iniciarApp() {
 }
 
 // ==========================================
-// DIBUJAR CARTAS DEL RAMO (Con foto y texto dinámicos)
+// DIBUJAR CARTAS DEL RAMO
 // ==========================================
 function dibujarCartas() {
   const cont = document.getElementById('contenedorCartas');
@@ -79,7 +81,6 @@ function dibujarCartas() {
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img"></div>
     </div>
     
-    <!-- CARTA CENTRAL DINÁMICA -->
     <div class="blister-card hw5" style="--rot: 0deg; bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;" onclick="abrirModal('PARA TI', '${configuracionRegalo.mensajeCentral}')">
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div>
       <div class="blister-burbuja"><img src="${configuracionRegalo.fotoCentral}" class="blister-auto-img" style="border-radius:5px; object-fit:cover; width:100%; height:100%;"></div>
@@ -101,8 +102,13 @@ document.getElementById('btnGenerarEnlace').onclick = async function() {
   let msgCentral = document.getElementById('inputMsgCentral').value;
   let inputFoto = document.getElementById('inputFoto');
   
+  let msgGalaxia = document.getElementById('inputMsgGalaxia').value;
+  let inputFotoGalaxia = document.getElementById('inputFotoGalaxia');
+  
   let fotoUrl = null;
+  let fotoGalaxiaUrl = null;
 
+  // Subir foto del ramo
   if (inputFoto.files.length > 0) {
     const formData = new FormData();
     formData.append("file", inputFoto.files[0]);
@@ -111,10 +117,19 @@ document.getElementById('btnGenerarEnlace').onclick = async function() {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
       const data = await res.json();
       fotoUrl = data.secure_url;
-    } catch (e) {
-      alert("Error subiendo la foto a Cloudinary. Intenta de nuevo.");
-      this.innerText = "Generar Enlace Mágico"; this.disabled = false; return;
-    }
+    } catch (e) { alert("Error subiendo foto del ramo."); }
+  }
+
+  // Subir foto de la galaxia
+  if (inputFotoGalaxia.files.length > 0) {
+    const formData2 = new FormData();
+    formData2.append("file", inputFotoGalaxia.files[0]);
+    formData2.append("upload_preset", UPLOAD_PRESET);
+    try {
+      const res2 = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData2 });
+      const data2 = await res2.json();
+      fotoGalaxiaUrl = data2.secure_url;
+    } catch (e2) { alert("Error subiendo foto de la galaxia."); }
   }
 
   let nuevoId = 'regalo_' + Math.random().toString(36).substring(2, 9);
@@ -123,7 +138,9 @@ document.getElementById('btnGenerarEnlace').onclick = async function() {
     await setDoc(doc(db, "regalos", nuevoId), {
       titulo: titulo,
       mensajeCentral: msgCentral,
-      fotoUrl: fotoUrl
+      fotoUrl: fotoUrl,
+      mensajeGalaxia: msgGalaxia,
+      fotoGalaxia: fotoGalaxiaUrl
     });
 
     let enlaceFinal = window.location.origin + window.location.pathname + "?id=" + nuevoId;
@@ -199,7 +216,6 @@ document.addEventListener('pointermove', (e) => {
   setTimeout(() => star.remove(), 600);
 });
 
-// Banco de mensajes aleatorios para la galaxia
 const bancoDeMensajes = [
   { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
@@ -214,10 +230,7 @@ const bancoDeMensajes = [
   { t: "CERO A CIEN", p: "Me haces pasar de 0 a 100 de felicidad en un segundo." },
   { t: "MOTOR DE MI VIDA", p: "Tú le das la fuerza y energía a todos mis días." },
   { t: "PISTA FAVORITA", p: "Quiero recorrer cada curva de la vida a tu lado." },
-  { t: "TURBO ACTIVADO", p: "Mi sonrisa se enciende a máxima potencia contigo." },
-  { t: "LUCES EN LA NOCHE", p: "Tu amor ilumina mi camino cuando todo está oscuro." },
-  { t: "MI CAMPEÓN", p: "Ganar tu corazón ha sido mi mayor y mejor victoria." },
-  { t: "AMOR CLÁSICO", p: "Lo nuestro es como un buen auto clásico: nunca pasa de moda." }
+  { t: "TURBO ACTIVADO", p: "Mi sonrisa se enciende a máxima potencia contigo." }
 ];
 
 function shuffleArray(array) {
@@ -231,7 +244,7 @@ function shuffleArray(array) {
 }
 
 // ==========================================
-// GALAXIA THREE.JS COMPLETA CON AUTO DORADO BRILLANTE
+// GALAXIA THREE.JS (Sin auto especial y sin líneas negras)
 // ==========================================
 let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
@@ -318,16 +331,27 @@ function resetShootingStar(star) {
 
 function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
-  const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
+  
+  // Solución para las líneas negras: Usar materiales con depthWrite y blending limpio sin wireframes agresivos
+  const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ 
+    color: color, 
+    side: THREE.DoubleSide, 
+    transparent: true, 
+    opacity: opacidad, 
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  });
 
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 280, 64, 6), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(280, 400, 64, 4), matAnillo(0x00aaff, 0.6));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(400, 650, 64, 2), matAnillo(0x0055ff, 0.3));
+  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 280, 64, 6), matAnillo(0xe0ffff, 0.8));
+  const ring2 = new THREE.Mesh(new THREE.RingGeometry(280, 400, 64, 4), matAnillo(0x00aaff, 0.5));
+  const ring3 = new THREE.Mesh(new THREE.RingGeometry(400, 650, 64, 2), matAnillo(0x0055ff, 0.25));
   
   anillosGalaxia.push(ring1, ring2, ring3);
   diskGroup.add(ring1, ring2, ring3);
   diskGroup.rotation.x = Math.PI / 2;
   universoGroup.add(diskGroup);
+  
+  // Esfera central negra
   universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
 }
 
@@ -336,7 +360,6 @@ function crearGalaxiaConEstelas() {
   const texturasAutos = ['auto1.png', 'auto2.png', 'auto3.png', 'auto4.png', 'auto5.png', 'auto6.png'].map(n => loader.load(n));
   const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
 
-  // Textos flotantes
   for(let i=0; i<60; i++) {
     const radio = 500 + Math.random() * 2300;
     const angulo = Math.random() * Math.PI * 2;
@@ -358,7 +381,7 @@ function crearGalaxiaConEstelas() {
     universoGroup.add(spriteTexto);
   }
 
-  // Autos con estelas y auto especial dorado brillante
+  // Autos normales flotando (sin auto dorado especial)
   for(let i=0; i<40; i++) {
     const radio = 600 + Math.random() * 2000;
     const angulo = Math.random() * Math.PI * 2;
@@ -378,41 +401,15 @@ function crearGalaxiaConEstelas() {
 
     let tColor = (i%3===0) ? 0x9b00ff : ((i%2===0) ? 0xff007f : 0x00d4ff);
 
-    // ✨ AUTO ESPECIAL DORADO BRILLANTE (i === 0)
-    if(i === 0) {
-      tColor = 0xffcc00;
-      sprite.material.color.setHex(0xffddaa);
-      baseWidth *= 1.4; baseHeight *= 1.4;
-      
-      const canvasGlow = document.createElement('canvas');
-      canvasGlow.width = 128; canvasGlow.height = 128;
-      const ctxG = canvasGlow.getContext('2d');
-      const grd = ctxG.createRadialGradient(64,64,10, 64,64,64);
-      grd.addColorStop(0, 'rgba(255, 204, 0, 1)');
-      grd.addColorStop(1, 'rgba(255, 204, 0, 0)');
-      ctxG.fillStyle = grd; ctxG.fillRect(0,0,128,128);
-      const glowTex = new THREE.CanvasTexture(canvasGlow);
-      const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.8}));
-      glowSprite.scale.set(baseWidth*1.8, baseHeight*1.8, 1);
-      glowSprite.position.set(0, 0, -5);
-      carPivot.add(glowSprite);
-
-      sprite.userData = { 
-        mensaje: { t: "✨ MI TESORO ✨", p: "Encontraste el auto dorado. Eres lo más valioso en mi universo entero. ¡Feliz 30 de Septiembre! ❤️" }, 
-        baseWidth: baseWidth, baseHeight: baseHeight 
-      };
-    } else {
-      sprite.userData = { 
-        mensaje: mensajesAleatorios[i % mensajesAleatorios.length], 
-        baseWidth: baseWidth, 
-        baseHeight: baseHeight
-      };
-    }
+    sprite.userData = { 
+      mensaje: mensajesAleatorios[i % mensajesAleatorios.length], 
+      baseWidth: baseWidth, 
+      baseHeight: baseHeight
+    };
 
     sprite.scale.set(baseWidth, baseHeight, 1); 
     sprite.position.set(radio, 0, 0);
 
-    // Estela de neón
     let puntosEstela = 30;
     let positions = new Float32Array(puntosEstela * 3);
     let colors = new Float32Array(puntosEstela * 3);
@@ -472,10 +469,25 @@ function onPointerUp(e) {
   }
 }
 
+// ==========================================
+// PANTALLA SECRETA DEL AGUJERO NEGRO (Con foto y texto personalizados)
+// ==========================================
 function mostrarSecretoAgujeroNegro() {
   let sec = document.createElement('div');
   sec.id = 'pantalla-secreta';
-  sec.innerHTML = '<h1>MI UNIVERSO ERES TÚ</h1><p>Gracias por ser el centro de mi galaxia.<br>¡Feliz 30 de Septiembre!</p><button onclick="cerrarSecreto()">VOLVER A ÓRBITA</button>';
+  
+  let contenidoFoto = '';
+  if (configuracionRegalo.fotoGalaxia) {
+    contenidoFoto = `<img src="${configuracionRegalo.fotoGalaxia}" style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; border: 3px solid #00d4ff; box-shadow: 0 0 30px #00d4ff; margin-bottom: 20px;">`;
+  }
+
+  sec.innerHTML = `
+    <h1>MI UNIVERSO ERES TÚ</h1>
+    ${contenidoFoto}
+    <p style="max-width: 500px; padding: 0 20px; white-space: pre-line;">${configuracionRegalo.mensajeGalaxia}</p>
+    <button onclick="cerrarSecreto()">VOLVER A ÓRBITA</button>
+  `;
+  
   document.body.appendChild(sec);
   setTimeout(() => sec.style.opacity = '1', 100);
 }
@@ -527,7 +539,6 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// Arrancar validando al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   iniciarApp();
 });
