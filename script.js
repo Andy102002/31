@@ -56,9 +56,12 @@ async function iniciarApp() {
         if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
         if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
         
-        // Ocultar botón de solicitud si es un enlace de regalo compartido
+        // 🛑 OCULTAR COMPLETAMENTE LOS BOTONES DE ACCESO Y CREACIÓN EN ENLACES COMPARTIDOS
         const contenedorAuth = document.getElementById('contenedorAuth');
         if(contenedorAuth) contenedorAuth.style.display = 'none';
+
+        const btnCreador = document.getElementById('btnAbrirCreador');
+        if(btnCreador) btnCreador.style.display = 'none';
       }
     } catch (e) { console.error("Error al cargar datos del regalo"); }
   }
