@@ -3,237 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Feliz 30 de Septiembre 💙</title>
+<title>Sorpresa Especial 💙</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@800&display=swap');
 
   :root {
-    --bg-dark: #0b1021;
-    --primary-blue: #0055ff;
-    --neon-blue: #00d4ff;
-    --hw-blue: #002299;
-    --hw-red: #e60000;
-    --hw-yellow: #ffcc00;
+    --bg-dark: #0b1021; --primary-blue: #0055ff; --neon-blue: #00d4ff;
   }
 
   * { box-sizing: border-box; }
   body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Nunito', sans-serif; color: white; user-select: none; touch-action: none; }
   
-  #pantallaEntrada {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-    transition: opacity 1s ease;
-  }
+  #pantallaEntrada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: opacity 1s ease; }
   #textoCarga { font-size: 1.5rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 20px; animation: parpadeo 1.5s infinite; font-weight: bold; text-transform: uppercase; }
   .barra-contenedor { width: 80%; max-width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0 auto; }
   .barra-progreso { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); transition: width 0.1s linear; }
 
-  #btnDescubrir {
-    display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase;
-    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px;
-    cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-    transition: all 0.3s; margin-top: 40px; animation: latido 2s infinite;
-  }
-  #btnDescubrir:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); }
-
-  #escenaRamo {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%);
-    z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
-    transition: opacity 1.5s ease;
-  }
+  #btnDescubrir { display: none; padding: 15px 50px; font-size: 1.2rem; font-weight: 900; background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 30px; cursor: pointer; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); margin-top: 40px; animation: latido 2s infinite; }
   
-  .ramo-titulo { 
-    font-family: 'Caveat', cursive; font-size: clamp(2.2rem, 5.5vw, 4.5rem); color: #fff; 
-    text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); 
-    opacity: 0; animation: fadeIn 1.5s forwards 0.2s; 
-    text-align: center; z-index: 200; 
-    display: flex; align-items: center; justify-content: center; gap: 15px;
-    margin-top: -50px;
-  }
-  
-  .ramo-master {
-    position: relative; width: 420px; height: 500px; 
-    display: flex; justify-content: center; align-items: flex-end;
-    opacity: 0; transform-origin: bottom center;
-    animation: nacerRamoMaster 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s;
-  }
+  #escenaRamo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #111a3a 0%, var(--bg-dark) 100%); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1.5s ease; }
+  .ramo-titulo { font-family: 'Caveat', cursive; font-size: clamp(2.2rem, 5.5vw, 4.5rem); color: #fff; text-shadow: 0 0 15px var(--primary-blue), 0 0 30px var(--neon-blue); opacity: 0; animation: fadeIn 1.5s forwards 0.2s; text-align: center; z-index: 200; margin-top: -50px; }
+  .ramo-master { position: relative; width: 420px; height: 500px; display: flex; justify-content: center; align-items: flex-end; opacity: 0; animation: nacerRamoMaster 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s; transform-origin: bottom center; }
 
-  @keyframes nacerRamoMaster {
-    0% { transform: translateY(250px) scale(0.2); opacity: 0; }
-    100% { transform: translateY(-40px) scale(1.3); opacity: 1; }
-  }
+  @keyframes nacerRamoMaster { 0% { transform: translateY(250px) scale(0.2); opacity: 0; } 100% { transform: translateY(-40px) scale(1.3); opacity: 1; } }
+  @media (max-width: 600px) { @keyframes nacerRamoMaster { 0% { transform: translateY(250px) scale(0.2); opacity: 0; } 100% { transform: translateY(-30px) scale(1.05); opacity: 1; } } }
 
-  @media (max-width: 600px) {
-    @keyframes nacerRamoMaster {
-      0% { transform: translateY(250px) scale(0.2); opacity: 0; }
-      100% { transform: translateY(-30px) scale(1.05); opacity: 1; } 
-    }
-  }
-
-  .capa-fondo {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
-    background-image: url('ramo_atras.png'); 
-    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
-    z-index: 10; 
-  }
-  .capa-frente {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
-    background-image: url('ramo_frente.png'); 
-    background-size: contain; background-position: bottom center; background-repeat: no-repeat;
-    z-index: 20; pointer-events: none; 
-  }
-
-  .luces-atras, .luces-frente { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
-  .luces-atras { z-index: 5; } 
-  .luces-frente { z-index: 25; } 
+  .capa-fondo { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-image: url('ramo_atras.png'); background-size: contain; background-position: bottom center; background-repeat: no-repeat; z-index: 10; }
+  .capa-frente { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-image: url('ramo_frente.png'); background-size: contain; background-position: bottom center; background-repeat: no-repeat; z-index: 20; pointer-events: none; }
   
-  .luciernaga {
-    position: absolute; width: 6px; height: 6px; border-radius: 50%;
-    animation: flotarLuz 2.5s infinite alternate ease-in-out;
-  }
+  .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15; }
   
-  .l1 { top: 10%; left: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0s; }
-  .l2 { top: 25%; right: 10%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 0.5s; }
-  .l3 { top: 5%; left: 50%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.2s; }
-  .l4 { top: 35%; left: 10%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.8s; }
-  .l5 { top: 50%; right: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 1.5s; }
-  .l6 { top: 20%; right: 30%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.3s; }
-  .l7 { top: 55%; left: 35%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 2.2s; }
-  .l8 { top: 15%; right: 45%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.7s; }
-  .l9 { top: 40%; left: 45%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 1.8s; }
-  .l10 { top: 65%; right: 15%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.9s; }
-  .l11 { top: 70%; left: 20%; background: #ff007f; box-shadow: 0 0 15px 4px #ff007f; animation-delay: 2.5s; }
-  .l12 { top: 30%; left: 25%; background: #ffcc00; box-shadow: 0 0 15px 4px #ffcc00; animation-delay: 1.1s; }
-  .l13 { top: 45%; right: 5%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.4s; }
-  .l14 { top: 10%; right: 20%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 2.0s; }
-  .l15 { top: 75%; left: 50%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 1.3s; }
+  /* Botón Galaxia */
+  #btnGalaxia { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 240px; height: 60px; background: linear-gradient(45deg, #020024, #4a00e0, #8e2de2, #00d4ff, #020024); background-size: 300% 300%; border: 2px solid #00d4ff; border-radius: 30px; color: #fff; font-weight: 900; font-size: 1.4rem; letter-spacing: 4px; cursor: pointer; opacity: 0; box-shadow: 0 0 25px #00d4ff; display: flex; align-items: center; justify-content: center; z-index: 50; animation: nacerBoton 1s forwards 3.5s, fondoGalaxia 4s ease infinite; }
   
-  .l16 { top: 75%; left: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.2s; width: 4px; height: 4px; }
-  .l17 { top: 82%; right: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.6s; width: 5px; height: 5px; }
-  .l18 { top: 80%; left: 45%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.1s; }
-  .l19 { top: 72%; right: 43%; background: #ffcc00; box-shadow: 0 0 10px 3px #ffcc00; animation-delay: 0.9s; width: 5px; height: 5px; }
-  .l20 { top: 88%; left: 47%; background: #9b00ff; box-shadow: 0 0 10px 3px #9b00ff; animation-delay: 1.4s; }
-  .l21 { top: 85%; right: 47%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.5s; width: 4px; height: 4px; }
-  .l22 { top: 78%; left: 32%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.8s; }
-  .l23 { top: 76%; right: 32%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.1s; width: 5px; height: 5px; }
-
-  @keyframes flotarLuz {
-    0% { transform: translate(0, 0) scale(0.6); opacity: 0.3; }
-    100% { transform: translate(20px, -25px) scale(1.5); opacity: 1; }
-  }
-
-  .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-  
-  .blister-card {
-    --rot: 0deg; 
-    position: absolute; width: 85px; height: 130px; pointer-events: auto;
-    background: linear-gradient(180deg, #0a1f44 0%, #020617 100%);
-    border-radius: 8px 8px 5px 5px; 
-    border: 2px solid rgba(100, 180, 255, 0.7);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 10px rgba(0, 212, 255, 0.3); 
-    display: flex; flex-direction: column; align-items: center;
-    cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-origin: bottom center;
-    transform: rotate(var(--rot));
-  }
-  
-  .blister-card:hover { 
-    transform: translateY(-20px) scale(1.3) rotate(var(--rot)) !important; 
-    z-index: 100 !important; 
-    box-shadow: 0 15px 40px var(--neon-blue); filter: brightness(1.2); 
-  }
-  
-  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
-  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.5); }
-  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
-
-  @keyframes saltarAuto { 
-    0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 
-    70% { transform: translateY(-10px) scale(1.1) rotate(var(--rot)); opacity: 1; } 
-    100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
-  }
-  
-  .hw2 { --rot: -16deg; bottom: 205px; left: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
-  .hw3 { --rot: 16deg;  bottom: 205px; right: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
-  .hw1 { --rot: -30deg; bottom: 135px; left: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
-  .hw4 { --rot: 30deg;  bottom: 135px; right: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
-  .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
-
-  #btnGalaxia {
-    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
-    width: 240px; height: 60px; 
-    background: linear-gradient(45deg, #020024, #4a00e0, #8e2de2, #00d4ff, #020024);
-    background-size: 300% 300%;
-    border: 2px solid #00d4ff; border-radius: 30px; 
-    color: #fff; font-weight: 900; font-size: 1.4rem; letter-spacing: 4px;
-    cursor: pointer; opacity: 0; 
-    box-shadow: 0 0 25px #00d4ff, inset 0 0 15px #8e2de2;
-    display: flex; align-items: center; justify-content: center; z-index: 50;
-    animation: nacerBoton 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s, fondoGalaxia 4s ease infinite, latidoLazo 2s infinite 4.5s; 
-    overflow: hidden; text-shadow: 0 0 8px #fff, 0 0 15px #00d4ff;
-  }
-  
-  #btnGalaxia::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#fff 2px, transparent 2px);
-    background-size: 20px 20px, 35px 35px; background-position: 0 0, 15px 15px;
-    opacity: 0.6; animation: moverEstrellas 3s linear infinite; pointer-events: none;
-  }
-  
-  #btnGalaxia:hover { box-shadow: 0 0 40px #00d4ff, inset 0 0 30px #ff007f; transform: translateX(-50%) scale(1.05); }
-
-  @keyframes fondoGalaxia { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-  @keyframes moverEstrellas { from { background-position: 0 0, 15px 15px; } to { background-position: -100px -100px, -85px -85px; } }
-
+  /* Canvas ThreeJS */
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
-  #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
+  #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; }
   
-  #modalMensaje {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
-    background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
-    width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111;
-    z-index: 10000; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 85, 255, 0.3);
-    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
+  /* Modal */
+  #modalMensaje { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9); background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px; width: 85%; max-width: 380px; padding: 35px 25px; text-align: center; color: #111; z-index: 10000; box-shadow: 0 20px 60px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.4s; }
   #modalMensaje.mostrar { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
-  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
-  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
-  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
-  .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
+  #modalTitulo { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 10px; font-weight: 900; }
+  .modal-img-tierna { font-size: 4.5rem; margin: 15px 0; display: block; animation: flotar 3s ease-in-out infinite; }
+  #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; font-family: 'Caveat', cursive; }
+  .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; }
 
-  /* Polvo Estelar (Mouse/Touch Drag) */
-  .polvo-estelar {
-    position: fixed; width: 5px; height: 5px; background: #fff;
-    box-shadow: 0 0 10px 3px #00d4ff; border-radius: 50%; pointer-events: none;
-    z-index: 99999; animation: desvanecerPolvo 0.6s ease-out forwards;
-  }
-  @keyframes desvanecerPolvo {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
-  }
+  /* MODO CREADOR (NUEVO) */
+  #btnAbrirCreador { position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold; }
+  #panelCreacion { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,8,20,0.98); z-index: 30000; display: none; flex-direction: column; align-items: center; overflow-y: auto; padding: 30px 20px; }
+  .form-box { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-blue); border-radius: 15px; padding: 25px; width: 100%; max-width: 500px; }
+  .form-box h2 { color: var(--neon-blue); font-family: 'Caveat', cursive; font-size: 2rem; margin-top: 0; text-align: center; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
+  .form-group input, .form-group textarea { width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-family: 'Nunito', sans-serif; }
+  .btn-crear { background: linear-gradient(90deg, var(--primary-blue), var(--neon-blue)); border: none; padding: 12px; width: 100%; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
 
-  /* Pantalla Secreta Agujero Negro */
-  #pantalla-secreta {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.95); z-index: 20000; display: flex;
-    flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.8s ease; text-align: center;
-    box-shadow: inset 0 0 150px #9b00ff;
-  }
-  #pantalla-secreta h1 { font-family: 'Caveat', cursive; font-size: clamp(3rem, 8vw, 5rem); color: #fff; text-shadow: 0 0 20px #00d4ff, 0 0 40px #ff007f; margin-bottom: 20px; animation: latido 2s infinite; padding: 0 20px; }
-  #pantalla-secreta p { font-size: 1.5rem; color: #ddd; font-weight: bold; margin-bottom: 40px; padding: 0 20px; }
-  #pantalla-secreta button { background: transparent; border: 2px solid #00d4ff; color: #00d4ff; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.4); text-transform: uppercase; }
-  #pantalla-secreta button:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
-
+  /* Animaciones y utilidades de las cartas (Sacadas de tu código) */
+  .blister-card { --rot: 0deg; position: absolute; width: 85px; height: 130px; pointer-events: auto; background: linear-gradient(180deg, #0a1f44 0%, #020617 100%); border-radius: 8px 8px 5px 5px; border: 2px solid rgba(100, 180, 255, 0.7); display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0; transform-origin: bottom center; transform: rotate(var(--rot)); transition: 0.3s; }
+  .blister-card:hover { transform: translateY(-20px) scale(1.3) rotate(var(--rot)) !important; z-index: 100 !important; filter: brightness(1.2); }
+  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
+  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; }
+  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; }
+  
+  @keyframes saltarAuto { 0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 70% { transform: translateY(-10px) scale(1.1) rotate(var(--rot)); opacity: 1; } 100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } }
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-  @keyframes latidoLazo { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
   @keyframes fadeIn { to { opacity: 1; } }
   @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes fondoGalaxia { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
   @keyframes nacerBoton { 0% { transform: translateX(-50%) scale(0); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
 </style>
 </head>
@@ -241,6 +80,33 @@
 
 <audio id="musicaFondo" loop crossorigin="anonymous"><source src="cancion.mp3" type="audio/mpeg"></audio>
 
+<!-- BOTÓN PARA CREAR -->
+<button id="btnAbrirCreador">✨ Crear tu propio ramo</button>
+
+<!-- PANEL CREADOR -->
+<div id="panelCreacion">
+  <div class="form-box">
+    <h2>Personaliza tu Regalo</h2>
+    <div class="form-group">
+      <label>Título (ej. Feliz 30 de Septiembre):</label>
+      <input type="text" id="inputTitulo" value="Feliz 30 de Septiembre">
+    </div>
+    <div class="form-group">
+      <label>Mensaje secreto de la carta central:</label>
+      <textarea id="inputMsgCentral">Aceleras mi mundo en cada kilómetro recorrido 🏎️</textarea>
+    </div>
+    <div class="form-group">
+      <label>Sube una foto para el centro (Opcional):</label>
+      <input type="file" id="inputFoto" accept="image/*">
+      <p style="font-size:0.8rem; color:#aaa;">(Si no subes nada, quedará el auto normal).</p>
+    </div>
+    <button class="btn-crear" id="btnGenerarEnlace">Generar Enlace Mágico</button>
+    <div id="resultadoEnlace" style="margin-top: 15px; word-break: break-all; font-size: 0.9rem; color: var(--neon-blue); text-align: center;"></div>
+  </div>
+  <button id="btnCerrarCreador" style="background:none; border:none; color:#aaa; cursor:pointer; margin-top:15px;">Cerrar panel</button>
+</div>
+
+<!-- PANTALLAS DEL REGALO -->
 <div id="pantallaEntrada">
   <div id="textoCarga">ENSAMBLANDO SORPRESA... 0%</div>
   <div class="barra-contenedor"><div class="barra-progreso" id="barraProgreso"></div></div>
@@ -248,465 +114,32 @@
 </div>
 
 <div id="escenaRamo">
-  <div class="ramo-titulo">💙 Feliz 30 de Septiembre 💙</div>
-  
+  <div class="ramo-titulo" id="tituloDinamico">💙 Feliz 30 de Septiembre 💙</div>
   <div class="ramo-master">
-    
-    <div class="luces-atras">
-      <div class="luciernaga l1"></div>
-      <div class="luciernaga l2"></div>
-      <div class="luciernaga l3"></div>
-      <div class="luciernaga l8"></div>
-      <div class="luciernaga l9"></div>
-      <div class="luciernaga l10"></div>
-    </div>
-
     <div class="capa-fondo"></div>
-    
-    <div class="cajas-container">
-      <div class="blister-card hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
-        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
-      </div>
-      <div class="blister-card hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
-        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
-      </div>
-
-      <div class="capa-frente"></div>
-
-      <div class="luces-frente">
-        <div class="luciernaga l4"></div>
-        <div class="luciernaga l5"></div>
-        <div class="luciernaga l6"></div>
-        <div class="luciernaga l7"></div>
-        <div class="luciernaga l11"></div>
-        <div class="luciernaga l12"></div>
-        <div class="luciernaga l13"></div>
-        <div class="luciernaga l14"></div>
-        <div class="luciernaga l15"></div>
-        <div class="luciernaga l16"></div>
-        <div class="luciernaga l17"></div>
-        <div class="luciernaga l18"></div>
-        <div class="luciernaga l19"></div>
-        <div class="luciernaga l20"></div>
-        <div class="luciernaga l21"></div>
-        <div class="luciernaga l22"></div>
-        <div class="luciernaga l23"></div>
-      </div>
-
-      <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
-        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
-      </div>
-      <div class="blister-card hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
-        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
-      </div>
-      <div class="blister-card hw5" onclick="abrirModal('MI PILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
-        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto5.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
-      </div>
+    <div class="cajas-container" id="contenedorCartas">
+      <!-- Las cartas se inyectan desde JavaScript -->
     </div>
-    
-    <button id="btnGalaxia" onclick="iniciarTransicionGalaxia()">GALAXIA</button>
+    <div class="capa-frente"></div>
+    <button id="btnGalaxia">GALAXIA</button>
   </div>
 </div>
 
 <div id="threeCanvas"></div>
-
-<div id="ui-galaxia">
-  <h1>💙 Feliz 30 de Septiembre 💙</h1>
-</div>
+<div id="ui-galaxia"><h1 id="tituloGalaxia">💙 Feliz 30 de Septiembre 💙</h1></div>
 
 <div id="modalMensaje">
   <div id="modalTitulo">Titulo</div>
   <span class="modal-img-tierna">🐻❤️🐼</span>
   <div id="modalTexto">Texto</div>
-  <button class="btn-cerrar" onclick="cerrarModal()">CONTINUAR</button>
+  <button class="btn-cerrar" id="btnCerrarModal">CONTINUAR</button>
 </div>
 
+<!-- LIBRERÍAS DE THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-
-<script>
-let porcentaje = 0;
-const intervaloCarga = setInterval(() => {
-  porcentaje += Math.floor(Math.random() * 8) + 2;
-  if(porcentaje >= 100) {
-    porcentaje = 100;
-    clearInterval(intervaloCarga);
-    document.getElementById('textoCarga').innerText = "¡SISTEMA LISTO!";
-    document.getElementById('barraProgreso').parentElement.style.display = 'none';
-    document.getElementById('btnDescubrir').style.display = 'block';
-  }
-  document.getElementById('textoCarga').innerText = `ENSAMBLANDO SORPRESA... ${porcentaje}%`;
-  document.getElementById('barraProgreso').style.width = `${porcentaje}%`;
-}, 100);
-
-document.getElementById('btnDescubrir').addEventListener('click', () => {
-  document.getElementById('musicaFondo').play().catch(e=>console.log(e));
-  document.getElementById('pantallaEntrada').style.opacity = '0';
-  setTimeout(() => { document.getElementById('pantallaEntrada').style.display = 'none'; }, 1000);
-});
-
-function abrirModal(titulo, texto) {
-  document.getElementById('modalTitulo').innerText = titulo;
-  document.getElementById('modalTexto').innerText = texto;
-  document.getElementById('modalMensaje').classList.add('mostrar');
-}
-function cerrarModal() {
-  document.getElementById('modalMensaje').classList.remove('mostrar');
-}
-
-function iniciarTransicionGalaxia() {
-  const escenaRamo = document.getElementById('escenaRamo');
-  escenaRamo.style.opacity = '0';
-  setTimeout(() => {
-    escenaRamo.style.display = 'none';
-    document.getElementById('threeCanvas').style.display = 'block';
-    document.getElementById('ui-galaxia').style.display = 'block';
-    initThreeJS();
-  }, 1500);
-}
-
-document.addEventListener('pointermove', (e) => {
-  if(document.getElementById('threeCanvas').style.display !== 'block') return;
-  if(e.buttons === 0 && !e.touches) return; 
-  let clientX = e.clientX; let clientY = e.clientY;
-  if(e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
-  if(!clientX) return;
-
-  let star = document.createElement('div');
-  star.className = 'polvo-estelar';
-  star.style.left = clientX + 'px';
-  star.style.top = clientY + 'px';
-  let dx = (Math.random() - 0.5) * 60;
-  let dy = (Math.random() - 0.5) * 60 + 20;
-  star.style.setProperty('--dx', dx + 'px');
-  star.style.setProperty('--dy', dy + 'px');
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 600);
-});
-
-const bancoDeMensajes = [
-  { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
-  { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
-  { t: "MI PILOTO FAVORITO", p: "Aceleras mi corazón todos los días." },
-  { t: "A TODA VELOCIDAD", p: "Mi corazón late a mil por hora cuando te veo." },
-  { t: "MI DESTINO FINAL", p: "No importa la ruta, mi destino siempre eres tú." },
-  { t: "HOT WHEELS", p: "Gracias por dejarme hacer feliz a tu niño interior." },
-  { t: "MI COPILOTO IDEAL", p: "La vida es un viaje, gracias por ir a mi lado." },
-  { t: "PRIMERA POSICIÓN", p: "En la carrera de mi vida, tú siempre tienes el primer lugar." },
-  { t: "ADRENALINA PURA", p: "Eso es exactamente lo que siento cuando me miras." },
-  { t: "MI META", p: "De todos los caminos posibles, siempre te elegiré a ti." },
-  { t: "CERO A CIEN", p: "Me haces pasar de 0 a 100 de felicidad en un segundo." },
-  { t: "MOTOR DE MI VIDA", p: "Tú le das la fuerza y energía a todos mis días." },
-  { t: "PISTA FAVORITA", p: "Quiero recorrer cada curva de la vida a tu lado." },
-  { t: "TURBO ACTIVADO", p: "Mi sonrisa se enciende a máxima potencia contigo." },
-  { t: "LUCES EN LA NOCHE", p: "Tu amor ilumina mi camino cuando todo está oscuro." },
-  { t: "MI CAMPEÓN", p: "Ganar tu corazón ha sido mi mayor y mejor victoria." },
-  { t: "AMOR CLÁSICO", p: "Lo nuestro es como un buen auto clásico: nunca pasa de moda." },
-  { t: "SÚPER MOTOR", p: "Gracias por darle tanta fuerza y amor a mis días." },
-  { t: "LLANTAS AL ASFALTO", p: "Me mantienes con los pies en la tierra pero el corazón volando." },
-  { t: "ESCUDERÍA PERFECTA", p: "Juntos somos el mejor equipo que existe." },
-  { t: "V8 DE EMOCIONES", p: "Haces vibrar todo mi mundo con solo hablarme." },
-  { t: "MI SUPERCAR", p: "No hay nadie que se compare contigo, eres perfecto para mí." },
-  { t: "VUELTA RÁPIDA", p: "El tiempo vuela demasiado rápido cuando estoy contigo." },
-  { t: "TRACCIÓN TOTAL", p: "Contigo me siento segura en cualquier terreno." },
-  { t: "ALINEACIÓN PERFECTA", p: "Tú le das el equilibrio exacto a mi universo." }
-];
-
-function shuffleArray(array) {
-  let currentIndex = array.length, randomIndex;
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-  }
-  return array;
-}
-
-let scene, camera, renderer, controls;
-let universoGroup = new THREE.Group();
-let carritosInteractivos = [];
-let anillosGalaxia = [];
-let shootingStars = [];
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-window.secretoRevelado = false;
-
-function initThreeJS() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x020510);
-  scene.fog = new THREE.FogExp2(0x020510, 0.00025);
-
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 15000);
-  camera.position.set(0, 400, 1600); 
-
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  document.getElementById('threeCanvas').appendChild(renderer.domElement);
-
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.8;
-  controls.maxDistance = 2500;
-  controls.minDistance = 100; 
-
-  scene.add(universoGroup);
-
-  crearFondoEstelar();
-  crearAgujeroNegroAnimado();
-  crearGalaxia();
-  crearEstrellasFugaces();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-  
-  renderer.domElement.addEventListener('pointerdown', onPointerDown);
-  renderer.domElement.addEventListener('pointerup', onPointerUp);
-
-  animate();
-}
-
-function crearSpriteTextoFlotante(texto) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024; canvas.height = 128;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff'; ctx.font = '50px "Caveat", cursive, sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.shadowColor = '#0055ff'; ctx.shadowBlur = 15;
-  ctx.fillText(texto, 512, 64);
-  const texture = new THREE.CanvasTexture(canvas);
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7 }));
-  sprite.scale.set(350, 45, 1);
-  return sprite;
-}
-
-function crearFondoEstelar() {
-  const starGeo = new THREE.BufferGeometry(); const starPos = [];
-  for(let i=0; i<5000; i++) starPos.push((Math.random()-0.5)*6000, (Math.random()-0.5)*6000, (Math.random()-0.5)*6000);
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
-}
-
-function crearEstrellasFugaces() {
-  for(let i=0; i<8; i++) {
-    let geo = new THREE.CylinderGeometry(1, 4, 300, 4);
-    geo.rotateZ(Math.PI/2);
-    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending});
-    let star = new THREE.Mesh(geo, mat);
-    resetShootingStar(star);
-    scene.add(star);
-    shootingStars.push(star);
-  }
-}
-function resetShootingStar(star) {
-  star.position.set((Math.random()-0.5)*6000, Math.random()*2000 + 500, (Math.random()-0.5)*6000);
-  star.userData = {
-    vx: (Math.random()-0.5)*40 + 30,
-    vy: -Math.random()*20 - 10,
-    vz: (Math.random()-0.5)*40
-  };
-  star.lookAt(star.position.x + star.userData.vx, star.position.y + star.userData.vy, star.position.z + star.userData.vz);
-}
-
-function crearAgujeroNegroAnimado() {
-  const diskGroup = new THREE.Group();
-  const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
-
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 260, 64, 4), new THREE.MeshBasicMaterial({color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9}));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(260, 360, 64, 2), matAnillo(0x00aaff, 0.4));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(360, 550, 64, 1), matAnillo(0x0055ff, 0.15));
-  
-  anillosGalaxia.push(ring1, ring2, ring3);
-  diskGroup.add(ring1, ring2, ring3);
-  diskGroup.rotation.x = Math.PI / 2;
-  universoGroup.add(diskGroup);
-  universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
-}
-
-function crearGalaxia() {
-  const loader = new THREE.TextureLoader();
-  const texturasAutos = [
-    loader.load('auto1.png'), loader.load('auto2.png'), loader.load('auto3.png'),
-    loader.load('auto4.png'), loader.load('auto5.png'), loader.load('auto6.png')
-  ];
-
-  const frasesFlotantes = ["Acelerando hacia ti", "Contigo la carretera es mejor", "Mi copiloto de vida", "Eres mi persona favorita", "Feliz día para ti", "Mi universo entero", "A toda máquina"];
-  const mensajesAleatorios = shuffleArray([...bancoDeMensajes]);
-
-  for(let i=0; i<70; i++) {
-    const radio = 450 + Math.random() * 2200;
-    const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 800 * (1 - radio/2800); 
-    const spriteTexto = crearSpriteTextoFlotante(frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)]);
-    spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    spriteTexto.userData = { isText: true, anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
-    universoGroup.add(spriteTexto);
-  }
-
-  const cantidadAutos = 35; 
-  for(let i=0; i<cantidadAutos; i++) {
-    const radio = 500 + Math.random() * 1900;
-    const angulo = Math.random() * Math.PI * 2;
-    const altura = (Math.random() - 0.5) * 450; 
-    
-    const textIdx = Math.floor(Math.random() * texturasAutos.length);
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturasAutos[textIdx], transparent: true }));
-    
-    let baseWidth = 160;
-    let baseHeight = 100;
-    
-    if(textIdx === 4 || textIdx === 5) {
-      baseHeight = 150;
-    }
-    
-    let carPivot = new THREE.Group();
-    carPivot.position.y = altura;
-    carPivot.rotation.y = angulo;
-    carPivot.userData = { isPivot: true, velocidad: 0.001 + Math.random() * 0.0012 };
-
-    let tColor = (i%3===0) ? 0x9b00ff : ((i%2===0) ? 0xff007f : 0x00d4ff);
-
-    if(i === 0) {
-      tColor = 0xffcc00;
-      sprite.material.color.setHex(0xffddaa);
-      baseWidth *= 1.4; baseHeight *= 1.4;
-      
-      const canvasGlow = document.createElement('canvas');
-      canvasGlow.width = 128; canvasGlow.height = 128;
-      const ctxG = canvasGlow.getContext('2d');
-      const grd = ctxG.createRadialGradient(64,64,10, 64,64,64);
-      grd.addColorStop(0, 'rgba(255, 204, 0, 1)');
-      grd.addColorStop(1, 'rgba(255, 204, 0, 0)');
-      ctxG.fillStyle = grd; ctxG.fillRect(0,0,128,128);
-      const glowTex = new THREE.CanvasTexture(canvasGlow);
-      const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.8}));
-      glowSprite.scale.set(baseWidth*1.8, baseHeight*1.8, 1);
-      glowSprite.position.set(radio, 0, -5);
-      carPivot.add(glowSprite);
-
-      sprite.userData = { 
-        mensaje: {t: "✨ MI TESORO ✨", p: "Encontraste el auto dorado. Eres lo más valioso en mi universo entero. ¡Feliz 30 de Septiembre! ❤️"}, 
-        baseWidth: baseWidth, baseHeight: baseHeight 
-      };
-    } else {
-      sprite.userData = { 
-        mensaje: mensajesAleatorios[i % mensajesAleatorios.length] || {t: "MI PILOTO", p: "Aceleras mi mundo entero 🏎️"}, 
-        baseWidth: baseWidth, baseHeight: baseHeight
-      };
-    }
-
-    sprite.scale.set(baseWidth, baseHeight, 1); 
-    sprite.position.set(radio, 0, 0);
-
-    let positions = new Float32Array(20 * 3);
-    let colors = new Float32Array(20 * 3);
-    let tColorObj = new THREE.Color(tColor);
-    for(let j=0; j<20; j++) {
-      let a = -0.5 * (j/19);
-      positions[j*3] = Math.cos(a)*radio;
-      positions[j*3+1] = 0;
-      positions[j*3+2] = Math.sin(a)*radio;
-      let fade = Math.pow(1 - (j/19), 2);
-      colors[j*3] = tColorObj.r * fade;
-      colors[j*3+1] = tColorObj.g * fade;
-      colors[j*3+2] = tColorObj.b * fade;
-    }
-    let trailGeo = new THREE.BufferGeometry();
-    trailGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    trailGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    let trailMat = new THREE.LineBasicMaterial({vertexColors: true, blending: THREE.AdditiveBlending, transparent: true});
-    let trail = new THREE.Line(trailGeo, trailMat);
-
-    carPivot.add(trail);
-    carPivot.add(sprite);
-    universoGroup.add(carPivot);
-    carritosInteractivos.push(sprite);
-  }
-}
-
-let posInicio = { x: 0, y: 0 }, tiempoInicio = 0;
-function onPointerDown(e) {
-  posInicio.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-  posInicio.y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-  tiempoInicio = Date.now();
-}
-
-function onPointerUp(e) {
-  let endX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : 0);
-  let endY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : 0);
-  
-  if (Math.hypot(endX - posInicio.x, endY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
-    mouse.x = (endX / window.innerWidth) * 2 - 1; mouse.y = -(endY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(carritosInteractivos, false);
-    if (intersects.length > 0) {
-      const obj = intersects[0].object; 
-      
-      if(obj.userData && obj.userData.mensaje) {
-        abrirModal(obj.userData.mensaje.t, obj.userData.mensaje.p);
-        const w = obj.userData.baseWidth || 160;
-        const h = obj.userData.baseHeight || 100;
-        obj.scale.set(w * 1.4, h * 1.4, 1); 
-        setTimeout(() => obj.scale.set(w, h, 1), 300);
-      }
-    }
-  }
-}
-
-function mostrarSecretoAgujeroNegro() {
-  let sec = document.createElement('div');
-  sec.id = 'pantalla-secreta';
-  sec.innerHTML = '<h1>MI UNIVERSO ERES TÚ</h1><p>Gracias por ser el centro de mi galaxia.<br>¡Feliz 30 de Septiembre!</p><button onclick="cerrarSecreto()">VOLVER A ÓRBITA</button>';
-  document.body.appendChild(sec);
-  setTimeout(() => sec.style.opacity = '1', 100);
-}
-
-window.cerrarSecreto = function() {
-  let sec = document.getElementById('pantalla-secreta');
-  sec.style.opacity = '0';
-  setTimeout(() => sec.remove(), 800);
-  let dir = camera.position.clone().normalize().multiplyScalar(500);
-  camera.position.copy(dir);
-  setTimeout(() => { window.secretoRevelado = false; }, 1000);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  universoGroup.rotation.y -= 0.0005;
-  if(anillosGalaxia.length === 3) {
-    anillosGalaxia[0].rotation.z -= 0.02; anillosGalaxia[1].rotation.z -= 0.008; anillosGalaxia[2].rotation.z -= 0.003;
-  }
-  
-  universoGroup.children.forEach(c => {
-    if(c.userData && c.userData.isPivot) {
-      c.rotation.y -= c.userData.velocidad;
-    } else if(c.userData && c.userData.isText) {
-      c.userData.anguloBase += c.userData.velocidad;
-      c.position.x = Math.cos(c.userData.anguloBase) * c.userData.radio;
-      c.position.z = Math.sin(c.userData.anguloBase) * c.userData.radio;
-    }
-  });
-
-  shootingStars.forEach(s => {
-    s.position.x += s.userData.vx;
-    s.position.y += s.userData.vy;
-    s.position.z += s.userData.vz;
-    if(s.position.y < -1500 || s.position.x > 4000 || s.position.x < -4000) resetShootingStar(s);
-  });
-
-  if(camera.position.length() < 190 && !window.secretoRevelado && document.getElementById('threeCanvas').style.display === 'block') {
-    window.secretoRevelado = true;
-    mostrarSecretoAgujeroNegro();
-  }
-
-  renderer.render(scene, camera);
-}
-</script>
+<!-- TU SCRIPT PROTEGIDO -->
+<script type="module" src="script.js"></script>
 </body>
 </html>
+
