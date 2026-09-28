@@ -109,7 +109,6 @@
   .l14 { top: 10%; right: 20%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 2.0s; }
   .l15 { top: 75%; left: 50%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 1.3s; }
   
-  /* Nuevas luces alrededor del cono/papel */
   .l16 { top: 75%; left: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.2s; width: 4px; height: 4px; }
   .l17 { top: 82%; right: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.6s; width: 5px; height: 5px; }
   .l18 { top: 80%; left: 45%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.1s; }
@@ -156,7 +155,6 @@
     100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
   }
   
-  /* Ajuste de posiciones: más centradas para que no se salgan en celular */
   .hw2 { --rot: -16deg; bottom: 205px; left: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
   .hw3 { --rot: 16deg;  bottom: 205px; right: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
   .hw1 { --rot: -30deg; bottom: 135px; left: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
@@ -192,8 +190,7 @@
   #threeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
   #ui-galaxia { position: absolute; top: 30px; width: 100%; text-align: center; z-index: 10; display: none; pointer-events: none; }
   #ui-galaxia h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); color: #fff; text-shadow: 0 0 20px #ff0055, 0 0 40px var(--neon-blue); font-weight: 800; font-family: 'Caveat', cursive; animation: flotar 3s infinite ease-in-out; }
-  #ui-galaxia p { margin-top: 10px; font-size: 1.1rem; color: #fff; background: rgba(0, 0, 20, 0.7); display: inline-block; padding: 8px 25px; border-radius: 30px; border: 1px solid var(--neon-blue); text-transform: uppercase; font-weight: bold; }
-
+  
   #modalMensaje {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.9);
     background: rgba(255, 255, 255, 0.98); border: 4px solid var(--primary-blue); border-radius: 20px;
@@ -207,6 +204,30 @@
   #modalTexto { font-size: 1.4rem; line-height: 1.4; margin-bottom: 30px; font-weight: 700; color: #333; font-family: 'Caveat', cursive;}
   .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
   .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
+
+  /* Polvo Estelar (Mouse/Touch Drag) */
+  .polvo-estelar {
+    position: fixed; width: 5px; height: 5px; background: #fff;
+    box-shadow: 0 0 10px 3px #00d4ff; border-radius: 50%; pointer-events: none;
+    z-index: 99999; animation: desvanecerPolvo 0.6s ease-out forwards;
+  }
+  @keyframes desvanecerPolvo {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
+  }
+
+  /* Pantalla Secreta Agujero Negro */
+  #pantalla-secreta {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); z-index: 20000; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.8s ease; text-align: center;
+    box-shadow: inset 0 0 150px #9b00ff;
+  }
+  #pantalla-secreta h1 { font-family: 'Caveat', cursive; font-size: clamp(3rem, 8vw, 5rem); color: #fff; text-shadow: 0 0 20px #00d4ff, 0 0 40px #ff007f; margin-bottom: 20px; animation: latido 2s infinite; padding: 0 20px; }
+  #pantalla-secreta p { font-size: 1.5rem; color: #ddd; font-weight: bold; margin-bottom: 40px; padding: 0 20px; }
+  #pantalla-secreta button { background: transparent; border: 2px solid #00d4ff; color: #00d4ff; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.4); text-transform: uppercase; }
+  #pantalla-secreta button:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
 
   @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
@@ -262,7 +283,6 @@
         <div class="luciernaga l13"></div>
         <div class="luciernaga l14"></div>
         <div class="luciernaga l15"></div>
-        <!-- Luces base del cono -->
         <div class="luciernaga l16"></div>
         <div class="luciernaga l17"></div>
         <div class="luciernaga l18"></div>
@@ -292,7 +312,6 @@
 
 <div id="ui-galaxia">
   <h1>💙 Feliz 30 de Septiembre 💙</h1>
-  <p>👆 Gira el universo y toca un auto 🏎️</p>
 </div>
 
 <div id="modalMensaje">
@@ -346,6 +365,25 @@ function iniciarTransicionGalaxia() {
   }, 1500);
 }
 
+document.addEventListener('pointermove', (e) => {
+  if(document.getElementById('threeCanvas').style.display !== 'block') return;
+  if(e.buttons === 0 && !e.touches) return; 
+  let clientX = e.clientX; let clientY = e.clientY;
+  if(e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+  if(!clientX) return;
+
+  let star = document.createElement('div');
+  star.className = 'polvo-estelar';
+  star.style.left = clientX + 'px';
+  star.style.top = clientY + 'px';
+  let dx = (Math.random() - 0.5) * 60;
+  let dy = (Math.random() - 0.5) * 60 + 20;
+  star.style.setProperty('--dx', dx + 'px');
+  star.style.setProperty('--dy', dy + 'px');
+  document.body.appendChild(star);
+  setTimeout(() => star.remove(), 600);
+});
+
 const bancoDeMensajes = [
   { t: "MI MEJOR DECISIÓN", p: "Amarte ha sido la carrera más hermosa de mi vida." },
   { t: "SIN FRENOS", p: "Me enamoré de ti sin frenos y sin marcha atrás." },
@@ -388,8 +426,10 @@ let scene, camera, renderer, controls;
 let universoGroup = new THREE.Group();
 let carritosInteractivos = [];
 let anillosGalaxia = [];
+let shootingStars = [];
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+window.secretoRevelado = false;
 
 function initThreeJS() {
   scene = new THREE.Scene();
@@ -410,13 +450,14 @@ function initThreeJS() {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.8;
   controls.maxDistance = 2500;
-  controls.minDistance = 300;
+  controls.minDistance = 100; 
 
   scene.add(universoGroup);
 
   crearFondoEstelar();
   crearAgujeroNegroAnimado();
   crearGalaxia();
+  crearEstrellasFugaces();
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -451,6 +492,27 @@ function crearFondoEstelar() {
   scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xcceeff, size: 2, transparent: true, opacity: 0.6})));
 }
 
+function crearEstrellasFugaces() {
+  for(let i=0; i<8; i++) {
+    let geo = new THREE.CylinderGeometry(1, 4, 300, 4);
+    geo.rotateZ(Math.PI/2);
+    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending});
+    let star = new THREE.Mesh(geo, mat);
+    resetShootingStar(star);
+    scene.add(star);
+    shootingStars.push(star);
+  }
+}
+function resetShootingStar(star) {
+  star.position.set((Math.random()-0.5)*6000, Math.random()*2000 + 500, (Math.random()-0.5)*6000);
+  star.userData = {
+    vx: (Math.random()-0.5)*40 + 30,
+    vy: -Math.random()*20 - 10,
+    vz: (Math.random()-0.5)*40
+  };
+  star.lookAt(star.position.x + star.userData.vx, star.position.y + star.userData.vy, star.position.z + star.userData.vz);
+}
+
 function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: opacidad, wireframe: true });
@@ -482,7 +544,7 @@ function crearGalaxia() {
     const altura = (Math.random() - 0.5) * 800 * (1 - radio/2800); 
     const spriteTexto = crearSpriteTextoFlotante(frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)]);
     spriteTexto.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    spriteTexto.userData = { anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
+    spriteTexto.userData = { isText: true, anguloBase: angulo, radio: radio, velocidad: 0.0004 + Math.random() * 0.0008 };
     universoGroup.add(spriteTexto);
   }
 
@@ -501,22 +563,69 @@ function crearGalaxia() {
     if(textIdx === 4 || textIdx === 5) {
       baseHeight = 150;
     }
-    if(textIdx === 2) {
-      baseHeight = 65; 
-    }
     
-    sprite.scale.set(baseWidth, baseHeight, 1); 
-    sprite.position.set(Math.cos(angulo) * radio, altura, Math.sin(angulo) * radio);
-    
-    sprite.userData = { 
-      mensaje: mensajesAleatorios[i % mensajesAleatorios.length] || {t: "MI PILOTO", p: "Aceleras mi mundo entero 🏎️"}, 
-      anguloBase: angulo, radio: radio, velocidad: 0.001 + Math.random() * 0.0012,
-      baseWidth: baseWidth,
-      baseHeight: baseHeight
-    };
+    let carPivot = new THREE.Group();
+    carPivot.position.y = altura;
+    carPivot.rotation.y = angulo;
+    carPivot.userData = { isPivot: true, velocidad: 0.001 + Math.random() * 0.0012 };
 
-    carritosInteractivos.push(sprite); 
-    universoGroup.add(sprite);
+    let tColor = (i%3===0) ? 0x9b00ff : ((i%2===0) ? 0xff007f : 0x00d4ff);
+
+    if(i === 0) {
+      tColor = 0xffcc00;
+      sprite.material.color.setHex(0xffddaa);
+      baseWidth *= 1.4; baseHeight *= 1.4;
+      
+      const canvasGlow = document.createElement('canvas');
+      canvasGlow.width = 128; canvasGlow.height = 128;
+      const ctxG = canvasGlow.getContext('2d');
+      const grd = ctxG.createRadialGradient(64,64,10, 64,64,64);
+      grd.addColorStop(0, 'rgba(255, 204, 0, 1)');
+      grd.addColorStop(1, 'rgba(255, 204, 0, 0)');
+      ctxG.fillStyle = grd; ctxG.fillRect(0,0,128,128);
+      const glowTex = new THREE.CanvasTexture(canvasGlow);
+      const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: glowTex, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.8}));
+      glowSprite.scale.set(baseWidth*1.8, baseHeight*1.8, 1);
+      glowSprite.position.set(radio, 0, -5);
+      carPivot.add(glowSprite);
+
+      sprite.userData = { 
+        mensaje: {t: "✨ MI TESORO ✨", p: "Encontraste el auto dorado. Eres lo más valioso en mi universo entero. ¡Feliz 30 de Septiembre! ❤️"}, 
+        baseWidth: baseWidth, baseHeight: baseHeight 
+      };
+    } else {
+      sprite.userData = { 
+        mensaje: mensajesAleatorios[i % mensajesAleatorios.length] || {t: "MI PILOTO", p: "Aceleras mi mundo entero 🏎️"}, 
+        baseWidth: baseWidth, baseHeight: baseHeight
+      };
+    }
+
+    sprite.scale.set(baseWidth, baseHeight, 1); 
+    sprite.position.set(radio, 0, 0);
+
+    let positions = new Float32Array(20 * 3);
+    let colors = new Float32Array(20 * 3);
+    let tColorObj = new THREE.Color(tColor);
+    for(let j=0; j<20; j++) {
+      let a = -0.5 * (j/19);
+      positions[j*3] = Math.cos(a)*radio;
+      positions[j*3+1] = 0;
+      positions[j*3+2] = Math.sin(a)*radio;
+      let fade = Math.pow(1 - (j/19), 2);
+      colors[j*3] = tColorObj.r * fade;
+      colors[j*3+1] = tColorObj.g * fade;
+      colors[j*3+2] = tColorObj.b * fade;
+    }
+    let trailGeo = new THREE.BufferGeometry();
+    trailGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    trailGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    let trailMat = new THREE.LineBasicMaterial({vertexColors: true, blending: THREE.AdditiveBlending, transparent: true});
+    let trail = new THREE.Line(trailGeo, trailMat);
+
+    carPivot.add(trail);
+    carPivot.add(sprite);
+    universoGroup.add(carPivot);
+    carritosInteractivos.push(sprite);
   }
 }
 
@@ -534,7 +643,7 @@ function onPointerUp(e) {
   if (Math.hypot(endX - posInicio.x, endY - posInicio.y) < 15 && Date.now() - tiempoInicio < 400) {
     mouse.x = (endX / window.innerWidth) * 2 - 1; mouse.y = -(endY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(carritosInteractivos);
+    const intersects = raycaster.intersectObjects(carritosInteractivos, false);
     if (intersects.length > 0) {
       const obj = intersects[0].object; 
       
@@ -549,6 +658,23 @@ function onPointerUp(e) {
   }
 }
 
+function mostrarSecretoAgujeroNegro() {
+  let sec = document.createElement('div');
+  sec.id = 'pantalla-secreta';
+  sec.innerHTML = '<h1>MI UNIVERSO ERES TÚ</h1><p>Gracias por ser el centro de mi galaxia.<br>¡Feliz 30 de Septiembre!</p><button onclick="cerrarSecreto()">VOLVER A ÓRBITA</button>';
+  document.body.appendChild(sec);
+  setTimeout(() => sec.style.opacity = '1', 100);
+}
+
+window.cerrarSecreto = function() {
+  let sec = document.getElementById('pantalla-secreta');
+  sec.style.opacity = '0';
+  setTimeout(() => sec.remove(), 800);
+  let dir = camera.position.clone().normalize().multiplyScalar(500);
+  camera.position.copy(dir);
+  setTimeout(() => { window.secretoRevelado = false; }, 1000);
+}
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -556,13 +682,29 @@ function animate() {
   if(anillosGalaxia.length === 3) {
     anillosGalaxia[0].rotation.z -= 0.02; anillosGalaxia[1].rotation.z -= 0.008; anillosGalaxia[2].rotation.z -= 0.003;
   }
+  
   universoGroup.children.forEach(c => {
-    if(c.userData && c.userData.radio) {
+    if(c.userData && c.userData.isPivot) {
+      c.rotation.y -= c.userData.velocidad;
+    } else if(c.userData && c.userData.isText) {
       c.userData.anguloBase += c.userData.velocidad;
       c.position.x = Math.cos(c.userData.anguloBase) * c.userData.radio;
       c.position.z = Math.sin(c.userData.anguloBase) * c.userData.radio;
     }
   });
+
+  shootingStars.forEach(s => {
+    s.position.x += s.userData.vx;
+    s.position.y += s.userData.vy;
+    s.position.z += s.userData.vz;
+    if(s.position.y < -1500 || s.position.x > 4000 || s.position.x < -4000) resetShootingStar(s);
+  });
+
+  if(camera.position.length() < 190 && !window.secretoRevelado && document.getElementById('threeCanvas').style.display === 'block') {
+    window.secretoRevelado = true;
+    mostrarSecretoAgujeroNegro();
+  }
+
   renderer.render(scene, camera);
 }
 </script>
