@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWQoG9z9hs62RSLhUUB-IDHpbWHvWWeCc",
@@ -9,6 +10,95 @@ const firebaseConfig = {
   messagingSenderId: "731044845743",
   appId: "1:731044845743:web:8bd3fe431832c4862d1c5a",
   measurementId: "G-3DWY1YM28Z"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// 🛑 PON TU CORREO PERSONAL AQUÍ (Tú eres el administrador supremo)
+const TU_CORREO_ADMIN = "andyodar2122@gmail.com"; 
+
+// ... (mantén tus funciones de Cloudinary, Three.js, etc., aquí abajo)
+
+// ==========================================
+// SISTEMA DE SEGURIDAD Y ACCESOS
+// ==========================================
+document.getElementById('btnLoginGoogle').onclick = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    verificarPermisosUsuario(user);
+  } catch (error) {
+    console.error("Error en el login:", error);
+  }
+};
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    verificarPermisosUsuario(user);
+  } else {
+    // Si no está logueado, ocultamos el botón de crear
+    const btnCreador = document.getElementById('btnAbrirCreador');
+    if(btnCreador) btnCreador.style.display = 'none';
+    document.getElementById('btnLoginGoogle').innerText = "🔑 Acceso Creador";
+  }
+});
+
+async function verificarPermisosUsuario(user) {
+  const correo = user.email;
+  document.getElementById('btnLoginGoogle').innerText = `👤 ${user.displayName.split(' ')[0]}`;
+
+  // 1. Si eres tú el administrador, acceso total inmediato
+  if (correo === TU_CORREO_ADMIN) {
+    activarPanelCreador();
+    return;
+  }
+
+  // 2. Revisar en Firestore si su correo está en la lista de permitidos
+  const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists() && docSnap.data().aprobado === true) {
+    // ¡Aprobado! Mostrar botón de crear
+    activarPanelCreador();
+  } else {
+    // No está aprobado o es primera vez que pide acceso
+    await setDoc(docRef, {
+      email: correo,
+      nombre: user.displayName,
+      aprobado: false,
+      fechaSolicitud: new Date().toISOString()
+    }, { merge: true });
+
+    // Mostrar ventana de espera
+    document.getElementById('textoEspera').innerText = `Hola ${user.displayName}, tu cuenta está registrada pero el administrador (Andy) aún no aprueba tu acceso para crear ramos. ¡Pídele que te autorice!`;
+    document.getElementById('modalEspera').style.display = 'flex';
+  }
+}
+
+function activarPanelCreador() {
+  // Asegurarnos de que el botón de abrir creador aparezca solo si no estamos viendo un enlace compartido `?id=`
+  const urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.get('id')) {
+    let btnCreador = document.getElementById('btnAbrirCreador');
+    if (!btnCreador) {
+      // Si el botón no existe en el HTML, lo creamos flotante
+      btnCreador = document.createElement('button');
+      btnCreador.id = 'btnAbrirCreador';
+      btnCreador.innerText = "✨ Crear tu propio ramo";
+      btnCreador.style.cssText = "position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3);";
+      btnCreador.onclick = () => document.getElementById('panelCreacion').style.display = 'flex';
+      document.body.appendChild(btnCreador);
+    }
+    btnCreador.style.display = 'block';
+  }
+}
+
+window.cerrarEspera = () => {
+  document.getElementById('modalEspera').style.display = 'none';
+  signOut(auth);
 };
 
 const CLOUD_NAME = "d3xvtf0l"; 
