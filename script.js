@@ -332,26 +332,36 @@ function resetShootingStar(star) {
 function crearAgujeroNegroAnimado() {
   const diskGroup = new THREE.Group();
   
-  // Solución para las líneas negras: Usar materiales con depthWrite y blending limpio sin wireframes agresivos
+  // Materiales dinámicos con wireframe y texturas translúcidas como antes
   const matAnillo = (color, opacidad) => new THREE.MeshBasicMaterial({ 
     color: color, 
     side: THREE.DoubleSide, 
     transparent: true, 
     opacity: opacidad, 
-    depthWrite: false,
-    blending: THREE.AdditiveBlending
+    wireframe: true 
   });
 
-  const ring1 = new THREE.Mesh(new THREE.RingGeometry(180, 280, 64, 6), matAnillo(0xe0ffff, 0.8));
-  const ring2 = new THREE.Mesh(new THREE.RingGeometry(280, 400, 64, 4), matAnillo(0x00aaff, 0.5));
-  const ring3 = new THREE.Mesh(new THREE.RingGeometry(400, 650, 64, 2), matAnillo(0x0055ff, 0.25));
+  const ring1 = new THREE.Mesh(
+    new THREE.RingGeometry(180, 260, 64, 4), 
+    new THREE.MeshBasicMaterial({ color: 0xe0ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9 })
+  );
+  
+  const ring2 = new THREE.Mesh(
+    new THREE.RingGeometry(260, 360, 64, 2), 
+    matAnillo(0x00aaff, 0.4)
+  );
+  
+  const ring3 = new THREE.Mesh(
+    new THREE.RingGeometry(360, 550, 64, 1), 
+    matAnillo(0x0055ff, 0.15)
+  );
   
   anillosGalaxia.push(ring1, ring2, ring3);
   diskGroup.add(ring1, ring2, ring3);
   diskGroup.rotation.x = Math.PI / 2;
   universoGroup.add(diskGroup);
   
-  // Esfera central negra
+  // Esfera central negra del agujero
   universoGroup.add(new THREE.Mesh(new THREE.SphereGeometry(175, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
 }
 
