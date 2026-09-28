@@ -108,6 +108,16 @@
   .l13 { top: 45%; right: 5%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 0.4s; }
   .l14 { top: 10%; right: 20%; background: #9b00ff; box-shadow: 0 0 15px 4px #9b00ff; animation-delay: 2.0s; }
   .l15 { top: 75%; left: 50%; background: #00d4ff; box-shadow: 0 0 15px 4px #00d4ff; animation-delay: 1.3s; }
+  
+  /* Nuevas luces alrededor del cono/papel */
+  .l16 { top: 75%; left: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.2s; width: 4px; height: 4px; }
+  .l17 { top: 82%; right: 38%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.6s; width: 5px; height: 5px; }
+  .l18 { top: 80%; left: 45%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.1s; }
+  .l19 { top: 72%; right: 43%; background: #ffcc00; box-shadow: 0 0 10px 3px #ffcc00; animation-delay: 0.9s; width: 5px; height: 5px; }
+  .l20 { top: 88%; left: 47%; background: #9b00ff; box-shadow: 0 0 10px 3px #9b00ff; animation-delay: 1.4s; }
+  .l21 { top: 85%; right: 47%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 0.5s; width: 4px; height: 4px; }
+  .l22 { top: 78%; left: 32%; background: #00d4ff; box-shadow: 0 0 10px 3px #00d4ff; animation-delay: 2.8s; }
+  .l23 { top: 76%; right: 32%; background: #ffffff; box-shadow: 0 0 10px 3px #ffffff; animation-delay: 1.1s; width: 5px; height: 5px; }
 
   @keyframes flotarLuz {
     0% { transform: translate(0, 0) scale(0.6); opacity: 0.3; }
@@ -146,10 +156,11 @@
     100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
   }
   
-  .hw2 { --rot: -18deg; bottom: 200px; left: 105px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
-  .hw3 { --rot: 18deg;  bottom: 200px; right: 105px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
-  .hw1 { --rot: -35deg; bottom: 130px; left: 40px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
-  .hw4 { --rot: 35deg;  bottom: 130px; right: 40px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
+  /* Ajuste de posiciones: más centradas para que no se salgan en celular */
+  .hw2 { --rot: -16deg; bottom: 205px; left: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
+  .hw3 { --rot: 16deg;  bottom: 205px; right: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
+  .hw1 { --rot: -30deg; bottom: 135px; left: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
+  .hw4 { --rot: 30deg;  bottom: 135px; right: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
   .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
 
   #btnGalaxia {
@@ -251,6 +262,15 @@
         <div class="luciernaga l13"></div>
         <div class="luciernaga l14"></div>
         <div class="luciernaga l15"></div>
+        <!-- Luces base del cono -->
+        <div class="luciernaga l16"></div>
+        <div class="luciernaga l17"></div>
+        <div class="luciernaga l18"></div>
+        <div class="luciernaga l19"></div>
+        <div class="luciernaga l20"></div>
+        <div class="luciernaga l21"></div>
+        <div class="luciernaga l22"></div>
+        <div class="luciernaga l23"></div>
       </div>
 
       <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
@@ -477,8 +497,12 @@ function crearGalaxia() {
     
     let baseWidth = 160;
     let baseHeight = 100;
+    
     if(textIdx === 4 || textIdx === 5) {
       baseHeight = 150;
+    }
+    if(textIdx === 2) {
+      baseHeight = 65; 
     }
     
     sprite.scale.set(baseWidth, baseHeight, 1); 
