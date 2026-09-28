@@ -146,10 +146,10 @@
     100% { transform: translateY(0) scale(1) rotate(var(--rot)); opacity: 1; } 
   }
   
-  .hw2 { --rot: -22deg; bottom: 200px; left: 75px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
-  .hw3 { --rot: 22deg;  bottom: 200px; right: 75px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
-  .hw1 { --rot: -40deg; bottom: 130px; left: 15px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
-  .hw4 { --rot: 40deg;  bottom: 130px; right: 15px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
+  .hw2 { --rot: -18deg; bottom: 200px; left: 105px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.7s; }
+  .hw3 { --rot: 18deg;  bottom: 200px; right: 105px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
+  .hw1 { --rot: -35deg; bottom: 130px; left: 40px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
+  .hw4 { --rot: 35deg;  bottom: 130px; right: 40px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
   .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
 
   #btnGalaxia {
@@ -272,6 +272,7 @@
 
 <div id="ui-galaxia">
   <h1>💙 Feliz 30 de Septiembre 💙</h1>
+  <p>👆 Gira el universo y toca un auto 🏎️</p>
 </div>
 
 <div id="modalMensaje">
@@ -476,8 +477,8 @@ function crearGalaxia() {
     
     let baseWidth = 160;
     let baseHeight = 100;
-    if(textIdx === 4) {
-      baseHeight = 120;
+    if(textIdx === 4 || textIdx === 5) {
+      baseHeight = 150;
     }
     
     sprite.scale.set(baseWidth, baseHeight, 1); 
