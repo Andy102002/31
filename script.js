@@ -56,7 +56,7 @@ async function iniciarApp() {
         if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
         if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
         
-        // Ocultar autenticación si es un enlace compartido de regalo
+        // Ocultar botón de solicitud si es un enlace de regalo compartido
         const contenedorAuth = document.getElementById('contenedorAuth');
         if(contenedorAuth) contenedorAuth.style.display = 'none';
       }
@@ -96,7 +96,7 @@ function dibujarCartas() {
 }
 
 // ==========================================
-// 3. SISTEMA DE AUTENTICACIÓN Y ACCESOS ESTRICTOS
+// 3. SISTEMA DE SOLICITUD Y ACCESOS
 // ==========================================
 const btnLogin = document.getElementById('btnLoginGoogle');
 if (btnLogin) {
@@ -114,9 +114,8 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     verificarPermisosUsuario(user);
   } else {
-    // Si nadie ha iniciado sesión, ocultamos completamente los botones de creación
     ocultarPanelCreador();
-    if(btnLogin) btnLogin.innerText = "🔑 Acceso Creador";
+    if(btnLogin) btnLogin.innerText = "✨ Solicitar acceso de Creador";
   }
 });
 
@@ -124,20 +123,20 @@ async function verificarPermisosUsuario(user) {
   const correo = user.email;
   if(btnLogin) btnLogin.innerText = `👤 ${user.displayName.split(' ')[0]}`;
 
-  // 1. Si eres tú el administrador supremo
+  // Si eres tú el admin
   if (correo === TU_CORREO_ADMIN) {
     activarPanelCreador();
     return;
   }
 
-  // 2. Revisar en Firestore si el correo está autorizado
+  // Revisar si ya fue aprobado en Firestore
   const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists() && docSnap.data().aprobado === true) {
     activarPanelCreador();
   } else {
-    // Registrar solicitud pendiente y OCULTAR los botones de creación para este usuario
+    // Registrar solicitud pendiente
     await setDoc(docRef, {
       email: correo,
       nombre: user.displayName,
@@ -149,7 +148,7 @@ async function verificarPermisosUsuario(user) {
 
     const textoEspera = document.getElementById('textoEspera');
     const modalEspera = document.getElementById('modalEspera');
-    if(textoEspera) textoEspera.innerText = `Hola ${user.displayName}, tu cuenta está registrada pero el administrador aún no aprueba tu acceso para crear ramos.`;
+    if(textoEspera) textoEspera.innerText = `Hola ${user.displayName} (${correo}), tu solicitud ha sido enviada al administrador. En cuanto acepte tu acceso, podrás crear tus propios ramos.`;
     if(modalEspera) modalEspera.style.display = 'flex';
   }
 }
@@ -158,7 +157,15 @@ function activarPanelCreador() {
   const urlParams = new URLSearchParams(window.location.search);
   if (!urlParams.get('id')) {
     let btnCreador = document.getElementById('btnAbrirCreador');
-    if (btnCreador) btnCreador.style.display = 'block';
+    if (!btnCreador) {
+      btnCreador = document.createElement('button');
+      btnCreador.id = 'btnAbrirCreador';
+      btnCreador.innerText = "✨ Crear tu propio ramo";
+      btnCreador.style.cssText = "position: fixed; bottom: 15px; right: 15px; z-index: 25000; background: rgba(0,212,255,0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 15px rgba(0,212,255,0.3);";
+      btnCreador.onclick = () => document.getElementById('panelCreacion').style.display = 'flex';
+      document.body.appendChild(btnCreador);
+    }
+    btnCreador.style.display = 'block';
   }
 }
 
@@ -175,12 +182,9 @@ window.cerrarEspera = () => {
   signOut(auth);
 };
 
-// Abrir y cerrar panel de creación solo si está autorizado
-const btnAbrir = document.getElementById('btnAbrirCreador');
+// Abrir/Cerrar panel creador
 const btnCerrar = document.getElementById('btnCerrarCreador');
 const panelCreacion = document.getElementById('panelCreacion');
-
-if(btnAbrir && panelCreacion) btnAbrir.onclick = () => panelCreacion.style.display = 'flex';
 if(btnCerrar && panelCreacion) btnCerrar.onclick = () => panelCreacion.style.display = 'none';
 
 // ==========================================
