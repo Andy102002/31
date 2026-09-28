@@ -125,18 +125,14 @@
 
   .cajas-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
   
-  /* ESTILOS NUEVOS PARA USAR LA PLANTILLA.PNG */
   .blister-card {
     --rot: 0deg; 
-    position: absolute; width: 95px; height: 140px; pointer-events: auto;
-    background-image: url('plantilla.png'); /* Usamos tu plantilla */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 5px; /* Suaviza las esquinas */
+    position: absolute; width: 85px; height: 130px; pointer-events: auto;
+    background: linear-gradient(180deg, #0a1f44 0%, #020617 100%);
+    border-radius: 8px 8px 5px 5px; 
+    border: 2px solid rgba(100, 180, 255, 0.7);
     box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 10px rgba(0, 212, 255, 0.3); 
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; /* Alineamos el auto abajo */
-    padding-bottom: 15px; /* Espacio debajo de la burbuja */
+    display: flex; flex-direction: column; align-items: center;
     cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: bottom center;
     transform: rotate(var(--rot));
@@ -148,16 +144,10 @@
     box-shadow: 0 15px 40px var(--neon-blue); filter: brightness(1.2); 
   }
   
-  /* Modificamos la burbuja para que parezca el plástico encima del cartón */
-  .blister-burbuja { 
-    width: 85%; height: 60px; 
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%); 
-    border-radius: 8px; 
-    border: 1px solid rgba(255,255,255,0.6); 
-    display: flex; justify-content: center; align-items: center; 
-    box-shadow: inset 0 5px 15px rgba(255,255,255,0.4), 0 5px 10px rgba(0,0,0,0.5); 
-  }
-  .blister-auto-img { width: 90%; height: auto; max-height: 50px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
+  .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
+  .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .blister-burbuja { width: 85%; height: 70px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%); border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.5); }
+  .blister-auto-img { width: 90%; height: auto; max-height: 55px; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
 
   @keyframes saltarAuto { 
     0% { transform: translateY(150px) scale(0) rotate(var(--rot)); opacity: 0; } 
@@ -169,7 +159,7 @@
   .hw3 { --rot: 16deg;  bottom: 205px; right: 125px; z-index: 15; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.9s; }
   .hw1 { --rot: -30deg; bottom: 135px; left: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.1s; }
   .hw4 { --rot: 30deg;  bottom: 135px; right: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s; }
-  .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -47.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
+  .hw5 { --rot: 0deg;   bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 30; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;}
 
   #btnGalaxia {
     position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
@@ -215,6 +205,7 @@
   .btn-cerrar { background: var(--primary-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 15px rgba(0, 85, 255, 0.4); transition: 0.2s; }
   .btn-cerrar:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0, 85, 255, 0.6); }
 
+  /* Polvo Estelar (Mouse/Touch Drag) */
   .polvo-estelar {
     position: fixed; width: 5px; height: 5px; background: #fff;
     box-shadow: 0 0 10px 3px #00d4ff; border-radius: 50%; pointer-events: none;
@@ -225,6 +216,7 @@
     100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
   }
 
+  /* Pantalla Secreta Agujero Negro */
   #pantalla-secreta {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.95); z-index: 20000; display: flex;
@@ -236,6 +228,13 @@
   #pantalla-secreta p { font-size: 1.5rem; color: #ddd; font-weight: bold; margin-bottom: 40px; padding: 0 20px; }
   #pantalla-secreta button { background: transparent; border: 2px solid #00d4ff; color: #00d4ff; padding: 15px 40px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 0 15px rgba(0,212,255,0.4); text-transform: uppercase; }
   #pantalla-secreta button:hover { background: #00d4ff; color: #000; box-shadow: 0 0 30px #00d4ff; }
+
+  @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes latidoLazo { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes nacerBoton { 0% { transform: translateX(-50%) scale(0); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -265,12 +264,11 @@
     <div class="capa-fondo"></div>
     
     <div class="cajas-container">
-      <!-- HTML MODIFICADO PARA LAS CARTAS -->
       <div class="blister-card hw2" onclick="abrirModal('TE AMO', 'No necesito un calendario para recordarte cuánto significas para mí ❤️')">
-        <div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto2.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
       <div class="blister-card hw3" onclick="abrirModal('TE ADORO', 'Recuerda que eres capaz de todo. Yo creo en ti siempre ❤️')">
-        <div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto3.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
 
       <div class="capa-frente"></div>
@@ -296,13 +294,13 @@
       </div>
 
       <div class="blister-card hw1" onclick="abrirModal('ERES MI ALEGRÍA', 'Tu alegría hace que mi vida sea más bonita 😍')">
-        <div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto1.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
       <div class="blister-card hw4" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
-        <div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
       <div class="blister-card hw5" onclick="abrirModal('MI PILOTO', 'Aceleras mi mundo en cada kilómetro recorrido 🏎️')">
-        <div class="blister-burbuja"><img src="auto5.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
+        <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto5.png" class="blister-auto-img" onerror="this.style.display='none'"></div>
       </div>
     </div>
     
