@@ -43,8 +43,12 @@ let configuracionRegalo = {
 async function iniciarApp() {
   const urlParams = new URLSearchParams(window.location.search);
   const regaloId = urlParams.get('id');
+  const contenedorAuth = document.getElementById('contenedorAuth');
 
   if (regaloId) {
+    // Es un enlace compartido: Nos aseguramos de mantener oculto el auth y el creador
+    if(contenedorAuth) contenedorAuth.style.display = 'none';
+    
     try {
       const docRef = doc(db, "regalos", regaloId);
       const docSnap = await getDoc(docRef);
@@ -55,15 +59,11 @@ async function iniciarApp() {
         if(data.fotoUrl) configuracionRegalo.fotoCentral = data.fotoUrl;
         if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
         if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
-        
-        // 🛑 OCULTAR COMPLETAMENTE LOS BOTONES DE ACCESO Y CREACIÓN EN ENLACES COMPARTIDOS
-        const contenedorAuth = document.getElementById('contenedorAuth');
-        if(contenedorAuth) contenedorAuth.style.display = 'none';
-
-        const btnCreador = document.getElementById('btnAbrirCreador');
-        if(btnCreador) btnCreador.style.display = 'none';
       }
     } catch (e) { console.error("Error al cargar datos del regalo"); }
+  } else {
+    // Es la página principal (sin ?id=): Mostramos el botón de acceso de forma limpia
+    if(contenedorAuth) contenedorAuth.style.display = 'flex';
   }
 
   document.getElementById('tituloDinamico').innerText = configuracionRegalo.titulo;
