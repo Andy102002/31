@@ -246,18 +246,18 @@
 
 <audio id="musicaFondo" loop crossorigin="anonymous"><source src="cancion.mp3" type="audio/mpeg"></audio>
 
-<!-- BOTÓN DE ACCESO / LOGIN -->
+<!-- BOTÓN DE SOLICITUD DE ACCESO -->
 <div id="contenedorAuth" style="position: fixed; top: 15px; right: 15px; z-index: 25000; display: flex; gap: 10px; align-items: center;">
-  <button id="btnLoginGoogle" style="background: rgba(255,255,255,0.1); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px);">🔑 Acceso Creador</button>
+  <button id="btnLoginGoogle" style="background: rgba(0,212,255,0.15); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,212,255,0.2);">✨ Solicitar acceso de Creador</button>
   <span id="usuarioLogueado" style="font-size: 0.8rem; color: #aaa;"></span>
 </div>
 
-<!-- PANEL DE ESPERA SI NO ESTÁS APROBADO -->
+<!-- MODAL DE ESPERA / SOLICITUD ENVIADA -->
 <div id="modalEspera" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,8,20,0.95); z-index: 40000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
-  <div class="form-box" style="max-width: 400px;">
-    <h2 style="color: var(--neon-blue);">Solicitud de Acceso</h2>
-    <p id="textoEspera" style="font-size: 1rem; color: #ddd; margin-bottom: 20px;"></p>
-    <button class="btn-crear" onclick="cerrarEspera()">Entendido</button>
+  <div class="form-box" style="max-width: 400px; background: rgba(15,20,35,0.95); border: 1px solid var(--neon-blue); padding: 30px; border-radius: 15px; box-shadow: 0 0 30px rgba(0,212,255,0.3);">
+    <h2 style="color: var(--neon-blue); margin-bottom: 15px;">Solicitud Enviada 🚀</h2>
+    <p id="textoEspera" style="font-size: 0.950rem; color: #ddd; margin-bottom: 25px; line-height: 1.5;"></p>
+    <button class="btn-crear" onclick="cerrarEspera()" style="background: var(--neon-blue); color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer;">Entendido</button>
   </div>
 </div>
   
