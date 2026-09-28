@@ -253,18 +253,34 @@
 <div id="panelCreacion">
   <div class="form-box">
     <h2>Personaliza tu Regalo</h2>
+    
     <div class="form-group">
       <label>Título principal (ej. Feliz 30 de Septiembre):</label>
       <input type="text" id="inputTitulo" value="Feliz 30 de Septiembre">
     </div>
+
     <div class="form-group">
-      <label>Mensaje secreto de la carta central:</label>
+      <label>Mensaje secreto de la carta central (Ramo):</label>
       <textarea id="inputMsgCentral">Aceleras mi mundo en cada kilómetro recorrido 🏎️</textarea>
     </div>
+
     <div class="form-group">
-      <label>Sube una foto para el centro (Opcional):</label>
+      <label>Sube una foto para el centro (Ramo) (Opcional):</label>
       <input type="file" id="inputFoto" accept="image/*">
     </div>
+
+    <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 15px 0;">
+
+    <div class="form-group">
+      <label>Mensaje secreto del centro de la galaxia:</label>
+      <textarea id="inputMsgGalaxia">Gracias por ser el centro de mi galaxia. ¡Feliz 30 de Septiembre!</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Sube una foto para el centro de la galaxia (Opcional):</label>
+      <input type="file" id="inputFotoGalaxia" accept="image/*">
+    </div>
+
     <button class="btn-crear" id="btnGenerarEnlace">Generar Enlace Mágico</button>
     <div id="resultadoEnlace" style="margin-top: 15px; word-break: break-all; font-size: 0.9rem; color: var(--neon-blue); text-align: center;"></div>
   </div>
