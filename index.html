@@ -133,14 +133,21 @@
     border: 2px solid rgba(100, 180, 255, 0.7);
     box-shadow: 0 10px 25px rgba(0,0,0,0.8), 0 0 10px rgba(0, 212, 255, 0.3); 
     display: flex; flex-direction: column; align-items: center;
-    cursor: pointer; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer; 
+    /* Cambiamos el comportamiento de la transición para evitar saltos raros */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
     transform-origin: bottom center;
     transform: rotate(var(--rot));
+    /* Por defecto están detrás de la capa de frente (capa-frente tiene z-index: 20) */
+    z-index: 12 !important; 
   }
+
   .blister-card:hover { 
     transform: translateY(-20px) scale(1.3) rotate(var(--rot)) !important; 
-    z-index: 100 !important; 
-    box-shadow: 0 15px 40px var(--neon-blue); filter: brightness(1.2); 
+    /* Al pasar el mouse suben por encima de todo para verse bien */
+    z-index: 35 !important; 
+    box-shadow: 0 15px 40px var(--neon-blue); 
+    filter: brightness(1.2); 
   }
   .blister-hueco { width: 25px; height: 8px; background: var(--bg-dark); border-radius: 0 0 10px 10px; border: 1px solid rgba(255,255,255,0.4); border-top: none; margin-bottom: 5px; }
   .blister-logo { background: #e60000; color: #ffcc00; font-size: 0.5rem; font-weight: 900; font-style: italic; padding: 2px 8px; border-radius: 12px; border: 1px solid #fff; margin-top: 6px; margin-bottom: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
