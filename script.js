@@ -56,11 +56,9 @@ async function iniciarApp() {
         if(data.mensajeGalaxia) configuracionRegalo.mensajeGalaxia = data.mensajeGalaxia;
         if(data.fotoGalaxia) configuracionRegalo.fotoGalaxia = data.fotoGalaxia;
         
-        // Ocultar botones de acceso si es un enlace compartido
+        // Ocultar autenticación si es un enlace compartido de regalo
         const contenedorAuth = document.getElementById('contenedorAuth');
         if(contenedorAuth) contenedorAuth.style.display = 'none';
-        const btnCreador = document.getElementById('btnAbrirCreador');
-        if(btnCreador) btnCreador.style.display = 'none';
       }
     } catch (e) { console.error("Error al cargar datos del regalo"); }
   }
@@ -98,7 +96,7 @@ function dibujarCartas() {
 }
 
 // ==========================================
-// 3. SISTEMA DE AUTENTICACIÓN Y ACCESOS
+// 3. SISTEMA DE AUTENTICACIÓN Y ACCESOS ESTRICTOS
 // ==========================================
 const btnLogin = document.getElementById('btnLoginGoogle');
 if (btnLogin) {
@@ -116,8 +114,8 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     verificarPermisosUsuario(user);
   } else {
-    const btnCreador = document.getElementById('btnAbrirCreador');
-    if(btnCreador) btnCreador.style.display = 'none';
+    // Si nadie ha iniciado sesión, ocultamos completamente los botones de creación
+    ocultarPanelCreador();
     if(btnLogin) btnLogin.innerText = "🔑 Acceso Creador";
   }
 });
@@ -126,23 +124,28 @@ async function verificarPermisosUsuario(user) {
   const correo = user.email;
   if(btnLogin) btnLogin.innerText = `👤 ${user.displayName.split(' ')[0]}`;
 
+  // 1. Si eres tú el administrador supremo
   if (correo === TU_CORREO_ADMIN) {
     activarPanelCreador();
     return;
   }
 
+  // 2. Revisar en Firestore si el correo está autorizado
   const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists() && docSnap.data().aprobado === true) {
     activarPanelCreador();
   } else {
+    // Registrar solicitud pendiente y OCULTAR los botones de creación para este usuario
     await setDoc(docRef, {
       email: correo,
       nombre: user.displayName,
       aprobado: false,
       fechaSolicitud: new Date().toISOString()
     }, { merge: true });
+
+    ocultarPanelCreador();
 
     const textoEspera = document.getElementById('textoEspera');
     const modalEspera = document.getElementById('modalEspera');
@@ -159,13 +162,20 @@ function activarPanelCreador() {
   }
 }
 
+function ocultarPanelCreador() {
+  let btnCreador = document.getElementById('btnAbrirCreador');
+  if (btnCreador) btnCreador.style.display = 'none';
+  const panel = document.getElementById('panelCreacion');
+  if (panel) panel.style.display = 'none';
+}
+
 window.cerrarEspera = () => {
   const modalEspera = document.getElementById('modalEspera');
   if(modalEspera) modalEspera.style.display = 'none';
   signOut(auth);
 };
 
-// Abrir y cerrar panel de creación
+// Abrir y cerrar panel de creación solo si está autorizado
 const btnAbrir = document.getElementById('btnAbrirCreador');
 const btnCerrar = document.getElementById('btnCerrarCreador');
 const panelCreacion = document.getElementById('panelCreacion');
@@ -646,7 +656,6 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// Arrancar validando al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   iniciarApp();
 });
