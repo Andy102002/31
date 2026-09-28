@@ -46,7 +46,6 @@ async function iniciarApp() {
   const contenedorAuth = document.getElementById('contenedorAuth');
 
   if (regaloId) {
-    // Es un enlace compartido: Nos aseguramos de mantener oculto el auth y el creador
     if(contenedorAuth) contenedorAuth.style.display = 'none';
     
     try {
@@ -62,7 +61,6 @@ async function iniciarApp() {
       }
     } catch (e) { console.error("Error al cargar datos del regalo"); }
   } else {
-    // Es la página principal (sin ?id=): Mostramos el botón de acceso de forma limpia
     if(contenedorAuth) contenedorAuth.style.display = 'flex';
   }
 
@@ -126,20 +124,17 @@ async function verificarPermisosUsuario(user) {
   const correo = user.email;
   if(btnLogin) btnLogin.innerText = `👤 ${user.displayName.split(' ')[0]}`;
 
-  // Si eres tú el admin
   if (correo === TU_CORREO_ADMIN) {
     activarPanelCreador();
     return;
   }
 
-  // Revisar si ya fue aprobado en Firestore
   const docRef = doc(db, "usuariosPermitidos", correo.replace(/\./g, '_'));
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists() && docSnap.data().aprobado === true) {
     activarPanelCreador();
   } else {
-    // Registrar solicitud pendiente
     await setDoc(docRef, {
       email: correo,
       nombre: user.displayName,
@@ -156,21 +151,8 @@ async function verificarPermisosUsuario(user) {
   }
 }
 
-ocultarPanelCreador();
-
-    const textoEspera = document.getElementById('textoEspera');
-    const modalEspera = document.getElementById('modalEspera');
-    if(textoEspera) textoEspera.innerText = `Hola ${user.displayName} (${correo}), tu solicitud ha sido enviada al administrador. En cuanto acepte tu acceso, podrás crear tus propios ramos.`;
-    if(modalEspera) modalEspera.style.display = 'flex';
-  }
-}
-
-// ==========================================
-// AQUÍ EMPIEZA EL CAMBIO EXACTO:
-// ==========================================
 function activarPanelCreador() {
   const urlParams = new URLSearchParams(window.location.search);
-  // Solo mostramos el botón si NO estamos viendo un enlace de regalo compartido (?id=...)
   if (!urlParams.get('id')) {
     let btnCreador = document.getElementById('btnAbrirCreador');
     if (btnCreador) {
@@ -196,7 +178,6 @@ window.cerrarEspera = () => {
   signOut(auth);
 };
 
-// Abrir/Cerrar panel creador
 const btnCerrar = document.getElementById('btnCerrarCreador');
 const panelCreacion = document.getElementById('panelCreacion');
 if(btnCerrar && panelCreacion) btnCerrar.onclick = () => panelCreacion.style.display = 'none';
