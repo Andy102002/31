@@ -88,12 +88,30 @@ function dibujarCartas() {
     <div class="blister-card hw4" style="--rot: 30deg; bottom: 135px; right: 75px; z-index: 25; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.3s;" onclick="abrirModal('ERES VALIOSO', 'Quiero desearte todo el éxito del mundo en cada meta que persigas 🥰')">
       <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div><div class="blister-burbuja"><img src="auto4.png" class="blister-auto-img"></div>
     </div>
-    
-    <div class="blister-card hw5" style="--rot: 0deg; bottom: 110px; left: 50%; margin-left: -42.5px; z-index: 35; position: relative; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;" onclick="abrirModal('PARA TI', '${configuracionRegalo.mensajeCentral}')">
-      <div class="blister-hueco"></div><div class="blister-logo">HOT WHEELS</div>
-      <div class="blister-burbuja"><img src="${configuracionRegalo.fotoCentral}" class="blister-auto-img" style="border-radius:5px; object-fit:cover; width:100%; height:100%;"></div>
-    </div>
   `;
+
+  // Agregamos el carrito del centro DIRECTAMENTE DESPUÉS de que cargue el contenedor de la capa frontal en el HTML principal
+  // O podemos inyectarlo asegurando que quede al frente del ramo:
+  const contenedorRamoMaster = document.querySelector('.ramo-master');
+  if (contenedorRamoMaster) {
+    // Si ya existe un carrito central previo, lo removemos para evitar duplicados
+    let viejoCentro = document.getElementById('carritoCentralFrente');
+    if (viejoCentro) viejoCentro.remove();
+
+    let divCentro = document.createElement('div');
+    divCentro.id = 'carritoCentralFrente';
+    divCentro.className = 'blister-card hw5';
+    divCentro.style.cssText = "--rot: 0deg; bottom: 110px; left: 50%; margin-left: -42.5px; position: absolute; z-index: 35; animation: saltarAuto 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.5s;";
+    divCentro.onclick = () => abrirModal('PARA TI', `${configuracionRegalo.mensajeCentral}`);
+    
+    divCentro.innerHTML = `
+      <div class="blister-hueco"></div>
+      <div class="blister-logo">HOT WHEELS</div>
+      <div class="blister-burbuja"><img src="${configuracionRegalo.fotoCentral}" class="blister-auto-img" style="border-radius:5px; object-fit:cover; width:100%; height:100%;"></div>
+    `;
+    
+    contenedorRamoMaster.appendChild(divCentro);
+  }
 }
 
 // ==========================================
